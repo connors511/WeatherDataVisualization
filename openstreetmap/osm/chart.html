@@ -169,6 +169,10 @@ $(function () {
     // Placeholder (the plot)
 	plotdata((new Date(today.getFullYear(), today.getMonth()-1, today.getDate())), today);
     
+    // http://localhost/fagprojekt/public/file/csv/list.json?id=1&c=WindSpeed&f=201001010010&t=201001012010
+    $.getJSON("http://localhost/fagprojekt/public/file/csv/list.json", { id: "1", c: "WindSpeed", f: "201001010010", t: "201001012010" }, function(json) {
+    alert("JSON Data: ");
+    });
     // Check checkbox 1
 	$("#checkbox-01,#checkbox-02,#checkbox-03,#checkbox-04,#checkbox-05").change(function() {
 		if (getView() == "<p>Weekly view</p>") {
@@ -329,7 +333,7 @@ $(function () {
 
 </script>
 <script type="text/javascript">
-	http://localhost/fagprojekt/public/file/csv/list.json?id=1&c=WindSpeed&f=201001010010&t=201001012010
+	// http://localhost/fagprojekt/public/file/csv/list.json?id=1&c=WindSpeed&f=201001010010&t=201001012010
 
 	/*$(function () {
 		
