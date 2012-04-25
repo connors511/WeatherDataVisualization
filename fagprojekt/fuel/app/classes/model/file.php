@@ -1,23 +1,33 @@
 <?php
-
 class Model_File extends \Orm\Model
 {
 	protected static $_properties = array(
 		'id',
 		'path',
 		'type',
-		'timestamp',
-		'user_id'
+		'user_id',
+		'created_at',
+		'updated_at',
 	);
 
-	protected static $_has_many = array(
-		'file_csvs' => array(
-			'key_from'		=> 'id',
-			'model_to'		=> 'Model_File_Csv',
-			'key_to'		=> 'file_id',
-			'cascade_save'		=> true,
-			'cascade_delete'	=> true,
-		)
+	protected static $_observers = array(
+		'Orm\Observer_CreatedAt' => array(
+			'events' => array('before_insert'),
+			'mysql_timestamp' => false,
+		),
+		'Orm\Observer_UpdatedAt' => array(
+			'events' => array('before_save'),
+			'mysql_timestamp' => false,
+		),
 	);
+
+	public static function validate($factory)
+	{
+		$val = Validation::forge($factory);
+		//Does not work with type:file
+		//$val->add_field('path', 'Path', 'required');
+
+		return $val;
+	}
 
 }

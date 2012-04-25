@@ -8,7 +8,13 @@ class Create_users
 	{
 		\DBUtil::create_table('users', array(
 			'id' => array('constraint' => 11, 'type' => 'int', 'auto_increment' => true),
-			'ip' => array('constraint' => 45, 'type' => 'varchar'),
+			'username' => array('constraint' => 50, 'type' => 'varchar'),
+			'password' => array('constraint' => 255, 'type' => 'varchar'),
+			'group' => array('constraint' => 11, 'type' => 'int'),
+			'email' => array('constraint' => 255, 'type' => 'varchar'),
+			'last_login' => array('constraint' => 11, 'type' => 'int'),
+			'login_hash' => array('constraint' => 255, 'type' => 'varchar'),
+			'profile_fields' => array('type' => 'text'),
 			'created_at' => array('constraint' => 11, 'type' => 'int'),
 			'updated_at' => array('constraint' => 11, 'type' => 'int'),
 		), array('id'));
