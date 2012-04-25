@@ -21,12 +21,14 @@
     }
     </style>
 	<script type="text/javascript">
-        
-var PossiblePower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), array('t'=>'2010020100','f'=>'2010010100','c'=>'PossiblePower','id'=>'26'))); ?>;
-var WindSpeed 		= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), array('t'=>'2010020100','f'=>'2010010100','c'=>'WindSpeed','id'=>'26'))); ?>;
-var RegimePossible 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), array('t'=>'2010020100','f'=>'2010010100','c'=>'RegimePossible','id'=>'26'))); ?>;
-var OutputPower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), array('t'=>'2010020100','f'=>'2010010100','c'=>'OutputPower','id'=>'26'))); ?>;
-var RegimeOutput 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), array('t'=>'2010020100','f'=>'2010010100','c'=>'RegimeOutput','id'=>'26'))); ?>;
+    <?php
+	$params = array('t'=>'2010020100','f'=>'2010010100','c'=>'PossiblePower','lat'=>$lat,'lng'=>$lng);
+	?>
+var PossiblePower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
+var WindSpeed 		= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
+var RegimePossible 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
+var OutputPower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
+var RegimeOutput 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
 
 	    // Array of the month, so we can get the month names
 var month = new Array();
