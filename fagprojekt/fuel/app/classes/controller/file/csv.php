@@ -7,7 +7,7 @@ class Controller_File_Csv extends Controller_Rest
 		
                 //Check for correct type and limit (to take care of the db)
                 if(!Model_File_Csv::has_key(Input::get('c')) || (int)(Input::get('t') - Input::get('f')) > 20000)
-			die("Not so fast, mister!");
+			die("Undefined column or too big timespan");
                 
                 //$query = Model_File_Csv::find()->
                 //    where('file_id',Input::get('id'))->
@@ -16,12 +16,12 @@ class Controller_File_Csv extends Controller_Rest
                 //    get();
                     
                 // ORM is too slow!
-		$query = DB::select('*')->
-			from('file_csvs')->
-			where('file_id', Input::get('id'))->
-			and_where('TimeStamps', 'between', array(Input::get('f'),Input::get('t')))->
-			order_by('id')->
-			execute()->as_array();
+				$query = DB::select('*')->
+					from('file_csvs')->
+					where('file_id', Input::get('id',1))->
+					and_where('TimeStamps', 'between', array(Input::get('f'),Input::get('t')))->
+					order_by('id')->
+					execute()->as_array();
 		
                 foreach($query as $row) {
                     

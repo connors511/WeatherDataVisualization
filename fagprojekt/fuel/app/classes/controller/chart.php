@@ -20,6 +20,8 @@ class Controller_Chart extends Controller
 	 */
 	public function action_index()
 	{
+		View::set_global('lat',Input::get('lat'));
+		View::set_global('lng',Input::get('lng'));
 		return Response::forge(View::forge('chart/index'));
 	}
 
