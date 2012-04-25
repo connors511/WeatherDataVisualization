@@ -1,0 +1,8 @@
+handle timezones + vinter/sommer tid
+CHECK validate data
+CHECK -99999 wind data = data missing
+CHECK (not plotting missing data, leaving holes instead) handle missing data (inform user)
+forecast vs observation
+view for combining forecast and observation
+
+DMI Data først

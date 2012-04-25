@@ -1,0 +1,206 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Thesis template file  prepared by:
+%  Thyge Knüppel, tkn@elektro.dtu.dk, DTU Elektro, May 2008
+%  Based on the work of Jan Larsen, IMM, DTU (cf. http://www2.imm.dtu.dk/teaching/phd/)
+%
+%  CET June 2010 edited Charlotte K. Madsen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% Compilation: 
+% compilation using latex (i.e. via a ps file)
+\documentclass[a4paper,11pt,oneside,openright,dvips]{book}
+
+% compilation using PDFLATEX - Note that pdflatex is known to have issues with
+% some of the pstricks-packages
+% 	\documentclass[a4paper,11pt,twoside,openright,pdftex]{book}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{config}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load style definitions, packages, etc:
+	\usepackage{style/thesisdef} 		% packages  listings aso
+	\usepackage{style/thesislayout} 	% layout; headings, pagemargin, theorems aso
+	\usepackage{style/mathboxes}		% example and other math boxes
+	\usepackage{style/Mythesis} 	  	% Locals editings to only your thesis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END of premable
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{document}
+
+%%%%%%%%%%%%%%%%% Edit ONLY for printing type:
+% Front matter:
+	\frontmatter
+
+  \ifx\thesisversion\printversion
+	% for final version include standard dtu cover pages
+	\pagenumbering{alph}%dummy numbering for pdf-file (numbering set as a
+                    %pdf-property and is NOT visible on the document). The
+                    %hyperref package complains if duplicate numbering exists
+	\coverpages    %generates the first four pages (thesislayout.sty)
+	\else
+%for draft version use simple title page:
+	\title{\ThesisTitle{} - \Subtitle{}}
+	\author{\ThesisAuthor}
+	\thispagestyle{empty}
+	\maketitle
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+   \fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PREFACE CHAPTERS INCLUDE: files are in folder "file"
+	%\pagestyle{empty} 	%For first few pages %\markboth{}{}
+	
+%% Ad to List of Contents:
+\chapter*{Acknowledgements}
+\input{./tex/acknowledgements.tex}
+	
+\pagenumbering{roman}
+  \ifx\thesisversion\printversion % no resumes in draft-version
+%% Ad to List of Contents:
+\chapter*{Abstract, Resumé}
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Resumé}
+	\else
+	\addcontentsline{toc}{chapter}{Abstract}
+	\fi
+\input{./tex/abstract.tex}
+\fi
+%% Ad to List of Contents:
+%\chapter*{Resumé, Abstract}
+%	\ifx\thesislanguage\danishlang
+%	\addcontentsline{toc}{chapter}{Abstract}
+%	\else
+%	\addcontentsline{toc}{chapter}{Resumé}
+%	\fi
+%\input{file/resume}
+%  \fi
+% if a chapter is wanted BEFORE lists
+%% Ad to List of Contents:
+%\chapter*{Preface, Forord}
+%	\ifx\thesislanguage\danishlang
+%	\addcontentsline{toc}{chapter}{Forord}
+%	\else
+%	\addcontentsline{toc}{chapter}{Preface}
+%	\fi
+%\input{file/preface} %lines above can be moved into this file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TOC,LOF,LOT and SETUP HEADER: (should not be edited)
+	%\pagestyle{fancyplain}		%'plain' enable center-food-pagenumber only
+							%'fancyplain' gives right-left numbers
+
+	\cleardoublepage 	\phantomsection  	% makes pdf-hyperref work in adobe
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Indhold}
+	\else
+	\addcontentsline{toc}{chapter}{Contents}
+	\fi
+\tableofcontents  
+
+  \ifx\thesisversion\printversion	
+	\cleardoublepage 	\phantomsection  	% makes pdf-hyperref work in adobe
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Figurliste}
+	\else
+	\addcontentsline{toc}{chapter}{List of Figures}
+	\fi
+\listoffigures
+
+	\cleardoublepage 	\phantomsection  	% makes pdf-hyperref work in adobe
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Tabelliste}
+	\else
+	\addcontentsline{toc}{chapter}{List of Tables}
+	\fi
+\listoftables
+  
+  	\cleardoublepage 	\phantomsection  	% makes pdf-hyperref work in adobe
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Kildekode liste}
+	\else
+	\addcontentsline{toc}{chapter}{List of Source code}
+	\fi
+\lstlistoflistings
+  \fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\label{fancy:frontend} %for 'of page /x'
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MAIN CHAPTERS INCLUDED FROM FOLDER  "file":
+	\mainmatter %\setcounter{page}{1}\pagenumbering{arabic} if mainmatter fails
+
+% if a chapter is wanted after lists or other unnumbered chapter
+%% Ad to List of Contents (can also be the first entry after \chapter in the file:
+	\cleardoublepage 	\phantomsection  	
+	\ifx\thesislanguage\danishlang
+	%\addcontentsline{toc}{chapter}{Introduktion}
+	\markboth{Forord}{}
+	\else
+	%\addcontentsline{toc}{chapter}{Introduction}
+	\markboth{Preface}{}
+	\fi
+\input{./tex/introduction.tex}
+\input{./tex/relatedwork.tex}
+\input{./tex/body.tex}
+\input{./tex/conclusion.tex}
+\input{./tex/futurework.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY: Build - bibtex to renew
+%	\clearpage{\thispagestyle{empty}\cleardoublepage} \phantomsection 
+%	\ifx\thesislanguage\danishlang
+%	\addcontentsline{toc}{chapter}{Litteratur}
+%	\else
+%	\addcontentsline{toc}{chapter}{Bibliography}
+%	\fi
+%	\bibliographystyle{plainnat}
+%\bibliography{bibbase}
+
+%% Ad to Runin headings:
+	\ifx\thesislanguage\danishlang
+	\markboth{Litteratur}{}
+	\else
+	\markboth{Bibliography}{}
+	\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCE:
+\clearpage{\thispagestyle{empty}\cleardoublepage} \phantomsection 
+\addcontentsline{toc}{chapter}{References}
+\input{./tex/references.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX:
+\clearpage{\thispagestyle{empty}\cleardoublepage} \phantomsection 
+	\appendix	
+	\ifx\thesislanguage\danishlang
+	\addcontentsline{toc}{chapter}{Appendiks}
+	\else
+	\addcontentsline{toc}{chapter}{Appendix}
+	\fi
+\input{./tex/appendix.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\label{fancy:mainend} %for 'of page /x'
+\clearpage{\thispagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BACK MATTER:
+	\backmatter
+	\ifx\thesisversion\printversion
+	\makebackpage %generates the backmatter (thesislayout.sty)
+	\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

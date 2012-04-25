@@ -1,0 +1,50 @@
+21 marts:
+Lidt bagud.. skal bruge mere tid til data analyse. 
+Store mængder data, flere filtyper gjorde det svært at sætte tid på dette punkt i starten.
+joachim har været i østrig, så vi har manglet en mand i to uger, hvilket har sat os lidt
+længere bagud end planlagt - dels også pga data analysens kompleksitet
+Projektplanen skal revideres til at reflecte dette
+overvejelser om database implementation, for at reducere antallet af kald til C++, og dermed øge hastigheden.
+
+
+28. marts:
+VERSION1
+	CSV visualization
+	Besluttet at droppe output fra C++, og få C++ til at populate DB istedet, som PHP benytter
+	
+VERSION2
+	WRK
+
+6 april:
+Qt giver problemer når MySQL plugin skal compiles, og vil ikke connecte til sqlite.
+PHP er blevet testet, for at se om dette kan bruges istedet, men den laver kun ~1k inserts i minuttet.
+C# er testet, og giver slightly bedre performance end PHP, men ikke meget..
+MySQL kan selv loade en CSV fil ind på meget kort tid (read <5 sec for 70k rows):
+	LOAD DATA INFILE 'C:\\wamp\\www\\dataRadarSea_28AUG2011.csv' 
+	INTO TABLE fagprojekt.file_csv 
+	FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+	LINES TERMINATED BY '\n'
+	IGNORE 1 LINES
+	(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR);
+
+Måske skulle Qt bare converte de andre dataset om til CSV, som MySQL så selv loader ind (PHP vil skulle fortælle dette til mysql serveren)
+
+
+11 april:
+C++ converter alle data typer om til csv, appender "file_id" til enden af hver row, og returner en status code for success/failure
+herefter skal PHP indlæse hele csv'en til mysql, som så er klar til brug
+
+13 april:
+VRIS_Parser er klar. converter en fil ad gangen. Skal denne laves om til at parse hele mapper ind i én csv fil med forskellige file ids per file? (kan være en del extra arbejde, men reducere server load)
+Tilføjelse af nye parsers; Tilføj typen til main.cpp:60 og lav en ny class der extender Parser. <NyParser>::parseCsv() skal lave en csv fil, med samme navn som den originale, men med .csv extension. (Skal output fil kunne defineres som command param?)
+Kan PHP danne billede ud fra værdier mellem 0 og 255?
+PHP kan nu generere billeder ud fra værdierne givet af img_type i db. et andet colormap skal dog bruges, så vi ikke får grayscale.
+Code/test.php kan generere billeder. Måske for PHP til dynamisk at samle flere billeder til et overlay billede, istedet for at loade mange små, til animation af skyer?
+
+18.apr:
+UTM
+gnomenic
+csv - maybe more columns. db problem.
+expand csv; alter table, add columns.. DB query; implode(',', Model::fields)
+målgruppe: fellow peers
+fokus: data processing, optimering, 

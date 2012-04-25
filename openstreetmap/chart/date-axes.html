@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	
+	<title>Date Axes</title>
+
+    <link class="include" rel="stylesheet" type="text/css" href="../jquery.jqplot.min.css" />
+    <link rel="stylesheet" type="text/css" href="examples.min.css" />
+    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shCoreDefault.min.css" />
+    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shThemejqPlot.min.css" />
+  
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
+    <script class="include" type="text/javascript" src="../jquery.min.js"></script>
+    
+   
+</head>
+<body>
+   
+    <div class="example-content">
+      
+<!-- Example scripts go here -->
+
+
+<div id="chart2" style="height:300px; width:650px;"></div>
+
+<pre class="code prettyprint brush: js"></pre>
+ 
+  
+<script class="code" type="text/javascript">
+$(document).ready(function(){
+  var line1=[['2008-06-30 8:00AM',4], ['2008-7-14 8:00AM',6.5], ['2008-7-28 8:00AM',5.7], ['2008-8-11 8:00AM',9], ['2008-8-25 8:00AM',8.2]];
+  var plot2 = $.jqplot('chart2', [line1], {
+      title:'Customized Date Axis', 
+	  // Turns on animatino for all series in this plot.
+            animate: true,
+            // Will animate plot on calls to plot1.replot({resetAxes:true})
+            animateReplot: true,
+            cursor: {
+                show: true,
+                zoom: true,
+                looseZoom: true,
+                showTooltip: false
+            },
+      axes:{
+        xaxis:{
+          renderer:$.jqplot.DateAxisRenderer, 
+          tickOptions:{formatString:'%b %#d, %#I %p'},
+          min:'June 16, 2008 8:00AM', 
+          tickInterval:'2 weeks'
+        }
+      },
+      series:[{lineWidth:4, markerOptions:{style:'square'}}]
+  });
+});
+</script>
+
+<!-- End example scripts -->
+
+<!-- Don't touch this! -->
+
+
+    <script class="include" type="text/javascript" src="../jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="syntaxhighlighter/scripts/shCore.min.js"></script>
+    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushJScript.min.js"></script>
+    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushXml.min.js"></script>
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+    <script class="include" language="javascript" type="text/javascript" src="../plugins/jqplot.dateAxisRenderer.min.js"></script>
+
+<!-- End additional plugins -->
+
+
+	</div>	
+
+</body>
+
+
+</html>

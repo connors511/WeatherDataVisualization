@@ -1,0 +1,7 @@
+﻿Eksempel på data til plot af graf. 
+Null bruger til ikke at 'connecte' de to grafter.
+[UNIX timestamp, data]
+
+
+
+var d3 = [[-373597200000, 315.71], [-368326800000, 317.50], null, [-360378000000, 314.93], [-357699600000, 313.19]]; 

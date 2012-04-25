@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Weather charts</title>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="../jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="../jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="../jquery.flot.resize.js"></script>
+    <style type="text/css">
+    html, body {
+        height: 100%; /* make the percentage height on placeholder work */
+    }
+    .message {
+        padding-left: 50px;
+        font-size: smaller;
+    }
+    </style>
+ </head>
+ <body>
+    <h1>Windspeed</h1>
+	<div id="zoom"></div>
+	    <div id="placeholder" style="width:80%;height:40%;"></div>
+	    <p>Zoom to: <button id="whole">Whole period</button>
+      <button id="nineties">1990-2000</button>
+      <button id="ninetynine">1999</button></p>
+	<input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked/>Possible Power</label><br />
+	<input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox"/>Wind Speed</label><br />
+	<input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox"/>Regime Possible</label><br />
+	<input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox"/>Output Power</label><br />
+	<input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox"/>Regime Output</label>
+
+<script type="text/javascript">
+$(function () {
+    var PossiblePower = [[-373597200000, 315.71], [-368326800000, 317.50], null, [-360378000000, 314.93], [-357699600000, 313.19]];
+    var WindSpeed = [[-373597200000, 615.71], [-368326800000, 617.50], null, [-360378000000, 614.93], [-357699600000, 613.19]];
+    var RegimePossible = [[-373597200000, 615.71], [-368326800000, 617.50], null, [-360378000000, 614.93], [-357699600000, 613.19]];
+    var OutputPower = [[-373597200000, 315.71], [-368326800000, 317.50], null, [-360378000000, 314.93], [-357699600000, 313.19]];
+    var RegimeOutput = [[-373597200000, 615.71], [-368326800000, 617.50], null, [-360378000000, 614.93], [-357699600000, 613.19]];
+
+    var placeholder = $("#placeholder");
+    $.plot($("#placeholder"), [PossiblePower], { xaxis: { mode: "time" } });
+    
+    // Check checkbox 1
+    $("#checkbox-01,#checkbox-02,#checkbox-03,#checkbox-04,#checkbox-05").change(function() {
+    		$.plot($("#placeholder"), [ (($("#checkbox-01").is(':checked')) ? PossiblePower : [[null]]),
+    									(($("#checkbox-02").is(':checked')) ? WindSpeed : [[null]]),
+    									(($("#checkbox-03").is(':checked')) ? RegimePossible : [[null]]),
+    									(($("#checkbox-04").is(':checked')) ? OutputPower : [[null]]),
+    									(($("#checkbox-05").is(':checked')) ? RegimeOutput : [[null]]) ], { xaxis: { mode: "time" } });
+    });
+            
+    // the plugin includes a jQuery plugin for adding resize events to
+    // any element, let's just add a callback so we can display the
+    // placeholder size
+    placeholder.resize(function () {
+        $(".message").text("Placeholder is now "
+                           + $(this).width() + "x" + $(this).height()
+                           + " pixels");
+    });
+    
+    
+    
+    $("#whole").click(function () {
+    	$("#zoom").text("");
+        $.plot($("#placeholder"), [d3], { xaxis: { mode: "time" } });
+    });
+
+    $("#nineties").click(function () {
+    	$("#zoom").text("1990-2000");
+        $.plot($("#placeholder"), [d3], {
+            xaxis: {
+                mode: "time",
+                min: (new Date(1990, 1, 1)).getTime(),
+                max: (new Date(2000, 1, 1)).getTime()
+            }
+        });
+    });
+
+    $("#ninetynine").click(function () {
+$("#zoom").text("1999");
+        $.plot($("#placeholder"), [d3], {
+            xaxis: {
+                mode: "time",
+                minTickSize: [1, "month"],
+                min: (new Date(1999, 1, 1)).getTime(),
+                max: (new Date(2000, 1, 1)).getTime()
+            }
+        });
+    });
+});
+</script>
+
+ </body>
+</html>

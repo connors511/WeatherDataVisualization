@@ -1,0 +1,160 @@
+<?php
+
+/**
+ * The User Controller.
+ * 
+ * @package  app
+ * @extends  Controller
+ */
+
+class Controller_Files extends Controller_Base {
+
+	/**
+	 * The index action.
+	 * 
+	 * @access  public
+	 * @return  void
+	 */
+	public function action_index()
+	{
+		// Make sure the user is logged in
+		$this->restrict();
+		
+		$res = \DB::select('files.*','profile.firstname','profile.lastname')
+			    ->from('files')
+			    ->join('profile')
+			    ->on('profile.user_id','=','files.user_id')
+			    ->order_by('type','desc')
+			    ->order_by('date','desc')
+			    ->execute()->as_array();
+		$a = array();
+		foreach(array_values(\Config::get('k1200.files')) as $k) {
+		    $a[$k] = array();
+		}
+		foreach($res as $vals) {
+		    $vals['user'] = $vals['firstname'].' '.$vals['lastname'];
+		    $a[$vals['type']][] = $vals;
+		}
+		$this->data['files'] = $a;
+		$this->data['file_types'] = \Config::get('k1200.files');
+		$this->data['sidebar'] = View::factory('inc/sidebar/files_category',$this->data);
+		$this->data['content'] = View::factory('inc/files',$this->data);
+	}
+	
+	public function action_download($id = false)
+	{
+	    $this->restrict();
+	    if(!$id) {
+		Response::redirect('files');
+	    }
+	    
+	    $res = \DB::select('path','ext')->from('files')->where('id','=',$id)->execute()->as_array();
+	    
+	    $rel_path = $res[0]['path'];
+	    /*
+	    Do any processing you'd like here:
+	    1.  Increment a counter
+	    2.  Do something with the DB
+	    3.  Check user permissions
+	    4.  Anything you want!
+	    */
+	    
+	    // required for IE
+	    if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off');  }
+	  
+	    // get the file mime type using the file extension
+	    switch(strtolower(substr(strrchr($rel_path,'.'),1)))
+	    {
+	      case 'pdf': $mime = 'application/pdf'; break;
+	      case 'zip': $mime = 'application/zip'; break;
+	      case 'jpeg':
+	      case 'jpg': $mime = 'image/jpg'; break;
+	      default: $mime = 'application/force-download';
+	    }
+	    header('Pragma: public');   // required
+	    header('Expires: 0');    // no cache
+	    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	    header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($rel_path)).' GMT');
+	    header('Cache-Control: private',false);
+	    header('Content-Type: '.$mime);
+	    header('Content-Disposition: attachment; filename="'.basename($rel_path).'"');
+	    header('Content-Transfer-Encoding: binary');
+	    header('Content-Length: '.filesize($rel_path));  // provide file size
+	    header('Connection: close');
+	    readfile($rel_path);    // push it out
+	    
+	    $this->do_render = false;
+	}
+	
+	public function action_upload()
+	{
+	    $this->restrict();
+	    if(!$_POST || Input::post('user_id') != $this->data['userid']) {
+		Response::redirect('files');
+	    }
+	    
+	    // register a before callback using a closure
+	    Upload::register('after', function (&$file) {
+		    if ($file['error'] == Upload::UPLOAD_ERR_OK)
+		    {
+			list($insert_id,$rows) = \DB::insert('files')->set(array(
+			    'user_id'	=> Input::post('user_id'),
+			    'type'	=> Input::post('file_type'),
+			    'name'	=> Input::post('file_name'),
+			    'description'	=> Input::post('description',''),
+			    'path'	=> $file['saved_to'].$file['saved_as'],
+			    'ext'	=> $file['extension']
+			))->execute();
+			Session::set_flash('insert_id',$insert_id);
+		    }
+		}
+	    );
+
+	    // do we have any uploaded files to save?
+	    if ( Upload::is_valid() )
+	    {
+		Upload::save();
+		if(Input::post('notice',false) !== FALSE) {
+			// Send email notice to all current residents
+			// select s.language,p.room from k1200_profile p join k1200_settings_general s using(user_id) where p.moved_out = '0000-00-00 00:00:00'
+			$res = DB::select('language','email')
+				->from('profile')
+				->join('settings_general')
+				->on('settings_general.user_id','=','profile.user_id')
+				->where('moved_out','=','0000-00-00 00:00:00')
+				->or_where('moved_out','>',DB::expr('NOW()'))
+				->order_by('room')
+				->order_by('language')
+				->execute()
+				->as_array();
+			$emails = array();
+			foreach($res as $r) {
+if($r['email'] && !empty($r['email'])) {
+				$emails[$r['language']][] = $r['email']; //$r['room'].'@k1200.dk';
+}
+			}
+			// select concat(firstname,' ',lastname) from k1200_profile where user_id = 12
+			$r = DB::select(array(DB::expr('CONCAT(firstname," ",lastname)'),'name'))->from('profile')->where('user_id','=',Input::post('user_id'))->execute()->current();
+			$name = $r['name'];
+			foreach($emails as $lang => $reps) {
+				Config::set('language',$lang);
+				Lang::load('global',$lang);
+				$recvs = implode(', ',$reps);
+				$header = __($lang.'.new_file_uploaded',array('name'=>Input::post('file_name')));
+				$body = __($lang.'.new_file_uploaded_body',array(
+									  'author'=>$name,
+									  'name'=>Input::post('file_name'),
+									  'desc'=>Input::post('description',''),
+									  'link'=>Uri::create('files/download/'.Session::get_flash('insert_id'))
+									  ));
+				$extra_heads = 	'From: "k1200" <robot@k1200.dk>' . PHP_EOL .
+						'X-Mailer: PHP-' . phpversion() . PHP_EOL;
+				mail($recvs,$header,$body,$extra_heads);
+			}
+			Config::set('language',Cookie::get('language','en'));
+			
+		}
+	    }
+	    Response::redirect('files');
+	}
+}

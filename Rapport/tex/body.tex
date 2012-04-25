@@ -1,0 +1,64 @@
+\chapter{Body}
+\section{The use of frameworks}
+Using frameworks because of the decreased development time due to already developed and tested libraries for various tasks such as database accesss, file handling and file uploading.
+
+\section{The C++ application}
+\subsection{Why a C++ application?}
+We're using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
+The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
+
+We could have chosen other languages such as F, F#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
+
+\subsection{Why Qt?}
+We've decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
+
+\subsection{Return codes}
+The C++ application returns the following codes to the PHP after processing data:
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Code} & \textbf{Explanation}\\
+\hline
+0 & Failure\\
+\hline
+1 & Success\\
+\hline
+2 & Success, unkown params ignored\\
+\hline
+10 & Failed, missing fileid\\
+\hline
+11 & Failed, missing filename\\
+\hline
+12 & Failed, missing type\\
+\hline
+20 & Unknown file type\\
+\hline
+21 & File not found\\
+\hline
+22 & Invalid file, or wrongly formatted\\
+\hline
+30 & Could not read input file\\
+\hline
+31 & Could not write to input file\\
+\hline
+32 & Could not read output file\\
+\hline
+33 & Could not write to output file\\
+\hline
+34 & Could not delete output file\\
+\hline
+\end{tabular}
+\label{tab:cppReturnCodes}
+\caption{Return codes from the C++ application}
+\end{table}
+
+\subsection{Extensibility}
+The application is coded with extensibility in mind, and all parsers is therefore extending the base class \emph{Parser}.
+The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.
+
+\section{The PHP site}
+\subsection{Why PHP?}
+
+\subsection{Why FuelPHP?}
+
