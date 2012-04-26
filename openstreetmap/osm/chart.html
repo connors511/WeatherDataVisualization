@@ -8,7 +8,7 @@
 	<!--[if lte IE 8]>
 		<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
 	<![endif]-->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css"/>
     <script language="javascript" type="text/javascript" src="jquery.flot.js"></script>
     <script language="javascript" type="text/javascript" src="jquery.flot.resize.js"></script>
@@ -24,7 +24,32 @@
     }
     </style>
 	<script type="text/javascript">
-var PossiblePower  = [[1332180067, 255.71], [1332266467, 217.50], null, [1332957667, 204.93], [1333044067, 213.19]];//var WindSpeed   = [[1332180067, 255.71], [1332266467, 217.50], null, [1332957667, 204.93], [1333044067, 213.19]];var RegimePossible  = [[1332180067, 355.71], [1332266467, 317.50], null, [1332957667, 304.93], [1333044067, 313.19]];var OutputPower  = [[1332180067, 455.71], [1332266467, 417.50], null, [1332957667, 404.93], [1333044067, 413.19]];var RegimeOutput  = [[1332180067, 555.71], [1332266467, 517.50], null, [1332957667, 504.93], [1333044067, 513.19]];
+function getJson (id, c, f, t) {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "http://localhost:8888/fagprojekt-wdv/fagprojekt/public/file/csv/list.json?id=" + id + "&c=" + c + "&f=" + f + "&t=" + t,
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+}
+	var PossiblePower = [];
+	var OutputPower = [];
+	var WindSpeed = [];
+	var RegimePossible = [];
+	var RegimeOutput = [];
+	var today;
+	var now;
+$(document).ready(function() {
+	getArray(new Date(2010, 01, 01), new Date(2010, 02, 01));
+	// Sets the 'Now' date (+ 5 days) and today date
+	now  = new Date(PossiblePower[PossiblePower.length-1][0]+5);
+	today = now;
+});
 	    // Array of the month, so we can get the month names
 var month = new Array();
 	month[0] = "January";
@@ -39,14 +64,11 @@ var month = new Array();
 	month[9] = "October";
 	month[10] = "November";
 	month[11] = "December";
-	
-    // Sets the 'Now' date (+ 5 days) and today date
-var now   = new Date(WindSpeed[WindSpeed.length-1][0]+5);
-var today = now;
+
 	</script>
  </head>
  <body>
-	<div id="zoom" style="color: #fff;"><script>document.write(today.getDate() + ". " + month[today.getMonth()-1] + " " + today.getFullYear() + " \t - \t " + today.getDate() + ". " + month[today.getMonth()] + " " + today.getFullYear())</script></div>
+	<div id="zoom" style="color: #fff;">Today</div>
 		<div class="button" id="button" style="margin-right: 10px;"><p>Monthly view</p></div>
 	    <div id="placeholder"></div>
 	    <div id="controlButtons">
@@ -85,31 +107,47 @@ $("#closechart").click(function () {
 		$("#openchart").hide("slide", { direction: "left" }, 600);
 		$("#sizer").show("slide", { direction: "left" }, 600);
 	}
+	
+	function getTimeStamp(date) {
+		var d = "0" + (date.getDate()+1);
+		var m = "0" + (date.getMonth()+1);
+		var y = "" + date.getFullYear();
+		console.log("GetTimeStamp: " + y+" "+m.substring(m.length-2, m.length)+" "+d.substring(d.length-2, d.length)+" "+"0000");
+		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+"0000";
+	}
 
     // Returns the arrays that the user selects.
-function getArray() {
-	var power  = 1;
-	var wind   = 2;
-	var regime = 3;
-	if (!$("#checkbox-01").is(':checked') && !$("#checkbox-04").is(':checked')) {
-		if (!$("#checkbox-02").is(':checked')) {
-			regime = 1;
-		} else {
-			wind--;
-			regime--;	
-		}
-	} else {
-		if (!$("#checkbox-02").is(':checked')) {
-			regime--;	
-		}
+function getArray(mind, maxd) {
+	var array = [];
+	var i = 0;
+	
+	if ($("#checkbox-01").is(':checked')) {
+	 	if (PossiblePower.length == 0)
+	 		PossiblePower = getJson(1, "PossiblePower", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: PossiblePower, label: "Possible Power", yaxis: 1};
 	}
-	return 	[ 
-			 (($("#checkbox-01").is(':checked')) ? {data: PossiblePower, label: "Possible Power", yaxis: power} : [[null]]),
-			 (($("#checkbox-04").is(':checked')) ? {data: OutputPower, label: "Output Power", yaxis: power} : [[null]]),
-    		 (($("#checkbox-02").is(':checked')) ? {data: WindSpeed, label: "Wind Speed", yaxis: wind} : [[null]]),
-    		 (($("#checkbox-03").is(':checked')) ? {data: RegimePossible, label: "Regime Possible", yaxis: regime} : [[null]]),
-			 (($("#checkbox-05").is(':checked')) ? {data: RegimeOutput, label: "Regime Output", yaxis: regime} : [[null]])  
-			];
+	if ($("#checkbox-04").is(':checked')) {
+	 	if (OutputPower.length == 0)
+		 	OutputPower = getJson(1, "OutputPower", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: OutputPower, label: "Output Power", yaxis: 1};
+	}
+   	if ($("#checkbox-02").is(':checked')) {
+	 	if (WindSpeed.length == 0)
+			WindSpeed = getJson(1, "WindSpeed", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: WindSpeed, label: "Wind Speed", yaxis: 2};
+   	}
+   	if ($("#checkbox-03").is(':checked')) {
+	 	if (RegimePossible.length == 0)
+			RegimePossible = getJson(1, "RegimePossible", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: RegimePossible, label: "Regime Possible", yaxis: 3};
+   	}
+	if ($("#checkbox-05").is(':checked')) {
+	 	if (RegimeOutput.length == 0)
+		 		RegimeOutput = getJson(1, "RegimeOutput", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: RegimeOutput, label: "Regime Output", yaxis: 3};
+	}
+	
+	return 	array;
 }
 
 $("#openchart").mouseenter(function () {
@@ -134,25 +172,39 @@ function getView() {
 	return document.getElementById("button").innerHTML	
 }
 
-    // Outputs the date range
-function outputDate(d) {
-	if (getView() == "<p>Monthly view</p>") {
-		var temp = new Date(d.getFullYear(), d.getMonth()-1, d.getDate())
-	} else if (getView() == "<p>Weekly view</p>") {
-		var temp = new Date(d.getFullYear(), d.getMonth(), d.getDate()-7)
-	} else {
-		var temp = new Date(d.getFullYear(), d.getMonth(), d.getDate()-1)	
+function plotdata(sDate, eDate) {
+	$("#zoom").text(sDate.getDate() + ". " + month[sDate.getMonth()] + " " + sDate.getFullYear() + " \t - \t " + eDate.getDate() + ". " + month[eDate.getMonth()] + " " + eDate.getFullYear());
+	
+	if ($("#checkbox-01").is(':checked')) {
+		PossiblePower = getJson(1, "PossiblePower", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
-	$("#zoom").text(temp.getDate() + ". " + month[temp.getMonth()] + " " + temp.getFullYear() + " \t - \t " + d.getDate() + ". " + month[d.getMonth()] + " " + d.getFullYear())
+	if ($("#checkbox-04").is(':checked')) {
+		OutputPower = getJson(1, "OutputPower", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-02").is(':checked')) {
+		WindSpeed = getJson(1, "WindSpeed", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-03").is(':checked')) {
+		RegimePossible = getJson(1, "RegimePossible", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-05").is(':checked')) {
+		RegimeOutput = getJson(1, "RegimeOutput", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	console.log(getTimeStamp(sDate));
+	
+	placeholder.setData(getArray(sDate, eDate));
+	placeholder.getOptions().xaxes[0].min = sDate.getTime();
+	placeholder.getOptions().xaxes[0].max = eDate.getTime();
+	placeholder.setupGrid();	placeholder.draw();	
 }
 
-function plotdata(sDate, eDate) {
-	outputDate(eDate);
-	$.plot($("#placeholder"), getArray(), { 
+$(function () {
+    // Placeholder (the plot)
+    placeholder = $.plot($("#placeholder"), getArray(), { 
 		xaxis: { 	
 			mode: "time",
-			min: sDate.getTime(),
-			max: eDate.getTime()
+			min: (new Date(today.getFullYear(), today.getMonth()-1, today.getDate())).getTime(),
+			max: today.getTime()
 		},
 		legend: { position: 'sw' },
 
@@ -162,17 +214,9 @@ function plotdata(sDate, eDate) {
                 clickable: true,
                 hoverable: true
 	});
-	//plot.setupGrid();	//plot.draw();	
-}
-
-$(function () {
-    // Placeholder (the plot)
 	plotdata((new Date(today.getFullYear(), today.getMonth()-1, today.getDate())), today);
     
     // http://localhost/fagprojekt/public/file/csv/list.json?id=1&c=WindSpeed&f=201001010010&t=201001012010
-    $.getJSON("http://localhost/fagprojekt/public/file/csv/list.json", { id: "1", c: "WindSpeed", f: "201001010010", t: "201001012010" }, function(json) {
-    alert("JSON Data: ");
-    });
     // Check checkbox 1
 	$("#checkbox-01,#checkbox-02,#checkbox-03,#checkbox-04,#checkbox-05").change(function() {
 		if (getView() == "<p>Weekly view</p>") {
@@ -198,24 +242,20 @@ $(function () {
 		var day = today.getDate();
 		var month = today.getMonth();
 		if (getView() == "<p>Monthly view</p>") {
-			var day = today.getDate();
-			var month = today.getMonth() - 1;
+			day = today.getDate();
+			month = today.getMonth() - 1;
 		} else if (getView() == "<p>Weekly view</p>") {
-			var day = today.getDate() - 7;
-			var month = today.getMonth();
+			day = today.getDate() - 7;
+			month = today.getMonth();
 		}
 		var year = today.getFullYear();
-		if (new Date(WindSpeed[0][0]) >= today) {
-			day = today.getDate();
-			month = today.getMonth();
-			year = today.getFullYear();
-		}
-		today = new Date(year, month, day);		
-		outputDate(today);
+		today = new Date(year, month, day);
 		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
 		}
 	});
 
@@ -224,33 +264,35 @@ $(function () {
 		var day = today.getDate() - 1;
 		var month = today.getMonth();
 		var year = today.getFullYear();
-		if (new Date(WindSpeed[0][0]) >= today) {
-			day = today.getDate();
-			month = today.getMonth();
-			year = today.getFullYear();
-		}
-		today = new Date(year, month, day);	
-		outputDate(today);
+		today = new Date(year, month, day);
 		
 		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
 			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			plotdata(f, today);
 		}
 	});
 
     // Today button
 	$("#today").click(function () {
 		today = now;
-		outputDate(today);
 		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		} else if ("<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}
 	});
 
@@ -258,13 +300,18 @@ $(function () {
 	$("#forward").click(function () {
 		var day = today.getDate() + 1;
 		today = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-		outputDate(today);
 		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}
 	});
 
@@ -281,11 +328,14 @@ $(function () {
 		}
 		var year = today.getFullYear();
 		today = new Date(year, month, day);
-		outputDate(today);
 		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}
 	});
 	
@@ -302,7 +352,9 @@ $(function () {
 		    });
 			document.getElementById("button").innerHTML = "<p>Weekly view</p>"
 			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()-10)
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		} else if (getView() == "<p>Daily view</p>") {
 			document.getElementById("forwardfast").style.cursor='pointer';
 			document.getElementById("backfast").style.cursor='pointer';
@@ -314,7 +366,9 @@ $(function () {
 		    });
 			document.getElementById("button").innerHTML = "<p>Monthly view</p>"
 			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()+10)
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		} else {
 			$('#forwardfast').fadeTo('fast', 0.1, function() {
 		    	// Animation complete.
@@ -326,7 +380,9 @@ $(function () {
 			document.getElementById("backfast").style.cursor='default';
 			document.getElementById("button").innerHTML = "<p>Daily view</p>"
 			today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			PossiblePower = getJson(1, "PossiblePower", getTimeStamp(f), getTimeStamp(today));
+			plotdata(f, today);
 		}
 	});
 });
@@ -334,18 +390,6 @@ $(function () {
 </script>
 <script type="text/javascript">
 	// http://localhost/fagprojekt/public/file/csv/list.json?id=1&c=WindSpeed&f=201001010010&t=201001012010
-
-	/*$(function () {
-		
-		$('#test').html('');
-		
-		var headID = document.getElementsByTagName("head")[0];         
-		var newScript = document.createElement('script');
-		newScript.type = 'text/javascript';
-		newScript.src = 'test2.js';
-		headID.appendChild(newScript);
-		
-	});*/
 	</script>
  </body>
 </html>
