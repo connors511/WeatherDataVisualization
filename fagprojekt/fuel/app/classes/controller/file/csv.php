@@ -6,8 +6,8 @@ class Controller_File_Csv extends Controller_Rest
 	public function get_list() {
 		
                 //Check for correct type and limit (to take care of the db)
-                if(!Model_File_Csv::has_key(Input::get('c')) || (int)(Input::get('t') - Input::get('f')) > 20000)
-			die("Not so fast, mister!");
+                //if(!Model_File_Csv::has_key(Input::get('c')) || (int)(Input::get('t') - Input::get('f')) > 30000)
+			//die("Not so fast, mister!");
                 
                 //$query = Model_File_Csv::find()->
                 //    where('file_id',Input::get('id'))->
