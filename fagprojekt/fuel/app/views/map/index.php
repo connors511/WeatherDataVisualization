@@ -112,7 +112,7 @@ map.setView(pos, 7).addLayer(cloudmade);
 //map.locate({setView: true, maxZoom: 9});
 
 var MyIcon = L.Icon.extend({
-    iconUrl: '<?php echo Asset::find_file('windmill.png','img'); ?>,
+    iconUrl: '<?php echo Asset::find_file('windmill.png','img'); ?>',
     shadowUrl: null,
     iconSize: new L.Point(64, 64),
     shadowSize: null,
@@ -128,8 +128,7 @@ var marker = new L.Marker(markerpos, {icon: icon}), marker2 = new L.Marker(new L
 map.addLayer(marker).addLayer(marker2);
 
 marker.on('click', function(e) {
-	
-    var page = "osm/chart.html?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
+    var page = "chart/?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
     var pagetitle = "chart";
     var $dialog = $( "#dialog-form" )
                 .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
@@ -158,13 +157,7 @@ function onMapClick(e) {
 }
 
 </script>
-<div class="demo">
-	<div id="dialog-form" title="Chart">
-		<p>hallo</p>
-	</div>
+<div id="dialog-form" title="Chart">
 </div>
-
-
-
 </body>
 </html>

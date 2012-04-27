@@ -41,7 +41,7 @@ return array(
 	 *
 	 * Set this to false or remove if you using mod_rewrite.
 	 */
-	'index_file'  => 'index.php',
+	'index_file'  => false,
 
 	'profiling'  => false,
 
@@ -94,7 +94,7 @@ return array(
 	 * Fuel::L_INFO
 	 * Fuel::L_ALL
 	 */
-	'log_threshold'    => Fuel::L_WARNING,
+	'log_threshold'    => Fuel::L_NONE,
 	'log_path'         => APPPATH.'logs/',
 	'log_date_format'  => 'Y-m-d H:i:s',
 
@@ -136,6 +136,7 @@ return array(
 			'Fuel\\Core\\Response',
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
+                        'Fuel\Core\Validation',
 			'Closure',
 		)
 	),
@@ -186,6 +187,8 @@ return array(
 		 */
 		'packages'  => array(
 			'orm',
+                        'auth',
+                        
 		),
 
 		/**
