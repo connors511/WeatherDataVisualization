@@ -111,7 +111,6 @@ $("#closechart").click(function () {
 		var d = "0" + (date.getDate()+1);
 		var m = "0" + (date.getMonth()+1);
 		var y = "" + date.getFullYear();
-		console.log("d: " + d);
 		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+"0000";
 	}
 
@@ -262,7 +261,7 @@ $(function () {
 			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
 			plotdata(f, today);
 		}  else {
-			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-2);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
 			plotdata(f, today);
 		}
 	});
@@ -277,7 +276,7 @@ $(function () {
 			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)
 			plotdata(f, today);
 		}  else {
-			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-2);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
 			plotdata(f, today);
 		}
 	});
@@ -292,7 +291,7 @@ $(function () {
 			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
 			plotdata(f, today);
 		}  else {
-			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-2);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
 			plotdata(f, today);
 		}
 	});
@@ -362,8 +361,7 @@ $(function () {
 			document.getElementById("backfast").style.cursor='default';
 			document.getElementById("button").innerHTML = "<p>Daily view</p>";
 			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()-3)
-			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-2);
-			console.log("today: " + getTimeStamp(today) + "\nfrom: " + getTimeStamp(f));
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
 			plotdata(f, today);
 		}
 	});
