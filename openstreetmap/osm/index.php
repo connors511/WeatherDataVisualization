@@ -84,11 +84,6 @@ body { font-size: 62.5%; }
 			<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
 <script>
 var images = new Image();
-	images = ["http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/108.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/106.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/102.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/101.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/103.gif"];
 var count = 0;
 var run = false;
 
@@ -175,17 +170,22 @@ var RadarIcon = L.Icon.extend({
 });
 icon = new RadarIcon();
 
-RadMarkPos = new L.LatLng(55.2,7.2);
+RadMarkPos = new L.LatLng(55.5,7.9);
 Radmark = new L.Marker(RadMarkPos, {icon: icon});
 
 map.addLayer(Radmark);
+images = ["http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/108.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/106.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/102.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/101.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/103.gif"];
+
 Radmark.on('click', function(e) {
 		if (!run) {
 			run = true;
 			SwitchPic();
 			run = false;
 		}
-		
 });	
 
 
@@ -215,13 +215,13 @@ function SwitchPic() {
 	});
 	icon = new RadarIcon();
 
-	RadMarkPos = new L.LatLng(55.2,7.2);
+	RadMarkPos = new L.LatLng(55.5,7.9);
 	Radmark = new L.Marker(RadMarkPos, {icon: icon});
 	map.addLayer(Radmark);
 	
 	if (count < images.length) {
 		setTimeout('SwitchPic()', 1000);
-	} /*else {
+	} else {
 		setTimeout(function () {
 			map.removeLayer(Radmark);
 			var RadarIcon = L.Icon.extend({
@@ -234,12 +234,12 @@ function SwitchPic() {
 			});
 			icon = new RadarIcon();
 			
-			RadMarkPos = new L.LatLng(55.2,7.2);
+			RadMarkPos = new L.LatLng(55.5,7.9);
 			Radmark = new L.Marker(RadMarkPos, {icon: icon});
 			
 			map.addLayer(Radmark);
 		}, 2000);
-	}*/
+	}
 }
 
 </script>
