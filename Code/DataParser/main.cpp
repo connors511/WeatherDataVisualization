@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QString type = "";
 
     QRegExp rxArgFileId("--fileid=([0-9]{1,})");
-    QRegExp rxArgFile("--file=([a-z0-9A-Z._\\\\:-]{1,})");
+    QRegExp rxArgFile("--file=([a-z0-9A-Z._\\\\:- ]{1,})");
     QRegExp rxArgType("--type=([a-z]{1,})");
 
     for (int i = 1; i < args.size(); ++i) {
