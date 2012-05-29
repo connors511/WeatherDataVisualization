@@ -1,8 +1,79 @@
+
 <html>
 <head>
 <title>Cunt</title>
 <style type="text/css">
-<link rel="stylesheet" href="css/style.css" />
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+a img {
+	border: none;
+}
+
+#map {
+	width: 100%;
+	height: 100%;	
+}
+body { font-size: 62.5%; }
+		label, input { display:block; }
+		input.text { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; }
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		div#users-contain { width: 350px; margin: 20px 0; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+</style>
+<link rel="stylesheet" href="css/style.css"/>
 <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
 <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
@@ -12,6 +83,10 @@
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 			<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
 <script>
+var images = new Image();
+var count = 0;
+var run = false;
+
 $(function() {
 $( "#dialog-form" ).dialog({
 			autoOpen: false,
@@ -45,8 +120,10 @@ pos = new L.LatLng(56.200, 11.200);
 map.setView(pos, 7).addLayer(cloudmade);
 //map.locate({setView: true, maxZoom: 9});
 
-var MyIcon = L.Icon.extend({
-    iconUrl: 'img/windmill.png',
+
+//--------- Windmills
+var WindIcon = L.Icon.extend({
+    iconUrl: '../windmill.png',
     shadowUrl: null,
     iconSize: new L.Point(64, 64),
     shadowSize: null,
@@ -54,7 +131,7 @@ var MyIcon = L.Icon.extend({
     popupAnchor: new L.Point(-3, -76)
 });
 
-var icon = new MyIcon();
+var icon = new WindIcon();
 
 var markerpos = new L.LatLng(56.2,11.2);
 var marker = new L.Marker(markerpos, {icon: icon}), marker2 = new L.Marker(new L.LatLng(56.2,9.2), {icon: icon});
@@ -63,24 +140,57 @@ map.addLayer(marker).addLayer(marker2);
 
 marker.on('click', function(e) {
 	
-    var page = "chart.php"
-    var pagetitle = "Chart " + '(' + this.getLatLng().lat.toFixed(3) + ', ' + this.getLatLng().lng.toFixed(3) + ')';
+    var page = "chart.html?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
+    var pagetitle = "Chart (" + this.getLatLng().lat.toFixed(3) + "; " + this.getLatLng().lng.toFixed(3) + ")";
     var $dialog = $( "#dialog-form" )
                 .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
                 .dialog({
                     autoOpen: false,
                     modal: true,
-                    height: screen.height*0.7,
-                    width: screen.width*0.8,
+                    height: screen.height*0.75,
+                    width: screen.width*0.9,
                     title: pagetitle,
-                    close: function(ev, ui) { $("#map").fadeTo("slow", 1); }
+                    close: function(ev, ui) { $("#map").fadeTo("slow", 1); },
+                    dragable: false
                 });
-                $("#map").fadeTo("slow", 0.3);
                 $dialog.dialog('open');
     //alert("test " + '(' + this.getLatLng().lat.toFixed(3) + ', ' + this.getLatLng().lng.toFixed(3) + ')');
 });
 
-map.on('click', onMapClick);
+
+//---------
+//--------- Radars
+var RadarIcon = L.Icon.extend({
+    iconUrl: '../radar.png',
+    shadowUrl: null,
+    iconSize: new L.Point(64, 64),
+    shadowSize: null,
+    iconAnchor: new L.Point(32, 32),
+    popupAnchor: new L.Point(-3, -76)
+});
+icon = new RadarIcon();
+
+RadMarkPos = new L.LatLng(55.5,7.9);
+Radmark = new L.Marker(RadMarkPos, {icon: icon});
+
+map.addLayer(Radmark);
+
+images = ["http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/108.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/106.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/102.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/101.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/103.gif"];
+
+Radmark.on('click', function(e) {
+			//SwitchPic(this.getLatLng().lat.toFixed(3), this.getLatLng().lng.toFixed(3));
+			alert("test");
+});	
+
+
+//---------
+
+
+/*map.on('click', onMapClick);
 
 function onMapClick(e) {
     var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
@@ -89,6 +199,46 @@ function onMapClick(e) {
     popup.setContent("You clicked the map at " + latlngStr);
 
     map.openPopup(popup);
+}*/
+
+function SwitchPic(lat, lng) {
+    map.removeLayer(Radmark);
+	var RadarIcon = L.Icon.extend({
+	    iconUrl: images[count++],
+	    shadowUrl: null,
+	    iconSize: new L.Point(64, 64),
+	    shadowSize: null,
+	    iconAnchor: new L.Point(32, 32),
+	    popupAnchor: new L.Point(-3, -76)
+	});
+	icon = new RadarIcon();
+
+	RadMarkPos = new L.LatLng(lat,lng);
+	Radmark = new L.Marker(RadMarkPos, {icon: icon});
+	map.addLayer(Radmark);
+	
+	if (count < images.length) {
+		setTimeout(function() {SwitchPic(lat, lng);}, 1000);
+	} else {
+		setTimeout(function() {count = 0; map.removeLayer(Radmark); radar(lat,lng);}, 2000);
+	}
+}
+
+function radar(lat, lng) {
+var RadarIcon = L.Icon.extend({
+    iconUrl: '../radar.png',
+    shadowUrl: null,
+    iconSize: new L.Point(64, 64),
+    shadowSize: null,
+    iconAnchor: new L.Point(32, 32),
+    popupAnchor: new L.Point(-3, -76)
+});
+icon = new RadarIcon();
+
+RadMarkPos = new L.LatLng(lat,lng);
+Radmark = new L.Marker(RadMarkPos, {icon: icon});
+
+map.addLayer(Radmark);
 }
 
 </script>
