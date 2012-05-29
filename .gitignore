@@ -4,3 +4,7 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+application/nbproject/*
+public/files/
+fuel/app/config/development/migrations.php
+fuel/app/config/development/db.php
