@@ -4,7 +4,9 @@
 <table class="zebra-striped">
 	<thead>
 		<tr>
-			<th>Path</th>
+			<th>Name</th>
+			<th>Location</th>
+			<th>File</th>
 			<th>Type</th>
 			<th>User id</th>
 			<th></th>
@@ -13,9 +15,11 @@
 	<tbody>
 <?php foreach ($files as $file): ?>		<tr>
 
+			<td><?php echo $file->name; ?></td>
+			<td><?php echo $file->latitude.','.$file->longitude; ?></td>
 			<td><?php echo $file->path; ?></td>
 			<td><?php echo $file->type; ?></td>
-			<td><?php echo $file->user_id; ?></td>
+			<td><?php echo $file->user->username; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/file/view/'.$file->id, 'View'); ?> |
 				<?php //echo Html::anchor('admin/file/edit/'.$file->id, 'Edit')." |"; ?>
