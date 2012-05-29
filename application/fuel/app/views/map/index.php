@@ -99,6 +99,9 @@ $( "#dialog-form" ).dialog({
 
 // 56.2, 11.2        56.2, 9.2
 WDV.Settings.Windfarm.positions = [[56.2, 11.2], [56.2, 9.2], [57.2, 9.7], [55.2, 8.2], [55.9, 7.2], [58.2, 6.7], [58.9, 5.8]];
+WDV.Settings.Radar.positions = [[56.4,11.4],[55.7,10.9]];
+WDV.Settings.Radar.images = [[['assets/img/windmill.png'],['assets/img/radar.png'],['assets/img/windmill.png'],['assets/img/radar.png']],
+				[['assets/img/windmill.png'],['assets/img/radar.png'],['assets/img/windmill.png'],['assets/img/radar.png']]];
 WDV.Init();
 
 </script>

@@ -10,7 +10,9 @@ WDV = {
 	_cloudmade: null,
 	_initialized: false,
 	_windfarms: [],
-	_iconTemplate: null,
+	_radars: [],
+	_iconTemplateWM: null,
+	_iconTemplateRD: null,
 		
 	Init: function() {
 		if (!this._initialized) {
@@ -25,8 +27,16 @@ WDV = {
 			// Set the view
 			WDV._map.setView(WDV._pos, 7).addLayer(WDV._cloudmade);
 			
-			WDV._iconTemplate = L.Icon.extend({
-				iconUrl: WDV.Settings.Icon.iconUrl,
+			WDV._iconTemplateWM = L.Icon.extend({
+				iconUrl: WDV.Settings.Icon.iconUrl.windmill,
+				shadowUrl: WDV.Settings.Icon.shadowUrl,
+				iconSize: WDV.Settings.Icon.iconSize,
+				shadowSize: WDV.Settings.Icon.shadowSize,
+				iconAnchor: WDV.Settings.Icon.iconAnchor,
+				popupAnchor: WDV.Settings.Icon.popupAnchor
+			});
+			WDV._iconTemplateRD = L.Icon.extend({
+				iconUrl: WDV.Settings.Icon.iconUrl.radar,
 				shadowUrl: WDV.Settings.Icon.shadowUrl,
 				iconSize: WDV.Settings.Icon.iconSize,
 				shadowSize: WDV.Settings.Icon.shadowSize,
@@ -43,6 +53,7 @@ WDV = {
 				WDV._map.openPopup(popup);
 			});
 			WDV.InitWindfarms();
+			WDV.InitRadars();
 		}
 	},
 	InitWindfarms: function() {
@@ -50,7 +61,7 @@ WDV = {
 		for (i = 0; i < WDV.Settings.Windfarm.positions.length; i++) {
 			// Create the marker
 			this._windfarms[i] = new L.Marker(new L.LatLng(WDV.Settings.Windfarm.positions[i][0], WDV.Settings.Windfarm.positions[i][1]), {
-				icon: new this._iconTemplate()
+				icon: new this._iconTemplateWM()
 			});
 			
 			// Click event
@@ -73,12 +84,63 @@ WDV = {
 			// Put it on the map
 			WDV._map.addLayer(this._windfarms[i]);
 		}
+	},
+	InitRadars: function() {
+		this._radars = [];
+		for (i = 0; i < WDV.Settings.Radar.positions.length; i++) {
+			// Create the marker
+			this._radars[i] = new L.Marker(new L.LatLng(WDV.Settings.Radar.positions[i][0], WDV.Settings.Radar.positions[i][1]), {
+				icon: new this._iconTemplateRD()
+			});
+			this._radars[i].images = WDV.Settings.Radar.images[i];
+			this._radars[i].current = 0;
+			this._radars[i].index = i;
+			this._radars[i].animate = function() {
+				WDV.RotateRadar(this.index);
+				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", 1000);
+			};
+			
+			// Click event
+			this._radars[i].on('click', function(e) {
+				// rotate images
+				if (this.intval == 0 || this.intval == undefined)
+				{
+					this.animate();
+				} 
+				else
+				{
+					clearTimeout(this.intval);
+					this.intval = 0;
+				}
+			});
+			
+			// Put it on the map
+			WDV._map.addLayer(this._radars[i]);
+		}
+	},
+	RotateRadar: function(radar) {
+		console.log("Rotating " + radar + " with current = " + this._radars[radar].current);
+		console.log(this._radars[radar]);
+		if (this._radars[radar].current < this._radars[radar].images.length)
+		{
+			this._radars[radar]._icon.src = this._radars[radar].images[this._radars[radar].current++];
+			//this._radars[radar]._icon.src = 'assets/img/radar.png';
+		}
+		else
+		{
+			clearTimeout(this._radars[radar].intval);
+			this._radars[radar].intval = 0;
+			this._radars[radar].current = 0;
+		}
 	}
 };
 
 WDV.Settings = {
 	Icon: {
-		iconUrl: 'assets/img/windmill.png',
+		iconUrl: {
+			windmill: 'assets/img/windmill.png',
+			radar: 'assets/img/radar.png'
+		},
 		shadowUrl: null,
 		iconSize: new L.Point(64, 64),
 		shadowSize: null,
@@ -97,15 +159,10 @@ WDV.Settings = {
 	},
 	Windfarm: {
 		positions: []
+	},
+	Radar: {
+		positions: [],
+		images: []
 	}
 };
 
-WDV.Obj = {
-	
-};
-
-/* Objects */
-WDV.Obj.Marker = {
-	position: null,
-	marker: null
-};
