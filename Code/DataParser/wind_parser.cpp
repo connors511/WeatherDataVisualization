@@ -14,6 +14,7 @@ int Wind_Parser::isValidFile()
     bool first = true;
     bool header = true;
     QStringList ts, pp, ws, rp, op, ro, tsr, files;
+    QString _lat, _lng, _name;
 
     qDebug("Reading CSV file..");
 
@@ -26,6 +27,12 @@ int Wind_Parser::isValidFile()
         if (first)
         {
             first = false;
+            _lat = strings.value(0).trimmed();
+            _lng = strings.value(1).trimmed();
+            _name = strings.value(2).trimmed();
+            if (_lat.isEmpty() || _lng.isEmpty() || _name.isEmpty()) {
+                return INVALID_FILE;
+            }
         }
         else
         {
@@ -75,7 +82,9 @@ int Wind_Parser::parseCsv()
     }
 
     bool first = true;
+    bool header = true;
     QStringList ts, pp, ws, rp, op, ro, tsr, files;
+    QString _lat, _lng, _name;
 
     qDebug("Reading CSV file..");
 
@@ -85,34 +94,43 @@ int Wind_Parser::parseCsv()
         QString line = m_file.readLine();
         QStringList strings = line.split(",");
 
-        if (!first) {
-            ts << strings.value(0).trimmed();
-            pp << strings.value(1).trimmed();
-            ws << strings.value(2).trimmed();
-            rp << strings.value(3).trimmed();
-            op << strings.value(4).trimmed();
-            ro << strings.value(5).trimmed();
-            tsr << strings.value(6).trimmed();
-            files << QString::number(m_fileId);
-        } else {
-            // Header, probably should be validated
+        if (first) {
             first = false;
-            ts << strings.value(0).trimmed();
-            pp << strings.value(1).trimmed();
-            ws << strings.value(2).trimmed();
-            rp << strings.value(3).trimmed();
-            op << strings.value(4).trimmed();
-            ro << strings.value(5).trimmed();
-            tsr << strings.value(6).trimmed();
-            files << "\"file_id\"";
+            _lat = strings.value(0).trimmed();
+            _lng = strings.value(1).trimmed();
+            _name = strings.value(2).trimmed();
         }
-        count++;
+        else
+        {
+            if (!header) {
+                ts << strings.value(0).trimmed();
+                pp << strings.value(1).trimmed();
+                ws << strings.value(2).trimmed();
+                rp << strings.value(3).trimmed();
+                op << strings.value(4).trimmed();
+                ro << strings.value(5).trimmed();
+                tsr << strings.value(6).trimmed();
+                files << QString::number(m_fileId);
+            } else {
+                // Header, probably should be validated
+                header = false;
+                ts << strings.value(0).trimmed();
+                pp << strings.value(1).trimmed();
+                ws << strings.value(2).trimmed();
+                rp << strings.value(3).trimmed();
+                op << strings.value(4).trimmed();
+                ro << strings.value(5).trimmed();
+                tsr << strings.value(6).trimmed();
+                files << "\"file_id\"";
+            }
+            count++;
+        }
     }
 
     this->close();
 
     qDebug() << "Read " << count << " rows";
-
+    qDebug() << "Lat: " << _lat << ", Lng: " << _lng << ", Name: " << _name;
     qDebug("Creating temp file");
 
     count = 0;
@@ -124,6 +142,7 @@ int Wind_Parser::parseCsv()
     }
 
     QTextStream out(&file);
+    out << _lat << "," << _lng << "," << _name << "\n";
     while(!ts.isEmpty()) {
         out << ts.takeFirst() << ",";
         out << pp.takeFirst() << ",";
