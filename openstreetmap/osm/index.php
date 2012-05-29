@@ -84,11 +84,6 @@ body { font-size: 62.5%; }
 			<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
 <script>
 var images = new Image();
-	images = ["http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/108.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/106.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/102.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/101.gif",  
-                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/103.gif"];
 var count = 0;
 var run = false;
 
@@ -175,17 +170,20 @@ var RadarIcon = L.Icon.extend({
 });
 icon = new RadarIcon();
 
-RadMarkPos = new L.LatLng(55.2,7.2);
+RadMarkPos = new L.LatLng(55.5,7.9);
 Radmark = new L.Marker(RadMarkPos, {icon: icon});
 
 map.addLayer(Radmark);
+
+images = ["http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/108.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/106.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/102.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/101.gif",  
+                        "http://l.yimg.com/us.yimg.com/i/mesg/emoticons7/103.gif"];
+
 Radmark.on('click', function(e) {
-		if (!run) {
-			run = true;
-			SwitchPic();
-			run = false;
-		}
-		
+			//SwitchPic(this.getLatLng().lat.toFixed(3), this.getLatLng().lng.toFixed(3));
+			alert("test");
 });	
 
 
@@ -203,7 +201,7 @@ function onMapClick(e) {
     map.openPopup(popup);
 }*/
 
-function SwitchPic() {
+function SwitchPic(lat, lng) {
     map.removeLayer(Radmark);
 	var RadarIcon = L.Icon.extend({
 	    iconUrl: images[count++],
@@ -215,31 +213,32 @@ function SwitchPic() {
 	});
 	icon = new RadarIcon();
 
-	RadMarkPos = new L.LatLng(55.2,7.2);
+	RadMarkPos = new L.LatLng(lat,lng);
 	Radmark = new L.Marker(RadMarkPos, {icon: icon});
 	map.addLayer(Radmark);
 	
 	if (count < images.length) {
-		setTimeout('SwitchPic()', 1000);
-	} /*else {
-		setTimeout(function () {
-			map.removeLayer(Radmark);
-			var RadarIcon = L.Icon.extend({
-			   iconUrl: '../radar.png',
-			   shadowUrl: null,
-			   iconSize: new L.Point(64, 64),
-			   shadowSize: null,
-			   iconAnchor: new L.Point(32, 32),
-			   popupAnchor: new L.Point(-3, -76)
-			});
-			icon = new RadarIcon();
-			
-			RadMarkPos = new L.LatLng(55.2,7.2);
-			Radmark = new L.Marker(RadMarkPos, {icon: icon});
-			
-			map.addLayer(Radmark);
-		}, 2000);
-	}*/
+		setTimeout(function() {SwitchPic(lat, lng);}, 1000);
+	} else {
+		setTimeout(function() {count = 0; map.removeLayer(Radmark); radar(lat,lng);}, 2000);
+	}
+}
+
+function radar(lat, lng) {
+var RadarIcon = L.Icon.extend({
+    iconUrl: '../radar.png',
+    shadowUrl: null,
+    iconSize: new L.Point(64, 64),
+    shadowSize: null,
+    iconAnchor: new L.Point(32, 32),
+    popupAnchor: new L.Point(-3, -76)
+});
+icon = new RadarIcon();
+
+RadMarkPos = new L.LatLng(lat,lng);
+Radmark = new L.Marker(RadMarkPos, {icon: icon});
+
+map.addLayer(Radmark);
 }
 
 </script>
