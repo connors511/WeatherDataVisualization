@@ -139,9 +139,10 @@ var marker = new L.Marker(markerpos, {icon: icon}), marker2 = new L.Marker(new L
 map.addLayer(marker).addLayer(marker2);
 
 marker.on('click', function(e) {
-	
-    var page = "chart.html?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
-    var pagetitle = "Chart (" + this.getLatLng().lat.toFixed(3) + "; " + this.getLatLng().lng.toFixed(3) + ")";
+	var lat = this.getLatLng().lat.toFixed(2);
+	var lng = this.getLatLng().lng.toFixed(2);
+    var page = "chart.php?lat=" + lat + "&lng=" + lng;
+    var pagetitle = "Chart (" + lat + "; " + lng + ")";
     var $dialog = $( "#dialog-form" )
                 .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
                 .dialog({
@@ -154,7 +155,6 @@ marker.on('click', function(e) {
                     dragable: false
                 });
                 $dialog.dialog('open');
-    //alert("test " + '(' + this.getLatLng().lat.toFixed(3) + ', ' + this.getLatLng().lng.toFixed(3) + ')');
 });
 
 
