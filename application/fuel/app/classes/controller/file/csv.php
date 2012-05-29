@@ -6,12 +6,9 @@ class Controller_File_Csv extends Controller_Rest
 	public function get_list() {
 		
                 //Check for correct type and limit (to take care of the db)
-//<<<<<<< HEAD
-//=======
-                //if(!Model_File_Csv::has_key(Input::get('c')) || (int)(Input::get('t') - Input::get('f')) > 20000)
-			//die("Undefined column or too big timespan");
-//>>>>>>> 25b13d01808be82b0a2746fc568bd7a85cdeaef8
-                
+                if(!Model_File_Csv::has_key(Input::get('c')))
+			die("Undefined column");
+
                 //$query = Model_File_Csv::find()->
                 //    where('file_id',Input::get('id'))->
                 //    where('TimeStamps', 'between', array(Input::get('f'),Input::get('t')))->
@@ -21,7 +18,8 @@ class Controller_File_Csv extends Controller_Rest
                 // ORM is too slow!
 				$query = DB::select('*')->
 					from('file_csvs')->
-					where('file_id', Input::get('id',1))->
+					where('latitude', Input::get('lat'))->
+					and_where('longitude',Input::get('lng'))->
 					and_where('TimeStamps', 'between', array(Input::get('f'),Input::get('t')))->
 					order_by('id')->
 					execute()->as_array();
