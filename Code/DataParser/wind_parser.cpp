@@ -12,6 +12,7 @@ int Wind_Parser::isValidFile()
     }
 
     bool first = true;
+    bool header = true;
     QStringList ts, pp, ws, rp, op, ro, tsr, files;
 
     qDebug("Reading CSV file..");
@@ -22,37 +23,44 @@ int Wind_Parser::isValidFile()
         QString line = m_file.readLine();
         QStringList strings = line.split(",");
 
-        if (!first) {
-            ts << strings.value(0).trimmed();
-            pp << strings.value(1).trimmed();
-            ws << strings.value(2).trimmed();
-            rp << strings.value(3).trimmed();
-            op << strings.value(4).trimmed();
-            ro << strings.value(5).trimmed();
-            tsr << strings.value(6).trimmed();
-            files << QString::number(m_fileId);
-        } else {
-            // Header, probably should be validated
+        if (first)
+        {
             first = false;
-            ts << strings.value(0).trimmed();
-            pp << strings.value(1).trimmed();
-            ws << strings.value(2).trimmed();
-            rp << strings.value(3).trimmed();
-            op << strings.value(4).trimmed();
-            ro << strings.value(5).trimmed();
-            tsr << strings.value(6).trimmed();
-            files << "\"fileId\"";
         }
-        if (ts.at(count).isEmpty() ||
-                pp.at(count).isEmpty() ||
-                ws.at(count).isEmpty() ||
-                rp.at(count).isEmpty() ||
-                op.at(count).isEmpty() ||
-                ro.at(count).isEmpty() ||
-                tsr.at(count).isEmpty()) {
-            return INVALID_FILE;
+        else
+        {
+            if (!header) {
+                ts << strings.value(0).trimmed();
+                pp << strings.value(1).trimmed();
+                ws << strings.value(2).trimmed();
+                rp << strings.value(3).trimmed();
+                op << strings.value(4).trimmed();
+                ro << strings.value(5).trimmed();
+                tsr << strings.value(6).trimmed();
+                files << QString::number(m_fileId);
+            } else {
+                // Header, probably should be validated
+                header = false;
+                ts << strings.value(0).trimmed();
+                pp << strings.value(1).trimmed();
+                ws << strings.value(2).trimmed();
+                rp << strings.value(3).trimmed();
+                op << strings.value(4).trimmed();
+                ro << strings.value(5).trimmed();
+                tsr << strings.value(6).trimmed();
+                files << "\"fileId\"";
+            }
+            if (ts.at(count).isEmpty() ||
+                    pp.at(count).isEmpty() ||
+                    ws.at(count).isEmpty() ||
+                    rp.at(count).isEmpty() ||
+                    op.at(count).isEmpty() ||
+                    ro.at(count).isEmpty() ||
+                    tsr.at(count).isEmpty()) {
+                return INVALID_FILE;
+            }
+            count++;
         }
-        count++;
     }
 
     this->close();
