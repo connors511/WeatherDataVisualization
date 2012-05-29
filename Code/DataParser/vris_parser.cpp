@@ -453,6 +453,6 @@ void VRIS_Parser::printHeader()
     std::cout << "Geo long: " << getGeoLong().toStdString() << "\n";
     std::cout << "Geo lat: " << getGeoLat().toStdString() << "\n";
     std::cout << "Signal: " << getSignal().toStdString() << "\n";
-    saveImage();
+    //saveImage();
     std::cout << "FILE HEADER END\n";
 }
