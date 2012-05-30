@@ -13,6 +13,7 @@ WDV = {
 	_radars: [],
 	_iconTemplateWM: null,
 	_iconTemplateRD: null,
+	_iconTemplateRDimg: null,
 		
 	Init: function() {
 		if (!this._initialized) {
@@ -43,17 +44,30 @@ WDV = {
 				iconAnchor: WDV.Settings.Icon.iconAnchor,
 				popupAnchor: WDV.Settings.Icon.popupAnchor
 			});
+			WDV._iconTemplateRDimg = L.Icon.extend({
+				iconUrl: WDV.Settings.Icon.iconUrl.radar,
+				shadowUrl: WDV.Settings.Icon.shadowUrl,
+				iconSize: new L.Point(240, 240),
+				shadowSize: WDV.Settings.Icon.shadowSize,
+				iconAnchor: WDV.Settings.Icon.iconAnchor,
+				popupAnchor: WDV.Settings.Icon.popupAnchor
+			});
 			
-			WDV._map.on('click', function(e) {
+			/*WDV._map.on('click', function(e) {
 				var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
 				var popup = new L.Popup();
 				popup.setLatLng(e.latlng);
 				popup.setContent("You clicked the map at " + latlngStr);
 
 				WDV._map.openPopup(popup);
+			});*/
+			
+			WDV._map.on('viewreset', function() {
+				WDV.UpdateRadarSizes();
 			});
 			WDV.InitWindfarms();
 			WDV.InitRadars();
+			WDV.UpdateRadarSizes();
 		}
 	},
 	InitWindfarms: function() {
@@ -90,7 +104,7 @@ WDV = {
 		for (i = 0; i < WDV.Settings.Radar.positions.length; i++) {
 			// Create the marker
 			this._radars[i] = new L.Marker(new L.LatLng(WDV.Settings.Radar.positions[i][0], WDV.Settings.Radar.positions[i][1]), {
-				icon: new this._iconTemplateRD()
+				icon: new this._iconTemplateRDimg()
 			});
 			this._radars[i].images = WDV.Settings.Radar.images[i];
 			this._radars[i].current = 0;
@@ -124,7 +138,6 @@ WDV = {
 		if (this._radars[radar].current < this._radars[radar].images.length)
 		{
 			this._radars[radar]._icon.src = this._radars[radar].images[this._radars[radar].current++];
-			//this._radars[radar]._icon.src = 'assets/img/radar.png';
 		}
 		else
 		{
@@ -132,6 +145,45 @@ WDV = {
 			this._radars[radar].intval = 0;
 			this._radars[radar].current = 0;
 		}
+	},
+	UpdateRadarSizes: function() {
+		var opt_px = 200;
+		var bounds = WDV._map.getBounds();
+		centerLat = bounds.getCenter().lat;
+
+		left = new L.LatLng(centerLat, bounds.getSouthWest().lng);
+		right = new L.LatLng(centerLat, bounds.getNorthEast().lng);
+
+		size = WDV._map.getSize();
+
+		maxMeters = left.distanceTo(right) * (opt_px / size.x);
+				
+		var pow10 = Math.pow(10, (Math.floor(maxMeters) + '').length - 1),
+		d = maxMeters / pow10;
+
+		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 2 ? 2 : 1;
+
+		meters = pow10 * d;
+
+		var t = [
+		width = Math.round(opt_px * (meters / maxMeters)) + 'px',
+		meters = meters,
+		centerLat = centerLat,
+		left = left,
+		right = right,
+		maxMeters = maxMeters,
+		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * 240000
+		];
+		var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * 240000;
+		for(var i = 0; i < WDV._radars.length; i++)
+		{
+			WDV._radars[i]._icon.style.width = _width;
+			WDV._radars[i]._icon.style.height = _width;
+			WDV._radars[i]._icon.style.marginTop = (-1*(_width/2));
+			WDV._radars[i]._icon.style.marginLeft = (-1*(_width/2));
+			
+		}
+		console.log("changed size to " + _width);
 	}
 };
 
