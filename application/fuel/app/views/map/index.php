@@ -81,6 +81,7 @@ body { font-size: 62.5%; }
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 			<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
 <script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
+
 			<?php echo Asset::js('map.content.js'); ?>
 <script>
 $(function() {
@@ -88,7 +89,7 @@ $( "#dialog-form" ).dialog({
 			autoOpen: false,
 			height: 300,
 			width: 350,
-			modal: true,
+			modal: true
 		});
 });
 </script>
@@ -98,10 +99,10 @@ $( "#dialog-form" ).dialog({
 <script type="text/javascript">
 
 // 56.2, 11.2        56.2, 9.2
-WDV.Settings.Windfarm.positions = [[56.2, 11.2], [56.2, 9.2], [57.2, 9.7], [55.2, 8.2], [55.9, 7.2], [58.2, 6.7], [58.9, 5.8]];
-WDV.Settings.Radar.positions = [[56.4,11.4],[55.7,10.9]];
-WDV.Settings.Radar.images = [[['assets/img/windmill.png'],['assets/img/radar.png'],['assets/img/windmill.png'],['assets/img/radar.png']],
-				[['assets/img/windmill.png'],['assets/img/radar.png'],['assets/img/windmill.png'],['assets/img/radar.png']]];
+//WDV.Settings.Windfarm.positions = [[56.2, 11.2], [56.2, 9.2], [57.2, 9.7], [55.2, 8.2], [55.9, 7.2], [58.2, 6.7], [58.9, 5.8]];
+WDV.Settings.Radar.positions = [[55.4,4.4],[55.7,10.9]];
+WDV.Settings.Radar.images = [[['radar/1'],['radar/2'],['radar/3']],
+				[['radar/1'],['radar/2'],['radar/3']]];
 WDV.Init();
 
 </script>
