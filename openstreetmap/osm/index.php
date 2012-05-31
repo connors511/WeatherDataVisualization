@@ -139,8 +139,8 @@ var marker = new L.Marker(markerpos, {icon: icon}), marker2 = new L.Marker(new L
 map.addLayer(marker).addLayer(marker2);
 
 marker.on('click', function(e) {
-	var lat = this.getLatLng().lat.toFixed(2);
-	var lng = this.getLatLng().lng.toFixed(2);
+	var lat = this.getLatLng().lat.toFixed(3);
+	var lng = this.getLatLng().lng.toFixed(3);
     var page = "chart.php?lat=" + lat + "&lng=" + lng;
     var pagetitle = "Chart (" + lat + "; " + lng + ")";
     var $dialog = $( "#dialog-form" )
@@ -169,9 +169,14 @@ var RadarIcon = L.Icon.extend({
     popupAnchor: new L.Point(-3, -76)
 });
 icon = new RadarIcon();
+circleOptions = {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5
+    };
 
 RadMarkPos = new L.LatLng(55.5,7.9);
-Radmark = new L.Marker(RadMarkPos, {icon: icon});
+Radmark = new L.Circle(RadMarkPos, 25000, circleOptions);
 
 map.addLayer(Radmark);
 

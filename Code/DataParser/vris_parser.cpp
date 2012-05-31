@@ -43,11 +43,12 @@ int VRIS_Parser::parseCsv()
     QList<QString> headers;
     headers << "signal" << "tot_bytes" << "trailer_offset" << "trailer_size";
     headers << "img_type" << "mm_predict" << "pixel_size" << "date_time";
-    headers << "rad_name" << "east_uppb" << "north_uppb" << "hei_uppb";
+    headers << /*"rad_name" <<*/ "east_uppb" << "north_uppb" << "hei_uppb";
     headers << "store_slope" << "store_icept" << "store_offset" << "store_quant";
-    headers << "geo_lon" << "geo_lat" << "signal" << "pixel_values" << "file_id";
+    headers << /*"geo_lon" << "geo_lat" <<*/ "signal" << "pixel_values" << "file_id";
 
     QList<QString> elements;
+    QString rad_name, geo_lon, geo_lat;
     elements << this->readFile(1); // signal
     elements << this->readFile(3); // tot_bytes
     elements << this->readFile(3); // trailer_offset
@@ -56,7 +57,7 @@ int VRIS_Parser::parseCsv()
     elements << this->readFile(3); // mm_predict
     elements << this->readFile(4).replace(' ', '0'); // pixel_size
     elements << this->readFile(14); // date_time (YYYYMMDDHHMMSS)
-    elements << this->readFile(20); // rad_name
+    rad_name = this->readFile(20); // rad_name
 
     QString east_uppb, north_uppb;
     east_uppb = this->readFile(3);
@@ -69,8 +70,8 @@ int VRIS_Parser::parseCsv()
     elements << this->readFile(6); // store_icept
     elements << this->readFile(6); // store_offset
     elements << this->readFile(8); // Store_quant
-    elements << this->readFile(7); // geo_lon
-    elements << this->readFile(7); // geo_lat
+    geo_lon = this->readFile(7); // geo_lon
+    geo_lat = this->readFile(7); // geo_lat
     bool ok;
     int number = this->readFile(1).toAscii().toHex().toInt(&ok, 16);
     QString tmp;
@@ -121,6 +122,7 @@ int VRIS_Parser::parseCsv()
 
     int count = 0;
     QTextStream out(&file);
+    out << geo_lat << "," << geo_lon << "," << rad_name << "\n";
     while(!headers.isEmpty()) {
         out << headers.takeFirst();
         if (headers.count() > 0)

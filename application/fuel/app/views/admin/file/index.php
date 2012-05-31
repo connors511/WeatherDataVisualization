@@ -22,7 +22,6 @@
 			<td><?php echo $file->user->username; ?></td>
 			<td>
 				<?php echo Html::anchor('admin/file/view/'.$file->id, 'View'); ?> |
-				<?php //echo Html::anchor('admin/file/edit/'.$file->id, 'Edit')." |"; ?>
 				<?php echo Html::anchor('admin/file/delete/'.$file->id, 'Delete', array('onclick' => "return confirm('Are you sure?')")); ?>
 
 			</td>
