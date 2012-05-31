@@ -47,8 +47,9 @@ class Model_File extends \Orm\Model
 	
 	protected static $_has_many = array(
 	    'file_csvs' => array(
-		'cascade_delete' => true,
-	    ),
+			'cascade_save' => false,
+			'cascade_delete' => false,			      
+		),
 	);
 	
 	protected static $_belongs_to = array(

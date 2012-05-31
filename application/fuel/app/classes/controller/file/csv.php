@@ -16,7 +16,7 @@ class Controller_File_Csv extends Controller_Rest
                 //    get();
                     
                 // ORM is too slow!
-				$query = DB::select('*')->
+				$query = DB::select('latitude,longitude,name')->
 					from('file_csvs')->
 					where('latitude', Input::get('lat'))->
 					and_where('longitude',Input::get('lng'))->
