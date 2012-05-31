@@ -1,7 +1,7 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
- <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	
     <title>Weather chart</title>
     <style type="text/css">
@@ -75,11 +75,12 @@ body { font-size: 62.5%; }
 		.ui-dialog .ui-state-error { padding: .3em; }
 		.validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
-<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
-<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
-<![endif]-->
+	<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
+	<![endif]-->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />
 			<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
@@ -143,6 +144,9 @@ var month = new Array();
 	</script>
  </head>
  <body>
+ <?php
+ 	include('sidebar.htm');
+ ?>
 	<div id="zoom" style="color: #fff;">Today</div>
 		<div class="button" id="button" style="margin-right: 10px;"><p>2-week view</p></div>
 	    <div id="placeholder"></div>
@@ -152,43 +156,8 @@ var month = new Array();
 			<div id="today" class="controlButton"></div>
 			<div id="forward" class="controlButton"></div>
 			<div id="forwardfast" class="controlButton"></div>
-	  </div>
-	<div id="sizer" style="max-height: 90%;">
-		<div id="closechart"></div>
-		<form action="#" method="get" accept-charset="utf-8">
-			<fieldset class="checkboxes">
-				<ul>
-					<label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked /> Possible Power</label>
-					<label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox"/> Wind Speed</label>
-					<label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox"/> Regime Possible</label>
-					<label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox"/> Output Power</label>
-					<label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox"/> Regime Output</label>
-					</ul>
-			</fieldset>
-		</form>
-	</div>
-	
-	<div id="canvasloader-container" class="wrapper"></div>
-	
-	<div id="openchart" onClick="javascript:toggle();"></div>
-	
-<script type="text/javascript">
-var cl = new CanvasLoader('canvasloader-container');
-		cl.setColor('#ffffff');
-		cl.setDiameter(36);
-		cl.setDensity(14);
-		cl.setRange(0.7);
-		cl.setSpeed(1);
-$("#closechart").click(function () {
-		$("#sizer").hide("slide", { direction: "left" }, 600);
-		$("#openchart").show("slide", { direction: "left" }, 1000); 
-	});
-
-	function toggle() {
-		$("#openchart").hide("slide", { direction: "left" }, 600);
-		$("#sizer").show("slide", { direction: "left" }, 600);
-	}
-	
+	  </div>	
+<script type="text/javascript">	
 	function getTimeStamp(date) {
 		var d = "0" + (date.getDate()+1);
 		var m = "0" + (date.getMonth()+1);

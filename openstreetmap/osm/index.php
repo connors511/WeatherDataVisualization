@@ -98,9 +98,7 @@ $( "#dialog-form" ).dialog({
 </script>
 </head>
 <body>
-<?php
-include('sidebar.htm');
-?>
+
 <div id="map"></div>
 <script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
 <script type="text/javascript">
