@@ -5,18 +5,26 @@ namespace Fuel\Tasks;
 class PrepareData {
 
 	public static function run() {
-		
+
 		// Get files not yet data parsed
 		$files = \Model_File::find('all', array(
-		    'where' => array(
-			array('name','=','--Parsing--')
-		    ),
-		));
-		
+			    'where' => array(
+				array('name', '=', '--Parsing--')
+			    ),
+			));
+
 		foreach ($files as $file) {
 
 			// Run DataParser
-			$cmd = 'D:\\wamp\\www\\fagprojekt-wdv\\application\\release\\DataParser.exe --file=' . $file->path . ' --type=' . $file->type . ' --fileid=' . $file->id . '';
+			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+				$path = str_replace('public/', '', DOCROOT) . 'release' . DS . 'win' . DS . 'DataParser.exe';
+			} else if (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
+				$path = '.' . str_replace('public/', '', DOCROOT) . 'release' . DS . 'osx' . DS . 'DataParser';
+			} else {
+				$path = str_replace('public/', '', DOCROOT) . 'release' . DS . 'nix' . DS . 'DataParser';
+			}
+			
+			$cmd = $path . ' --file=' . $file->path . ' --type=' . $file->type . ' --fileid=' . $file->id . '';
 			$t = exec($cmd, $out, $retval);
 
 			// On success
@@ -57,9 +65,9 @@ class PrepareData {
 						$file->latitude = $lat;
 						$file->longitude = $lng;
 						$file->name = $name;
-						
+
 						\Fuel\Core\DB::insert('file_wrks')->columns(explode(',', $columns))->values(explode(',', $array[2]))->execute();
-						
+
 						break;
 					default:
 						break;
