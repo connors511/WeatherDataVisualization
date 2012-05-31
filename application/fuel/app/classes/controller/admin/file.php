@@ -50,73 +50,11 @@ class Controller_Admin_File extends Controller_Admin {
 
 							$model->path = $f;
 							$model->type = $ext;
-							$model->name = '';
-							$model->latitude = '';
-							$model->longitude = '';
+							$model->name = '--Parsing--';
+							$model->latitude = '--Parsing--';
+							$model->longitude = '--Parsing--';
 
-							$execute = true;
-
-							switch ($ext) {
-
-								case 'csv':
-
-									// read 1st line
-									$fh = fopen($f, 'r');
-									list($lat, $lng, $name) = str_replace('"', '', explode(",", fgets($fh, 4096)));
-									fclose($fh);
-
-									$model->name = $name;
-									$model->latitude = $lat;
-									$model->longitude = $lng;
-
-									$ignore = 2;
-									$columns = 'TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id';
-
-									break;
-								case 'wrk':
-									
-									$ignore = 1;
-									$columns = 'sig,tot_bytes,trailer_offset,trailer_size,img_type,mm_predict,pixel_size,date_time,east_uppb,north_uppb,hei_uppb,store_slope,store_icept,store_offset,store_quant,signal2,pixel_values,file_id';
-									
-									break;
-								default:
-									$execute = false;
-									break;
-							}
-
-							// get id
 							$model->save();
-
-							if ($execute) {
-								$cmd = 'D:\\wamp\\www\\fagprojekt-wdv\\application\\release\\DataParser.exe --file=' . $f . ' --type=' . $ext . ' --fileid=' . $model->id . '';
-								$t = exec($cmd, $out, $retval);
-								if ($retval == 1 || $retval == 2) {
-									if ($ext == 'wrk')
-									{
-										$fp = @fopen(str_replace($ext,'csv',$f), 'r');
-										if ($fp) {
-											$array = explode("\n", fread($fp, filesize(str_replace($ext,'csv',$f))));
-										}
-										list($lat, $lng, $name) = explode(",",$array[0]);
-										$model->latitude = $lat;
-										$model->longitude = $lng;
-										$model->name = $name;
-										$model->save();
-										DB::insert('file_wrks')->columns(explode(',',$columns))->values(explode(',',$array[2]))->execute();
-									}
-									else
-									{
-										$result = DB::query("
-											LOAD DATA INFILE '".str_replace('\\\\\\\\', '\\\\', str_replace('\\', '\\\\', str_replace($ext,'csv',$f)))."'
-											INTO TABLE fagprojekt.file_csvs
-											FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
-											LINES TERMINATED BY '\n'
-											IGNORE 2 LINES
-											(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
-										")->execute();
-									}
-								}
-							}
 						}
 					});
 
@@ -127,7 +65,7 @@ class Controller_Admin_File extends Controller_Admin {
 					Upload::save();
 
 					// Redirect to header
-					//Response::redirect('admin/file');
+					Response::redirect('admin/file');
 				} else {
 					Session::set_flash('error', 'Something went wrong with upload');
 				}
@@ -162,70 +100,6 @@ class Controller_Admin_File extends Controller_Admin {
 		}
 
 		Response::redirect('admin/file');
-	}
-
-}
-
-class Unpack {
-
-	protected static $_output_files = array();
-
-	public function __construct() {
-		self::$_output_files = array();
-	}
-
-	public static function extract($path) {
-		self::_unpack($path);
-		return self::$_output_files;
-	}
-
-	protected static function _unpack($path) {
-
-		$ext = substr($path, strrpos($path, '.') + 1);
-		switch ($ext) {
-			case 'gz':
-				// Raising this value may increase performance
-				$buffer_size = 4096; // read 4kb at a time
-				$out_file_name = str_replace('.gz', '', $path);
-
-				// Open our files (in binary mode)
-				$file = gzopen($path, 'rb');
-				$out_file = fopen($out_file_name, 'wb');
-
-				// Keep repeating until the end of the input file
-				while (!gzeof($file)) {
-					// Read buffer-size bytes
-					// Both fwrite and gzread and binary-safe
-					fwrite($out_file, gzread($file, $buffer_size));
-				}
-
-				// Files are done, close files
-				fclose($out_file);
-				gzclose($file);
-
-				self::_unpack($out_file_name);
-
-				break;
-			case 'zip':
-
-				$unzip = new Fuel\Core\Unzip();
-				$files = '';
-				try {
-					$files = $unzip->extract($path);
-				} catch (FuelException $e) {
-					//Session::set_flash('error', $unzip->error_string());
-				}
-
-				foreach ($files as $file) {
-					self::_unpack($file);
-				}
-
-				break;
-			//case 'tar':
-			//	break;
-			default:
-				self::$_output_files[] = $path;
-		}
 	}
 
 }

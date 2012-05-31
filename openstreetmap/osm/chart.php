@@ -1,85 +1,16 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
- <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	
     <title>Weather chart</title>
-    <style type="text/css">
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-
-/* remember to define focus styles! */
-:focus {
-	outline: 0;
-}
-
-/* remember to highlight inserts somehow! */
-ins {
-	text-decoration: none;
-}
-del {
-	text-decoration: line-through;
-}
-
-/* tables still need 'cellspacing="0"' in the markup */
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-a img {
-	border: none;
-}
-
-#map {
-	width: 100%;
-	height: 100%;	
-}
-body { font-size: 62.5%; }
-		label, input { display:block; }
-		input.text { margin-bottom:12px; width:95%; padding: .4em; }
-		fieldset { padding:0; border:0; margin-top:25px; }
-		h1 { font-size: 1.2em; margin: .6em 0; }
-		div#users-contain { width: 350px; margin: 20px 0; }
-		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-		.ui-dialog .ui-state-error { padding: .3em; }
-		.validateTips { border: 1px solid transparent; padding: 0.3em; }
-</style>
-<link rel="stylesheet" href="css/style.css"/>
+    
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
-<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
-<![endif]-->
+	<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
+	<![endif]-->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />
 			<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
@@ -143,6 +74,9 @@ var month = new Array();
 	</script>
  </head>
  <body>
+ <?php
+ 	include('sidebar.htm');
+ ?>
 	<div id="zoom" style="color: #fff;">Today</div>
 		<div class="button" id="button" style="margin-right: 10px;"><p>2-week view</p></div>
 	    <div id="placeholder"></div>
@@ -152,43 +86,8 @@ var month = new Array();
 			<div id="today" class="controlButton"></div>
 			<div id="forward" class="controlButton"></div>
 			<div id="forwardfast" class="controlButton"></div>
-	  </div>
-	<div id="sizer" style="max-height: 90%;">
-		<div id="closechart"></div>
-		<form action="#" method="get" accept-charset="utf-8">
-			<fieldset class="checkboxes">
-				<ul>
-					<label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked /> Possible Power</label>
-					<label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox"/> Wind Speed</label>
-					<label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox"/> Regime Possible</label>
-					<label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox"/> Output Power</label>
-					<label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox"/> Regime Output</label>
-					</ul>
-			</fieldset>
-		</form>
-	</div>
-	
-	<div id="canvasloader-container" class="wrapper"></div>
-	
-	<div id="openchart" onClick="javascript:toggle();"></div>
-	
-<script type="text/javascript">
-var cl = new CanvasLoader('canvasloader-container');
-		cl.setColor('#ffffff');
-		cl.setDiameter(36);
-		cl.setDensity(14);
-		cl.setRange(0.7);
-		cl.setSpeed(1);
-$("#closechart").click(function () {
-		$("#sizer").hide("slide", { direction: "left" }, 600);
-		$("#openchart").show("slide", { direction: "left" }, 1000); 
-	});
-
-	function toggle() {
-		$("#openchart").hide("slide", { direction: "left" }, 600);
-		$("#sizer").show("slide", { direction: "left" }, 600);
-	}
-	
+	  </div>	
+<script type="text/javascript">	
 	function getTimeStamp(date) {
 		var d = "0" + (date.getDate()+1);
 		var m = "0" + (date.getMonth()+1);

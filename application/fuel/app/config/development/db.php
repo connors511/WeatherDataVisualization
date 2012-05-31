@@ -6,9 +6,9 @@
 return array(
 	'default' => array(
 		'connection'  => array(
-			'dsn'        => 'mysql:unix_socket=/Applications/MAMP/tmp/mysql/mysql.sock;dbname=fagprojekt',
+			'dsn'        => 'mysql:host=localhost;dbname=fagprojekt',
 			'username'   => 'root',
-			'password'   => 'root',
+			'password'   => '',
 		),
 	),
 );
