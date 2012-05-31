@@ -2,7 +2,7 @@
 
 namespace Fuel\Tasks;
 
-class PrepareData {
+class Preparedata {
 
 	public static function run() {
 
@@ -81,3 +81,4 @@ class PrepareData {
 }
 
 /* End of file task */
+
