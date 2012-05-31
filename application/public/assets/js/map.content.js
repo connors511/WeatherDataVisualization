@@ -111,7 +111,7 @@ WDV = {
 			this._radars[i].index = i;
 			this._radars[i].animate = function() {
 				WDV.RotateRadar(this.index);
-				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", 1000);
+				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", WDV.Settings.Radar.speed);
 			};
 			
 			// Click event
@@ -184,6 +184,13 @@ WDV = {
 			
 		}
 		console.log("changed size to " + _width);
+	},
+	PlayAllRadars: function() {
+		for (i = 0; i < WDV._radars.length; i++) {
+			
+			this._radars[i].current = 0;
+			this._radars[i].animate();
+		}
 	}
 };
 
@@ -214,7 +221,8 @@ WDV.Settings = {
 	},
 	Radar: {
 		positions: [],
-		images: []
+		images: [],
+		speed: 1000
 	}
 };
 

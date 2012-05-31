@@ -20,7 +20,25 @@ class Controller_Map extends Controller
 	 */
 	public function action_index()
 	{
-		return Response::forge(View::forge('map/index'));
+		$radars = DB::select('latitude','longitude')
+			->from('files')
+			->where('type','=','wrk')
+			->group_by('latitude')
+			->group_by('longitude')
+			->execute()
+			->as_array();
+		
+		$wind = DB::select('latitude','longitude')
+			->from('files')
+			->where('type','=','csv')
+			->group_by('latitude')
+			->group_by('longitude')
+			->execute()
+			->as_array();
+		$view = View::forge('map/index');
+		$view->set_global('radars',$radars);
+		$view->set_global('windmills',$wind);
+		return Response::forge($view);
 	}
 
 	/**

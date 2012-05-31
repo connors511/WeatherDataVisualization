@@ -24,7 +24,7 @@ class Controller_Radar extends Controller
 		{
 			throw new HttpNotFoundException();
 		}
-		$res = DB::select('*')->from('file_wrk')->where('id', Input::get('id', $id))->execute()->as_array();
+		$res = DB::select('*')->from('file_wrks')->where('id', Input::get('id', $id))->execute()->as_array();
 		$res = $res[0];
 		if (!file_exists(DOCROOT . 'assets/radar/' . $res['id'] . '.png'))
 		{
