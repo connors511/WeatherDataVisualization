@@ -22,7 +22,7 @@
 
 #define FAILURE 0
 #define SUCCESS 1
-#define SUCCES_UNK_PARAM_IGN 2
+#define SUCCESS_UNK_PARAM_IGN 2
 #define MISS_FILEID 10
 #define MISS_FILENAME 11
 #define MISS_TYPE 12
