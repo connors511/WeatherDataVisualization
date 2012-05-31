@@ -94,13 +94,17 @@ body { font-size: 62.5%; }
         height: 100%; /* make the percentage height on placeholder work */
     }
     </style>
+    <?php
+    	$lat = $_GET['lat'];
+    	$lng = $_GET['lng'];
+    ?>
 	<script type="text/javascript">
-function getJson (id, c, f, t) {
+function getJson (c, f, t) {
     var json = null;
     $.ajax({
         'async': false,
         'global': false,
-        'url': "http://localhost:8888/fagprojekt-wdv/fagprojekt/public/file/csv/list.json?id=" + id + "&c=" + c + "&f=" + f + "&t=" + t,
+        'url': "http://localhost:8888/fagprojekt-wdv/fagprojekt/public/file/csv/list.json?lat=" + <?php $lat ?> + "&lng" + <?php $lng ?> + "&c=" + c + "&f=" + f + "&t=" + t,
         'dataType': "json",
         'success': function (data) {
             json = data;
@@ -199,27 +203,27 @@ function getArray(mind, maxd) {
 	
 	if ($("#checkbox-01").is(':checked')) {
 	 	if (PossiblePower.length == 0)
-	 		PossiblePower = getJson(1, "PossiblePower", getTimeStamp(mind), getTimeStamp(maxd));
+	 		PossiblePower = getJson("PossiblePower", getTimeStamp(mind), getTimeStamp(maxd));
 	 	array[i++] = {data: PossiblePower, label: "Possible Power", yaxis: 1};
 	}
 	if ($("#checkbox-04").is(':checked')) {
 	 	if (OutputPower.length == 0)
-		 	OutputPower = getJson(1, "OutputPower", getTimeStamp(mind), getTimeStamp(maxd));
+		 	OutputPower = getJson("OutputPower", getTimeStamp(mind), getTimeStamp(maxd));
 	 	array[i++] = {data: OutputPower, label: "Output Power", yaxis: 1};
 	}
    	if ($("#checkbox-02").is(':checked')) {
 	 	if (WindSpeed.length == 0)
-			WindSpeed = getJson(1, "WindSpeed", getTimeStamp(mind), getTimeStamp(maxd));
+			WindSpeed = getJson("WindSpeed", getTimeStamp(mind), getTimeStamp(maxd));
 	 	array[i++] = {data: WindSpeed, label: "Wind Speed", yaxis: 2};
    	}
    	if ($("#checkbox-03").is(':checked')) {
 	 	if (RegimePossible.length == 0)
-			RegimePossible = getJson(1, "RegimePossible", getTimeStamp(mind), getTimeStamp(maxd));
+			RegimePossible = getJson("RegimePossible", getTimeStamp(mind), getTimeStamp(maxd));
 	 	array[i++] = {data: RegimePossible, label: "Regime Possible", yaxis: 3};
    	}
 	if ($("#checkbox-05").is(':checked')) {
 	 	if (RegimeOutput.length == 0)
-		 		RegimeOutput = getJson(1, "RegimeOutput", getTimeStamp(mind), getTimeStamp(maxd));
+		 		RegimeOutput = getJson("RegimeOutput", getTimeStamp(mind), getTimeStamp(maxd));
 	 	array[i++] = {data: RegimeOutput, label: "Regime Output", yaxis: 3};
 	}
 	
@@ -254,19 +258,19 @@ function plotdata(sDate, eDate) {
 	$("#zoom").text(temps.getDate() + ". " + month[temps.getMonth()] + " " + temps.getFullYear() + " \t - \t " + tempe.getDate() + ". " + month[tempe.getMonth()] + " " + tempe.getFullYear());
 	
 	if ($("#checkbox-01").is(':checked')) {
-		PossiblePower = getJson(1, "PossiblePower", getTimeStamp(sDate), getTimeStamp(eDate));
+		PossiblePower = getJson("PossiblePower", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
 	if ($("#checkbox-04").is(':checked')) {
-		OutputPower = getJson(1, "OutputPower", getTimeStamp(sDate), getTimeStamp(eDate));
+		OutputPower = getJson("OutputPower", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
 	if ($("#checkbox-02").is(':checked')) {
-		WindSpeed = getJson(1, "WindSpeed", getTimeStamp(sDate), getTimeStamp(eDate));
+		WindSpeed = getJson("WindSpeed", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
 	if ($("#checkbox-03").is(':checked')) {
-		RegimePossible = getJson(1, "RegimePossible", getTimeStamp(sDate), getTimeStamp(eDate));
+		RegimePossible = getJson("RegimePossible", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
 	if ($("#checkbox-05").is(':checked')) {
-		RegimeOutput = getJson(1, "RegimeOutput", getTimeStamp(sDate), getTimeStamp(eDate));
+		RegimeOutput = getJson("RegimeOutput", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
 	plot = $.plot(placeholder, getArray(sDate, eDate), { xaxis: { mode: "time"} });
 	plot.setupGrid();	plot.draw();

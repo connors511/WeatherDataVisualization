@@ -7,9 +7,16 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
 \contentsline {chapter}{\numberline {2}Related work}{2}{chapter.2}
 \contentsline {chapter}{\numberline {3}Body}{3}{chapter.3}
-\contentsline {section}{\numberline {3.1}The C++ application}{3}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Return codes}{3}{subsection.3.1.1}
-\contentsline {chapter}{\numberline {4}Conclusion}{4}{chapter.4}
-\contentsline {chapter}{\numberline {5}Future work}{5}{chapter.5}
-\contentsline {chapter}{References}{6}{section*.13}
-\contentsline {chapter}{Appendix}{7}{section*.15}
+\contentsline {section}{\numberline {3.1}The use of frameworks}{3}{section.3.1}
+\contentsline {section}{\numberline {3.2}The C++ application}{3}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Why a C++ application?}{3}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Why Qt?}{3}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Return codes}{3}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Extensibility}{4}{subsection.3.2.4}
+\contentsline {section}{\numberline {3.3}The PHP site}{4}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Why PHP?}{4}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Why FuelPHP?}{4}{subsection.3.3.2}
+\contentsline {chapter}{\numberline {4}Conclusion}{5}{chapter.4}
+\contentsline {chapter}{\numberline {5}Future work}{6}{chapter.5}
+\contentsline {chapter}{References}{7}{section*.13}
+\contentsline {chapter}{Appendix}{8}{section*.15}
