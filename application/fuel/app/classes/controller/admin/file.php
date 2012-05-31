@@ -73,9 +73,9 @@ class Controller_Admin_File extends Controller_Admin {
 
 									break;
 								case 'wrk':
-
+									
 									$ignore = 1;
-									$columns = 'sig,tot_bytes,trailer_offset,trailer_size,img_type,mm_predict,pixel_size,date_time,rad_name,east_uppb,north_uppb,hei_uppb,store_slope,store_icept,store_offset,store_quant,geo_lon,geo_lat,signal2,pixel_values,file_id';
+									$columns = 'sig,tot_bytes,trailer_offset,trailer_size,img_type,mm_predict,pixel_size,date_time,east_uppb,north_uppb,hei_uppb,store_slope,store_icept,store_offset,store_quant,signal2,pixel_values,file_id';
 									
 									break;
 								default:
@@ -96,7 +96,12 @@ class Controller_Admin_File extends Controller_Admin {
 										if ($fp) {
 											$array = explode("\n", fread($fp, filesize(str_replace($ext,'csv',$f))));
 										}
-										DB::insert('file_wrks')->columns(explode(',',$columns))->values(explode(',',$array[1]))->execute();
+										list($lat, $lng, $name) = explode(",",$array[0]);
+										$model->latitude = $lat;
+										$model->longitude = $lng;
+										$model->name = $name;
+										$model->save();
+										DB::insert('file_wrks')->columns(explode(',',$columns))->values(explode(',',$array[2]))->execute();
 									}
 									else
 									{
