@@ -10,7 +10,7 @@ class Controller_Admin_File extends Controller_Admin
 		    ),
 		));
 		$this->template->title = "Files";
-		$this->template->content = View::forge('admin\file/index', $data);
+		$this->template->content = View::forge('admin/file/index', $data);
 
 	}
 
@@ -19,7 +19,7 @@ class Controller_Admin_File extends Controller_Admin
 		$data['file'] = Model_File::find($id);
 
 		$this->template->title = "File";
-		$this->template->content = View::forge('admin\file/view', $data);
+		$this->template->content = View::forge('admin/file/view', $data);
 
 	}
 
