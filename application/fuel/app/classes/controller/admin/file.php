@@ -9,14 +9,15 @@ class Controller_Admin_File extends Controller_Admin {
 			    ),
 			));
 		$this->template->title = "Files";
-		$this->template->content = View::forge('admin\file/index', $data);
+		$this->template->content = View::forge('admin/file/index', $data);
+
 	}
 
 	public function action_view($id = null) {
 		$data['file'] = Model_File::find($id);
 
 		$this->template->title = "File";
-		$this->template->content = View::forge('admin\file/view', $data);
+		$this->template->content = View::forge('admin/file/view', $data);
 	}
 
 	public function action_create($id = null) {
