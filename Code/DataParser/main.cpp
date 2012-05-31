@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     QStringList args = a.arguments();
 
     int retval = 0;
+    bool unk_param = false;
     int fileid = 0;
     QString filename = "";
     QString type = "";
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
         }
         else {
             qDebug() << "Uknown arg:" << args.at(i);
-            retval = 1;
+            unk_param = true;
         }
     }
 
@@ -76,6 +77,9 @@ int main(int argc, char *argv[])
         qDebug("Invalid file");
         retval = INVALID_FILE;
     }
-
+    if (retval == SUCCESS && unk_param)
+    {
+        retval = SUCCESS_UNK_PARAM_IGN;
+    }
     return retval;
 }
