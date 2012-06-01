@@ -77,6 +77,7 @@ WDV = {
 			this._windfarms[i] = new L.Marker(new L.LatLng(WDV.Settings.Windfarm.positions[i][0], WDV.Settings.Windfarm.positions[i][1]), {
 				icon: new this._iconTemplateWM()
 			});
+			this._windfarms[i].name = WDV.Settings.Windfarm.positions[i][2];
 			
 			// Click event
 			this._windfarms[i].on('click', function(e) {
@@ -88,7 +89,7 @@ WDV = {
 					modal: WDV.Settings.Marker.modal,
 					height: WDV.Settings.Marker.height,
 					width: WDV.Settings.Marker.width,
-					title: WDV.Settings.Marker.title.replace('LAT', this.getLatLng().lat.toFixed(3)).replace('LNG', this.getLatLng().lng.toFixed(3)),
+					title: WDV.Settings.Marker.title.replace('LAT', this.getLatLng().lat.toFixed(3)).replace('LNG', this.getLatLng().lng.toFixed(3)).replace('NAME',this.name),
 					close: WDV.Settings.Marker.close
 				});
 				$("#map").fadeTo("slow", 0.3);
@@ -211,7 +212,7 @@ WDV.Settings = {
 		modal: true,
 		height: screen.height * 0.7,
 		width: screen.width * 0.8,
-		title: 'Chart (LAT, LNG)',
+		title: 'Chart for NAME (LAT, LNG)',
 		close: function(ev, ui) {
 			$("#map").fadeTo("slow", 1);
 		}

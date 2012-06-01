@@ -7,8 +7,8 @@ return array(
 	'default' => array(
 		'connection'  => array(
 			'dsn'        => 'mysql:host=localhost;dbname=fagprojekt',
-			'username'   => 'root',
-			'password'   => '',
+			'username'   => 'dev',
+			'password'   => 'dev',
 		),
 	),
 );
