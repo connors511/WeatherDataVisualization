@@ -68,6 +68,8 @@ WDV = {
 			WDV.InitWindfarms();
 			WDV.InitRadars();
 			WDV.UpdateRadarSizes();
+			// Move the zoom control
+			$('.leaflet-control-zoom').css('margin-top','50px');
 		}
 	},
 	InitWindfarms: function() {
@@ -164,6 +166,7 @@ WDV = {
 			clearTimeout(this._radars[radar].intval);
 			this._radars[radar].intval = 0;
 			this._radars[radar].current = 0;
+			this._radars[radar]._icon.src = WDV.Settings.Icon.iconUrl.radar;
 			// Restore windfarms
 			if (this._radars[radar].hiding != undefined && this._radars[radar].hiding.length > 0)
 			{
