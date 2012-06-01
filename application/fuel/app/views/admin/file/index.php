@@ -18,8 +18,18 @@
 	<tbody>
 <?php foreach ($files as $file): ?>		<tr>
 
-			<td><?php echo $file->name; ?></td>
-			<td><?php echo $file->latitude.','.$file->longitude; ?></td>
+			<td><?php switch($file->name) {
+				case '0':
+					echo 'Parsing';
+					break;
+				case '1':
+					echo 'Error';
+					break;
+				default:
+					echo $file->name;
+					break;
+			}?></td>
+			<td><?php if ($file->name != '0' and $file->name != '1') echo $file->latitude.','.$file->longitude; ?></td>
 			<td><?php echo $file->path; ?></td>
 			<td><?php echo $file->type; ?></td>
 			<td><?php echo $file->user->username; ?></td>

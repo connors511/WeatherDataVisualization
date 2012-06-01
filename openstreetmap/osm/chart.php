@@ -26,8 +26,7 @@
     }
     </style>
     <?php
-    	$lat = $_GET['lat'];
-    	$lng = $_GET['lng'];
+    	$id = $_GET['id'];
     ?>
 	<script type="text/javascript">
 function getJson (c, f, t) {
@@ -35,7 +34,7 @@ function getJson (c, f, t) {
     $.ajax({
         'async': false,
         'global': false,
-        'url': "http://localhost:8888/fagprojekt-wdv/fagprojekt/public/file/csv/list.json?lat=" + <?php echo $lat; ?> + "&lng=" + <?php echo $lng; ?> + "&c=" + c + "&f=" + f + "&t=" + t,
+        'url': "http://localhost:8888/fagprojekt-wdv/application/public/file/csv/list.json?id=" + <?php echo $id; ?> + "&c=" + c + "&f=" + f + "&t=" + t,
         'dataType': "json",
         'success': function (data) {
             json = data;
@@ -43,6 +42,7 @@ function getJson (c, f, t) {
     });
     return json;
 }
+
 	var PossiblePower = [];
 	var OutputPower = [];
 	var WindSpeed = [];

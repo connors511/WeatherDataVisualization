@@ -23,14 +23,16 @@ class Controller_Map extends Controller
 		$radars = DB::select('latitude','longitude')
 			->from('files')
 			->where('type','=','wrk')
+			->where('name','NOT IN',array('0','1'))
 			->group_by('latitude')
 			->group_by('longitude')
 			->execute()
 			->as_array();
 		
-		$wind = DB::select('latitude','longitude')
+		$wind = DB::select('latitude','longitude','name')
 			->from('files')
 			->where('type','=','csv')
+			->where('name','NOT IN',array('0','1'))
 			->group_by('latitude')
 			->group_by('longitude')
 			->execute()

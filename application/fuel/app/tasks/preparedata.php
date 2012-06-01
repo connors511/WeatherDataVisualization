@@ -9,7 +9,7 @@ class Preparedata {
 		// Get files not yet data parsed
 		$files = \Model_File::find('all', array(
 			    'where' => array(
-				array('name', '=', '--Parsing--')
+				array('name', '=', '0')
 			    ),
 			));
 
@@ -39,19 +39,20 @@ class Preparedata {
 						list($lat, $lng, $name) = str_replace('"', '', explode(",", fgets($fh, 4096)));
 						fclose($fh);
 
-						$file->name = $name;
+						$file->name = trim($name);
 						$file->latitude = $lat;
 						$file->longitude = $lng;
 
+						$file_name = str_replace('\\\\\\\\', '\\\\', str_replace('\\', '\\\\', $file->path));
+						
 						$result = \Fuel\Core\DB::query("
-							LOAD DATA INFILE '" . str_replace('\\\\\\\\', '\\\\', str_replace('\\', '\\\\', $file->path)) . "'
+							LOAD DATA LOCAL INFILE '" . $file_name . "'
 							INTO TABLE fagprojekt.file_csvs
 							FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
 							LINES TERMINATED BY '\n'
 							IGNORE 2 LINES
 							(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
 						")->execute();
-
 						break;
 					case 'wrk':
 
@@ -72,9 +73,14 @@ class Preparedata {
 					default:
 						break;
 				}
-				// Save changes to files
-				$file->save();
 			}
+			else
+			{
+				$file->name = '1';
+			}
+			
+			// Save changes to files
+			$file->save();
 		}
 	}
 
