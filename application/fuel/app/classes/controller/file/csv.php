@@ -8,16 +8,10 @@ class Controller_File_Csv extends Controller_Rest {
 		if (!Model_File_Csv::has_key(Input::get('c')))
 			die("Undefined column");
 
-		//$query = Model_File_Csv::find()->
-		//    where('file_id',Input::get('id'))->
-		//    where('TimeStamps', 'between', array(Input::get('f'),Input::get('t')))->
-		//    order_by('TimeStampsR','desc')->
-		//    get();
 		// ORM is too slow!
-		$query = DB::select('latitude','longitude','name')->
+		$query = DB::select(Input::get('c'))->
 			from('file_csvs')->
-			where('latitude', 'LIKE', Input::get('lat') . '%')->
-			and_where('longitude', 'LIKE', Input::get('lng' . '%'))->
+			where('file_id', '=', Input::get('id') )->
 			and_where('TimeStamps', 'between', array(Input::get('f'), Input::get('t')))->
 			order_by('id')->
 			execute()->
