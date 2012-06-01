@@ -21,9 +21,26 @@
     }
     </style>
 	<script type="text/javascript">
+	<?php
+    	$id = $_GET['id'];
+    ?>
     <?php
-	$params = array('t'=>'2010020100','f'=>'2010010100','c'=>'PossiblePower','id'=>$id);
+	$params = array('t'=>'2010010100','f'=>'2010010105','c'=>'PossiblePower','id'=>$id);
 	?>
+function getJson (c, f, t) {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "http://localhost:8888/fagprojekt-wdv/application/public/file/csv/list.json?id=" + <?php echo $id; ?> + "&c=" + c + "&f=" + f + "&t=" + t,
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;  
+}
+
 var PossiblePower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
 var WindSpeed 		= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
 var RegimePossible 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
@@ -44,14 +61,11 @@ var month = new Array();
 	month[9] = "October";
 	month[10] = "November";
 	month[11] = "December";
-	
-    // Sets the 'Now' date (+ 5 days) and today date
-var now   = new Date(WindSpeed[WindSpeed.length-1][0]+5);
-var today = now;
+
 	</script>
  </head>
  <body>
-	<div id="sizer">
+ 	<div id="sizer">
 		<div id="close"></div>
 		<form action="#" method="get" accept-charset="utf-8">
 			<fieldset class="checkboxes">
@@ -68,7 +82,7 @@ var today = now;
 
 	<div id="open" onClick="javascript:toggle();"></div>
 
-	<script type="text/javascript">
+	<script>
 		function setupLabel() {
 			if ($('.label_check input').length) {
 				$('.label_check').each(function(){ 
@@ -125,7 +139,6 @@ var today = now;
 	
 	
 	</script>
-	
 	<div id="zoom" style="color: #fff;">Today</div>
 		<div class="button" id="button" style="margin-right: 10px;"><p>2-week view</p></div>
 	    <div id="placeholder"></div>
@@ -399,6 +412,7 @@ $(function () {
 });
 
 </script>
+
 
 <script type="text/javascript">
 	$(function () {

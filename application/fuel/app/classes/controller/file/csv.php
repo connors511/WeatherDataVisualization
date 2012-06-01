@@ -13,7 +13,7 @@ class Controller_File_Csv extends Controller_Rest {
 			from('file_csvs')->
 			where('file_id', '=', Input::get('id') )->
 			and_where('TimeStamps', 'between', array(Input::get('f'), Input::get('t')))->
-			order_by('id')->
+			order_by('TimeStampsR')->
 			execute()->
 			as_array();
 

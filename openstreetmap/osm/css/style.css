@@ -19,7 +19,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 body {
 	line-height: 1;
-	background-color: #fff;
+	background-color: #888;
 }
 ol, ul {
 	list-style: none;
@@ -229,7 +229,7 @@ div.hr {
  
 a {
 	text-decoration: none;
-	color: fff;
+	color: #fff;
 }
  
 .button:hover {
