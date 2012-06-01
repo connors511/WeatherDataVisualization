@@ -43,20 +43,22 @@ class Unpack {
 			case 'zip':
 
 				$unzip = new Fuel\Core\Unzip();
-				$files = '';
 				try {
 					$unzip->allow(array('csv', 'zip', 'wrk'));
 					$files = $unzip->extract($path);
+					
+					foreach ($files as $file) {
+						self::_unpack($file);
+					}
+				
+					// Remove zip
+					//Fuel\Core\File::delete($path);
+					unlink($path);
+					
 				} catch (FuelException $e) {
 					//Session::set_flash('error', $unzip->error_string());
 				}
-
-				foreach ($files as $file) {
-					self::_unpack($file);
-				}
 				
-				//TODO: delete zip
-
 				break;
 			//case 'tar':
 			//	break;

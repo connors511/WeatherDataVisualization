@@ -1,5 +1,8 @@
 <h2>Listing Files</h2>
-<br>
+<br />
+<p>
+<?php echo Html::anchor('admin/file/create', 'Add new File', array('class' => 'btn success')); ?>
+</p>
 <?php if ($files): ?>
 <table class="zebra-striped">
 	<thead>
@@ -42,7 +45,4 @@
 <?php else: ?>
 <p>No Files.</p>
 
-<?php endif; ?><p>
-	<?php echo Html::anchor('admin/file/create', 'Add new File', array('class' => 'btn success')); ?>
-
-</p>
+<?php endif; ?>

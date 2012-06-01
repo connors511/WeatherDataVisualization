@@ -19,7 +19,7 @@ class Preparedata {
 			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 				$path = str_replace('public/', '', DOCROOT) . 'release' . DS . 'win' . DS . 'DataParser.exe';
 			} else if (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN') {
-				$path = '.' . str_replace('public/', '', DOCROOT) . 'release' . DS . 'osx' . DS . 'DataParser';
+				$path = str_replace('public/', '', DOCROOT) . 'release' . DS . 'osx' . DS . 'DataParser';
 			} else {
 				$path = str_replace('public/', '', DOCROOT) . 'release' . DS . 'nix' . DS . 'DataParser';
 			}
