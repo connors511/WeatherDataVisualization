@@ -7,4 +7,5 @@ Thumbs.db
 application/nbproject/*
 application/public/files/*
 application/fuel/app/config/development/*
+application/fuel/app/config/development/db.php
 application/public/assets/radar/*

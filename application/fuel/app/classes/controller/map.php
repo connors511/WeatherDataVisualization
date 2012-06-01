@@ -9,9 +9,11 @@
  * @package  app
  * @extends  Controller
  */
-class Controller_Map extends Controller
+class Controller_Map extends Controller_Base
 {
 
+	public $template = 'template';
+	
 	/**
 	 * The basic welcome message
 	 * 
@@ -40,7 +42,23 @@ class Controller_Map extends Controller
 		$view = View::forge('map/index');
 		$view->set_global('radars',$radars);
 		$view->set_global('windmills',$wind);
-		return Response::forge($view);
+
+		$this->template->css = array(
+			'http://code.leafletjs.com/leaflet-0.3.1/leaflet.css',
+			'http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css'
+		);
+		
+		$this->template->js = array(
+			'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+		    'http://code.jquery.com/ui/1.8.19/jquery-ui.min.js',
+		    'http://code.leafletjs.com/leaflet-0.3.1/leaflet.js',
+		    'map.content.js'
+		);
+		
+		$this->template->title = "Map";
+		$this->template->content = $view;
+		
+		//return Response::forge($view);
 	}
 
 	/**

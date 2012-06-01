@@ -90,6 +90,12 @@ class Controller_Admin_File extends Controller_Admin {
 	public function action_delete($id = null) {
 		
 		// Tables are related at SQL level
+		
+		//Remove file
+		$file = Model_File::find($id);
+		unlink($file->path);
+		
+		
 		$query = DB::delete('files')
 		->where('id', '=', $id)
 		->execute();

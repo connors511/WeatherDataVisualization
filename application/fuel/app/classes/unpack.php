@@ -50,9 +50,9 @@ class Unpack {
 					foreach ($files as $file) {
 						self::_unpack($file);
 					}
+					$unzip->close();
 				
 					// Remove zip
-					//Fuel\Core\File::delete($path);
 					unlink($path);
 					
 				} catch (FuelException $e) {

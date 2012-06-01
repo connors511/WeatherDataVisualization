@@ -1,4 +1,4 @@
-<h2>Listing Files</h2>
+<h2>Listing <?php echo count($files); ?> Files</h2>
 <br />
 <p>
 <?php echo Html::anchor('admin/file/create', 'Add new File', array('class' => 'btn success')); ?>
