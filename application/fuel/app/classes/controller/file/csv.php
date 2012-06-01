@@ -14,7 +14,7 @@ class Controller_File_Csv extends Controller_Rest {
 		//    order_by('TimeStampsR','desc')->
 		//    get();
 		// ORM is too slow!
-		$query = DB::select('latitude,longitude,name')->
+		$query = DB::select('latitude','longitude','name')->
 			from('file_csvs')->
 			where('latitude', 'LIKE', Input::get('lat') . '%')->
 			and_where('longitude', 'LIKE', Input::get('lng' . '%'))->
