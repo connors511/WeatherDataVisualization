@@ -78,6 +78,7 @@ WDV = {
 				icon: new this._iconTemplateWM()
 			});
 			this._windfarms[i].name = WDV.Settings.Windfarm.positions[i][2];
+			this._windfarms[i].setZIndexOffset(WDV.Settings.Marker.zIndexOffset);
 			
 			// Click event
 			this._windfarms[i].on('click', function(e) {
@@ -114,6 +115,7 @@ WDV = {
 				WDV.RotateRadar(this.index);
 				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", WDV.Settings.Radar.speed);
 			};
+			this._radars[i].hiding = [];
 			
 			// Click event
 			this._radars[i].on('click', function(e) {
@@ -124,6 +126,12 @@ WDV = {
 				} 
 				else
 				{
+					for(i = 0; i < this.hiding.length; i++)
+					{
+						$(WDV._windfarms[this.hiding[i]]._icon).fadeIn('slow');
+						
+					}
+					this.hiding = [];
 					clearTimeout(this.intval);
 					this.intval = 0;
 				}
@@ -134,17 +142,39 @@ WDV = {
 		}
 	},
 	RotateRadar: function(radar) {
-		console.log("Rotating " + radar + " with current = " + this._radars[radar].current);
-		console.log(this._radars[radar]);
+		//console.log("Rotating " + radar + " with current = " + this._radars[radar].current);
+		//console.log(this._radars[radar]);
 		if (this._radars[radar].current < this._radars[radar].images.length)
 		{
 			this._radars[radar]._icon.src = this._radars[radar].images[this._radars[radar].current++];
+			if (this._radars[radar].hiding == undefined || this._radars[radar].hiding.length == 0)
+			{
+				for(i = 0; i < WDV._windfarms.length; i++)
+				{
+					if (this._radars[radar].getLatLng().distanceTo(WDV._windfarms[i].getLatLng()) < (WDV.Settings.Radar.range / 2))
+					{
+						this._radars[radar].hiding.push(i);
+						$(WDV._windfarms[i]._icon).fadeOut('slow');
+					}
+				}
+			}
 		}
 		else
 		{
 			clearTimeout(this._radars[radar].intval);
 			this._radars[radar].intval = 0;
 			this._radars[radar].current = 0;
+			// Restore windfarms
+			if (this._radars[radar].hiding != undefined && this._radars[radar].hiding.length > 0)
+			{
+				
+				for(i = 0; i < this._radars[radar].hiding.length; i++)
+				{
+					$(WDV._windfarms[this._radars[radar].hiding[i]]._icon).fadeIn('slow');
+
+				}
+			}
+			this._radars[radar].hiding = [];
 		}
 	},
 	UpdateRadarSizes: function() {
@@ -173,9 +203,9 @@ WDV = {
 		left = left,
 		right = right,
 		maxMeters = maxMeters,
-		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * 240000
+		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * WDV.Settings.Radar.range
 		];
-		var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * 240000;
+		var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV.Settings.Radar.range;
 		for(var i = 0; i < WDV._radars.length; i++)
 		{
 			WDV._radars[i]._icon.style.width = _width;
@@ -215,7 +245,8 @@ WDV.Settings = {
 		title: 'Chart for NAME (LAT, LNG)',
 		close: function(ev, ui) {
 			$("#map").fadeTo("slow", 1);
-		}
+		},
+		zIndexOffset: 100
 	},
 	Windfarm: {
 		positions: []
@@ -223,7 +254,8 @@ WDV.Settings = {
 	Radar: {
 		positions: [],
 		images: [],
-		speed: 1000
+		speed: 1000, // Change image every milliseconds
+		range: 240000 // Range in meters
 	}
 };
 
