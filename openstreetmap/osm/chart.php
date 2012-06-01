@@ -15,6 +15,8 @@
 			<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 			<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="jquery.flot.resize.js"></script>
 	
 	<div id="test">
 		<script src="test1.js"></script>
@@ -40,7 +42,7 @@ function getJson (c, f, t) {
             json = data;
         }
     });
-    return json;
+    return json;  
 }
 
 	var PossiblePower = [];
@@ -51,7 +53,7 @@ function getJson (c, f, t) {
 	var today;
 	var now;
 $(document).ready(function() {
-	getArray(new Date(2010, 01, 01), new Date(2010, 02, 01));
+	getArray(new Date(2010, 01, 01), new Date(2010, 01, 14));
 	// Sets the 'Now' date (+ 5 days) and today date
 	now  = new Date(PossiblePower[PossiblePower.length-1][0]+5);
 	today = now;
@@ -74,9 +76,80 @@ var month = new Array();
 	</script>
  </head>
  <body>
- <?php
- 	include('sidebar.htm');
- ?>
+ 	<div id="sizer">
+		<div id="close"></div>
+		<form action="#" method="get" accept-charset="utf-8">
+			<fieldset class="checkboxes">
+				<ul>
+					<label class="label_check" for="checkbox-01"><input name="sample-checkbox-01" id="checkbox-01" value="1" type="checkbox" checked /> Possible Power</label>
+					<label class="label_check" for="checkbox-02"><input name="sample-checkbox-02" id="checkbox-02" value="1" type="checkbox"/> Wind Speed</label>
+					<label class="label_check" for="checkbox-03"><input name="sample-checkbox-03" id="checkbox-03" value="1" type="checkbox"/> Regime Possible</label>
+					<label class="label_check" for="checkbox-04"><input name="sample-checkbox-04" id="checkbox-04" value="1" type="checkbox"/> Output Power</label>
+					<label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox"/> Regime Output</label>
+					</ul>
+			</fieldset>
+		</form>	
+	</div>
+
+	<div id="open" onClick="javascript:toggle();"></div>
+
+	<script>
+		function setupLabel() {
+			if ($('.label_check input').length) {
+				$('.label_check').each(function(){ 
+					$(this).removeClass('c_on');
+				});
+				$('.label_check input:checked').each(function(){ 
+					$(this).parent('label').addClass('c_on');
+				});                
+			};
+			if ($('.label_radio input').length) {
+				$('.label_radio').each(function(){ 
+					$(this).removeClass('r_on');
+				});
+				$('.label_radio input:checked').each(function(){ 
+					$(this).parent('label').addClass('r_on');
+				});
+			};
+		};
+		$(document).ready(function(){
+			$('body').addClass('has-js');
+			$('.label_check, .label_radio').click(function(){
+				setupLabel();
+			});
+			setupLabel();
+		});
+	
+	$("#close").click(function () {
+		$("#sizer").hide("slide", { direction: "left" }, 600);
+		$("#open").show("slide", { direction: "left" }, 1000); 
+	});
+
+	function toggle() {
+		$("#open").hide("slide", { direction: "left" }, 600);
+		$("#sizer").show("slide", { direction: "left" }, 600);
+	}
+	
+	$("#open").mouseenter(function () {
+		if ($(this).is(":visible")) {
+			$( this ).animate({
+				left: 0
+			}, {
+				duration: 100,
+			});
+		}
+	}).mouseout(function(){
+		if ($(this).is(":visible")) {
+			$( this ).animate({
+				left: -10
+			}, {
+				duration: 100,
+			});
+		}
+	});
+	
+	
+	</script>
 	<div id="zoom" style="color: #fff;">Today</div>
 		<div class="button" id="button" style="margin-right: 10px;"><p>2-week view</p></div>
 	    <div id="placeholder"></div>

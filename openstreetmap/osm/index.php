@@ -139,7 +139,7 @@ map.addLayer(marker).addLayer(marker2);
 marker.on('click', function(e) {
 	var lat = this.getLatLng().lat.toFixed(3);
 	var lng = this.getLatLng().lng.toFixed(3);
-    var page = "chart.php?lat=" + lat + "&lng=" + lng;
+    var page = "chart.php?id=1";
     var pagetitle = "Chart (" + lat + "; " + lng + ")";
     var $dialog = $( "#dialog-form" )
                 .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')

@@ -50,9 +50,9 @@ class Controller_Admin_File extends Controller_Admin {
 
 							$model->path = $f;
 							$model->type = $ext;
-							$model->name = '--Parsing--';
-							$model->latitude = '--Parsing--';
-							$model->longitude = '--Parsing--';
+							$model->name = '0';
+							$model->latitude = '';
+							$model->longitude = '';
 
 							$model->save();
 						}
@@ -67,11 +67,12 @@ class Controller_Admin_File extends Controller_Admin {
 					// Redirect to header
 					Response::redirect('admin/file');
 				} else {
-					Session::set_flash('error', 'Something went wrong with upload');
+					Debug::dump(Upload::get_errors());
+					Session::set_flash('error', "Something went wrong with upload.");
 				}
 			} catch (Orm\ValidationFailed $e) {
 
-				Session::set_flash('error', $e->getMessage());
+				Session::set_flash("error", $e->getMessage());
 			}
 		}
 

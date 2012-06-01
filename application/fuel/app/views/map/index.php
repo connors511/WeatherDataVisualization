@@ -98,8 +98,7 @@ $( "#dialog-form" ).dialog({
 <div id="map"></div>
 <script type="text/javascript">
 
-// 56.2, 11.2        56.2, 9.2
-WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']}]"; } echo implode(',',$mills); ?>];
+WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}']"; } echo implode(',',$mills); ?>];
 
 WDV.Settings.Radar.positions = [<?php $rads = array(); foreach($radars as $rad) { $rads[] = "[{$rad['latitude']},{$rad['longitude']}]"; } echo implode(',',$rads); ?>];
 WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}']"; } echo implode(",",$arr); ?>],
