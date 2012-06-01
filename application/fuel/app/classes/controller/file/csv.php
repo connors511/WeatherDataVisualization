@@ -9,7 +9,7 @@ class Controller_File_Csv extends Controller_Rest {
 			die("Undefined column");
 
 		// ORM is too slow!
-		$query = DB::select(Input::get('c'))->
+		$query = DB::select(Input::get('c'),'TimeStampsR')->
 			from('file_csvs')->
 			where('file_id', '=', Input::get('id') )->
 			and_where('TimeStamps', 'between', array(Input::get('f'), Input::get('t')))->
