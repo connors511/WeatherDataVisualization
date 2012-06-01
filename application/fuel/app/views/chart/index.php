@@ -22,7 +22,7 @@
     </style>
 	<script type="text/javascript">
     <?php
-	$params = array('t'=>'2010020100','f'=>'2010010100','c'=>'PossiblePower','lat'=>$lat,'lng'=>$lng);
+	$params = array('t'=>'2010020100','f'=>'2010010100','c'=>'PossiblePower','id'=>$id);
 	?>
 var PossiblePower 	= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
 var WindSpeed 		= <?php echo file_get_contents(Uri::create('file/csv/list.json', array(), $params)); ?>;
@@ -51,18 +51,8 @@ var today = now;
 	</script>
  </head>
  <body>
-	<div id="zoom" style="color: #fff;"><script>document.write(today.getDate() + ". " + month[today.getMonth()-1] + " " + today.getFullYear() + " \t - \t " + today.getDate() + ". " + month[today.getMonth()] + " " + today.getFullYear())</script></div>
-		<div class="button" id="button" style="margin-right: 10px;"><p>Monthly view</p></div>
-	    <div id="placeholder"></div>
-	    <div id="controlButtons">
-			<div id="backfast" class="controlButton"></div>
-			<div id="back" class="controlButton"></div>
-			<div id="today" class="controlButton"></div>
-			<div id="forward" class="controlButton"></div>
-			<div id="forwardfast" class="controlButton"></div>
-	  </div>
 	<div id="sizer">
-		<div id="closechart"></div>
+		<div id="close"></div>
 		<form action="#" method="get" accept-charset="utf-8">
 			<fieldset class="checkboxes">
 				<ul>
@@ -73,48 +63,119 @@ var today = now;
 					<label class="label_check" for="checkbox-05"><input name="sample-checkbox-05" id="checkbox-05" value="1" type="checkbox"/> Regime Output</label>
 					</ul>
 			</fieldset>
-		</form>
+		</form>	
 	</div>
+
+	<div id="open" onClick="javascript:toggle();"></div>
+
+	<script type="text/javascript">
+		function setupLabel() {
+			if ($('.label_check input').length) {
+				$('.label_check').each(function(){ 
+					$(this).removeClass('c_on');
+				});
+				$('.label_check input:checked').each(function(){ 
+					$(this).parent('label').addClass('c_on');
+				});                
+			};
+			if ($('.label_radio input').length) {
+				$('.label_radio').each(function(){ 
+					$(this).removeClass('r_on');
+				});
+				$('.label_radio input:checked').each(function(){ 
+					$(this).parent('label').addClass('r_on');
+				});
+			};
+		};
+		$(document).ready(function(){
+			$('body').addClass('has-js');
+			$('.label_check, .label_radio').click(function(){
+				setupLabel();
+			});
+			setupLabel();
+		});
 	
-	
-	<div id="openchart" onClick="javascript:toggle();"></div>
-	
-<script type="text/javascript">
-var placeholder = $("#placeholder");
-$("#closechart").click(function () {
+	$("#close").click(function () {
 		$("#sizer").hide("slide", { direction: "left" }, 600);
-		$("#openchart").show("slide", { direction: "left" }, 1000); 
+		$("#open").show("slide", { direction: "left" }, 1000); 
 	});
 
 	function toggle() {
-		$("#openchart").hide("slide", { direction: "left" }, 600);
+		$("#open").hide("slide", { direction: "left" }, 600);
 		$("#sizer").show("slide", { direction: "left" }, 600);
+	}
+	
+	$("#open").mouseenter(function () {
+		if ($(this).is(":visible")) {
+			$( this ).animate({
+				left: 0
+			}, {
+				duration: 100,
+			});
+		}
+	}).mouseout(function(){
+		if ($(this).is(":visible")) {
+			$( this ).animate({
+				left: -10
+			}, {
+				duration: 100,
+			});
+		}
+	});
+	
+	
+	</script>
+	
+	<div id="zoom" style="color: #fff;">Today</div>
+		<div class="button" id="button" style="margin-right: 10px;"><p>2-week view</p></div>
+	    <div id="placeholder"></div>
+	    <div id="controlButtons">
+			<div id="backfast" class="controlButton"></div>
+			<div id="back" class="controlButton"></div>
+			<div id="today" class="controlButton"></div>
+			<div id="forward" class="controlButton"></div>
+			<div id="forwardfast" class="controlButton"></div>
+	  </div>	
+<script type="text/javascript">	
+	function getTimeStamp(date) {
+		var d = "0" + (date.getDate()+1);
+		var m = "0" + (date.getMonth()+1);
+		var y = "" + date.getFullYear();
+		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+"0000";
 	}
 
     // Returns the arrays that the user selects.
-function getArray() {
-	var power  = 1;
-	var wind   = 2;
-	var regime = 3;
-	if (!$("#checkbox-01").is(':checked') && !$("#checkbox-04").is(':checked')) {
-		if (!$("#checkbox-02").is(':checked')) {
-			regime = 1;
-		} else {
-			wind--;
-			regime--;	
-		}
-	} else {
-		if (!$("#checkbox-02").is(':checked')) {
-			regime--;	
-		}
+function getArray(mind, maxd) {
+	var array = [];
+	var i = 0;
+	
+	if ($("#checkbox-01").is(':checked')) {
+	 	if (PossiblePower.length == 0)
+	 		PossiblePower = getJson("PossiblePower", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: PossiblePower, label: "Possible Power", yaxis: 1};
 	}
-	return 	[ 
-			 (($("#checkbox-01").is(':checked')) ? {data: PossiblePower, label: "Possible Power", yaxis: power} : [[null]]),
-			 (($("#checkbox-04").is(':checked')) ? {data: OutputPower, label: "Output Power", yaxis: power} : [[null]]),
-    		 (($("#checkbox-02").is(':checked')) ? {data: WindSpeed, label: "Wind Speed", yaxis: wind} : [[null]]),
-    		 (($("#checkbox-03").is(':checked')) ? {data: RegimePossible, label: "Regime Possible", yaxis: regime} : [[null]]),
-			 (($("#checkbox-05").is(':checked')) ? {data: RegimeOutput, label: "Regime Output", yaxis: regime} : [[null]])  
-			];
+	if ($("#checkbox-04").is(':checked')) {
+	 	if (OutputPower.length == 0)
+		 	OutputPower = getJson("OutputPower", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: OutputPower, label: "Output Power", yaxis: 1};
+	}
+   	if ($("#checkbox-02").is(':checked')) {
+	 	if (WindSpeed.length == 0)
+			WindSpeed = getJson("WindSpeed", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: WindSpeed, label: "Wind Speed", yaxis: 2};
+   	}
+   	if ($("#checkbox-03").is(':checked')) {
+	 	if (RegimePossible.length == 0)
+			RegimePossible = getJson("RegimePossible", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: RegimePossible, label: "Regime Possible", yaxis: 3};
+   	}
+	if ($("#checkbox-05").is(':checked')) {
+	 	if (RegimeOutput.length == 0)
+		 		RegimeOutput = getJson("RegimeOutput", getTimeStamp(mind), getTimeStamp(maxd));
+	 	array[i++] = {data: RegimeOutput, label: "Regime Output", yaxis: 3};
+	}
+	
+	return 	array;
 }
 
 $("#openchart").mouseenter(function () {
@@ -139,27 +200,40 @@ function getView() {
 	return document.getElementById("button").innerHTML	
 }
 
-    // Outputs the date range
-function outputDate(d) {
-	if (getView() == "<p>Monthly view</p>") {
-		var temp = new Date(d.getFullYear(), d.getMonth()-1, d.getDate())
-	} else if (getView() == "<p>Weekly view</p>") {
-		var temp = new Date(d.getFullYear(), d.getMonth(), d.getDate()-7)
-	} else {
-		var temp = new Date(d.getFullYear(), d.getMonth(), d.getDate()-1)	
+function plotdata(sDate, eDate) {
+	var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
+	var tempe = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate()+1);
+	$("#zoom").text(temps.getDate() + ". " + month[temps.getMonth()] + " " + temps.getFullYear() + " \t - \t " + tempe.getDate() + ". " + month[tempe.getMonth()] + " " + tempe.getFullYear());
+	
+	if ($("#checkbox-01").is(':checked')) {
+		PossiblePower = getJson("PossiblePower", getTimeStamp(sDate), getTimeStamp(eDate));
 	}
-	$("#zoom").text(temp.getDate() + ". " + month[temp.getMonth()] + " " + temp.getFullYear() + " \t - \t " + d.getDate() + ". " + month[d.getMonth()] + " " + d.getFullYear())
+	if ($("#checkbox-04").is(':checked')) {
+		OutputPower = getJson("OutputPower", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-02").is(':checked')) {
+		WindSpeed = getJson("WindSpeed", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-03").is(':checked')) {
+		RegimePossible = getJson("RegimePossible", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	if ($("#checkbox-05").is(':checked')) {
+		RegimeOutput = getJson("RegimeOutput", getTimeStamp(sDate), getTimeStamp(eDate));
+	}
+	plot = $.plot(placeholder, getArray(sDate, eDate), { xaxis: { mode: "time"} });
+	plot.setupGrid();	plot.draw();
 }
 
-function plotdata(sDate, eDate) {
-	outputDate(eDate);
-	$.plot($("#placeholder"), getArray(), { 
+$(function () {
+	var placeholder = $("#placeholder");
+    // Placeholder (the plot)
+    plot = $.plot(placeholder, getArray(), { 
 		xaxis: { 	
 			mode: "time",
-			min: sDate.getTime(),
-			max: eDate.getTime()
+			min: new Date(today.getFullYear(), today.getMonth(), today.getDate()-14).getTime(),
+			max: today.getTime()
 		},
-		legend: { position: 'sw' },
+		legend: { position: 'ne' },
 
                 series: {
                          lines: { show: true , shadowSize:0},
@@ -167,20 +241,13 @@ function plotdata(sDate, eDate) {
                 clickable: true,
                 hoverable: true
 	});
-	//plot.setupGrid();
-	//plot.draw();	
-}
-
-$(function () {
-    // Placeholder (the plot)
-	plotdata((new Date(today.getFullYear(), today.getMonth()-1, today.getDate())), today);
     
     // Check checkbox 1
 	$("#checkbox-01,#checkbox-02,#checkbox-03,#checkbox-04,#checkbox-05").change(function() {
 		if (getView() == "<p>Weekly view</p>") {
 			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
-		} else if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		} else if (getView() == "<p>2-week view</p>") {
+			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-14), today);
 		} else {
 			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
 		}
@@ -195,108 +262,96 @@ $(function () {
                            + " pixels");
 	});
 	
-    // Backfast button (-1 month in monthly view and -7 days in weekly view)
+    // Backfast button (-14 days in 2-week view and -7 days in weekly view)
 	$("#backfast").click(function () {
-		if (getView() == "<p>Monthly view</p>") {
-			var day = today.getDate();
-			var month = today.getMonth() - 1;
+		var day = today.getDate();
+		var month = today.getMonth();
+		if (getView() == "<p>2-week view</p>") {
+			day = today.getDate() - 14;
 		} else if (getView() == "<p>Weekly view</p>") {
-			var day = today.getDate() - 7;
-			var month = today.getMonth();
-		} else {
-			var day = today.getDate() - 1;
-			var month = today.getMonth();	
+			day = today.getDate() - 7;
 		}
 		var year = today.getFullYear();
-
-		if (new Date(WindSpeed[0][0]) >= today) {
-			day = today.getDate();
-			month = today.getMonth();
-			year = today.getFullYear();
-		}
-		today = new Date(year, month, day);		
-		outputDate(today);
-		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		today = new Date(year, month, day);
+		if (getView() == "<p>2-week view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
 		}
 	});
 
     // Back button (-1 day)
 	$("#back").click(function () {
-		var day = today.getDate() - 1;
-		var month = today.getMonth();
-		var year = today.getFullYear();
-		if (new Date(WindSpeed[0][0]) >= today) {
-			day = today.getDate();
-			month = today.getMonth();
-			year = today.getFullYear();
-		}
-		today = new Date(year, month, day);	
-		outputDate(today);
-		
-		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		today = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+		if (getView() == "<p>2-week view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			plotdata(f, today);
 		}
 	});
 
     // Today button
 	$("#today").click(function () {
 		today = now;
-		outputDate(today);
-		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		if (getView() == "<p>2-week view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
 		} else if ("<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)
+			plotdata(f, today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			plotdata(f, today);
 		}
 	});
 
     // Forward button (+1 day)
 	$("#forward").click(function () {
-		var day = today.getDate() + 1;
 		today = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-		outputDate(today);
-		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		if (getView() == "<p>2-week view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
 		}  else {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			plotdata(f, today);
 		}
 	});
 
-    // Forwardfast button (+1 month forward in monthly view and +7 days forward in weekly view)
+    // Forwardfast button (+1 month forward in 2-week view and +7 days forward in weekly view)
 	$("#forwardfast").click(function () {
-		if (getView() == "<p>Monthly view</p>") {
 			var day = today.getDate();
-			var month = today.getMonth() + 1;
+			var month = today.getMonth();
+		if (getView() == "<p>2-week view</p>") {
+			var day = today.getDate() + 14;
 		} else if (getView() == "<p>Weekly view</p>") {
 			var day = today.getDate() + 7;
-			var month = today.getMonth();
-		} else {
-			var day = today.getDate() + 1;
-			var month = today.getMonth();	
 		}
 		var year = today.getFullYear();
 		today = new Date(year, month, day);
-		outputDate(today);
-		if (getView() == "<p>Monthly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+		if (getView() == "<p>2-week view</p>") {
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
 		} else if (getView() == "<p>Weekly view</p>") {
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
 		}
 	});
 	
-	// Change view - checks if monthly or weekly view is activated.  
+	// Change view - checks if 2-week or weekly view is activated.  
 	$("#button").click(function () {
-		if (getView() == "<p>Monthly view</p>") {
+		
+		// Weekly view
+		if (getView() == "<p>2-week view</p>") {
 			document.getElementById("forwardfast").style.cursor='pointer';
 			document.getElementById("backfast").style.cursor='pointer';
 			$('#forwardfast').fadeTo('fast', 1, function() {
@@ -305,9 +360,12 @@ $(function () {
 			$('#backfast').fadeTo('fast', 1, function() {
 		    	// Animation complete.
 		    });
-			document.getElementById("button").innerHTML = "<p>Weekly view</p>"
-			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()-10)
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7), today);
+			document.getElementById("button").innerHTML = "<p>Weekly view</p>";
+			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+			plotdata(f, today);
+		
+		// 2-week view
 		} else if (getView() == "<p>Daily view</p>") {
 			document.getElementById("forwardfast").style.cursor='pointer';
 			document.getElementById("backfast").style.cursor='pointer';
@@ -317,9 +375,12 @@ $(function () {
 			$('#backfast').fadeTo('fast', 1, function() {
 		    	// Animation complete.
 		    });
-			document.getElementById("button").innerHTML = "<p>Monthly view</p>"
+			document.getElementById("button").innerHTML = "<p>2-week view</p>";
 			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()+10)
-			plotdata(new Date(today.getFullYear(), today.getMonth()-1, today.getDate()), today);
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-14);
+			plotdata(f, today);
+			
+		// Daily view
 		} else {
 			$('#forwardfast').fadeTo('fast', 0.1, function() {
 		    	// Animation complete.
@@ -329,14 +390,16 @@ $(function () {
 		    });
 			document.getElementById("forwardfast").style.cursor='default';
 			document.getElementById("backfast").style.cursor='default';
-			document.getElementById("button").innerHTML = "<p>Daily view</p>"
-			today = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-			plotdata(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1), today);
+			document.getElementById("button").innerHTML = "<p>Daily view</p>";
+			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()-3)
+			var f = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+			plotdata(f, today);
 		}
 	});
 });
 
 </script>
+
 <script type="text/javascript">
 	$(function () {
 		
