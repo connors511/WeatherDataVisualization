@@ -70,7 +70,7 @@ WDV = {
 			WDV.UpdateRadarSizes();
 			// Move the zoom control
 			//$('.leaflet-control-zoom').css('margin-top','50px');
-			$('.leaflet-control-zoom').css('visibility','hidden');
+			$('.leaflet-control-zoom').css('display','none');
 		}
 	},
 	InitWindfarms: function() {

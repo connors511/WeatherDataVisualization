@@ -78,6 +78,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 <script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
 <script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
+<script src="http://trentrichardson.com/examples/timepicker/js/jquery-ui-timepicker-addon.js"></script>
 <?php echo Asset::js('map.content.js'); ?>
 <?php echo Asset::css('bootstrap.css'); ?>
 <?php echo Asset::css('style.css'); ?>
@@ -93,41 +94,56 @@ $( "#dialog-form" ).dialog({
 </script>
 </head>
 <body>
-	<div class="topbar">
-	    <div class="fill">
-	        <div class="container">
-	            <h3><?php echo Html::anchor('', 'WeatherApp'); ?></h3>
-	            <ul>
-	                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-						<?php echo Html::anchor('', 'Map'); ?>
-					</li>
-	                
-					<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
-						
-						<?php
-						$section_segment = basename($controller, '.php');
-						$section_title = Inflector::humanize($section_segment);
-						?>
-						
-	                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-						<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
-					</li>
-					<?php endforeach; ?>
-	          </ul>
-	          <div class="btn-group" style="float:right;">
-	          <h3 style="display: inline; padding-right: 10px;">Zoom: </h3>
-				<button class="btn" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>				<button class="btn" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>			  </div>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar">			<div class="navbar-inner">				<div class="container-fluid">
+					<div class="row-fluid">
+	    				<div class="span4">
+							<a class="brand" href="<?php Html::anchor('WeatherApp');?>">WeatherApp</a>
+		            		<ul class="nav">
+					                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+										<?php echo Html::anchor('', 'Map'); ?>
+									</li>
+					                
+									<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
+										
+										<?php
+										$section_segment = basename($controller, '.php');
+										$section_title = Inflector::humanize($section_segment);
+										?>
+										
+					                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
+									</li>
+									<?php endforeach; ?>
+							</ul>
+						</div>
+						<div class="span1"></div>
+						<div class="span3">
+							<div class="input-group" style="padding-top:8px;">
+		 						<input type="text" class="input-medium" id="intervalfrom" value="From"/>
+		 						<input type="text" class="input-medium" id="intervalto" value="To"/>
+							</div>
+						</div>
+						<div class="span3"></div>
+						<div class="span1">
+			          		<div class="btn-group">
+								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>							</div>
+						</div>
+					</div>
+	        	</div>
 	        </div>
 	    </div>
 	</div>
 <div id="map"></div>
 <script type="text/javascript">
+$('#intervalfrom').datetimepicker();
+$('#intervalto').datetimepicker();
 
 WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}']"; } echo implode(',',$mills); ?>];
 
 WDV.Settings.Radar.positions = [<?php $rads = array(); foreach($radars as $rad) { $rads[] = "[{$rad['latitude']},{$rad['longitude']}]"; } echo implode(',',$rads); ?>];
-WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>],
-				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>]];
+WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}']"; } echo implode(",",$arr); ?>],
+				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}']"; } echo implode(",",$arr); ?>]];
 WDV.Settings.Radar.speed = 200;
 WDV.Init();
 
