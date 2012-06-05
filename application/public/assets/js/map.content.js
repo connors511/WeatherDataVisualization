@@ -69,7 +69,8 @@ WDV = {
 			WDV.InitRadars();
 			WDV.UpdateRadarSizes();
 			// Move the zoom control
-			$('.leaflet-control-zoom').css('margin-top','50px');
+			//$('.leaflet-control-zoom').css('margin-top','50px');
+			$('.leaflet-control-zoom').css('visibility','hidden');
 		}
 	},
 	InitWindfarms: function() {
@@ -261,4 +262,3 @@ WDV.Settings = {
 		range: 240000 // Range in meters
 	}
 };
-
