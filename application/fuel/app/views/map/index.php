@@ -80,6 +80,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 <script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
 <?php echo Asset::js('map.content.js'); ?>
 <?php echo Asset::css('bootstrap.css'); ?>
+<?php echo Asset::css('style.css'); ?>
 <script>
 $(function() {
 $( "#dialog-form" ).dialog({
@@ -113,6 +114,9 @@ $( "#dialog-form" ).dialog({
 					</li>
 					<?php endforeach; ?>
 	          </ul>
+	          <div class="btn-group" style="float:right;">
+	          <h3 style="display: inline; padding-right: 10px;">Zoom: </h3>
+				<button class="btn" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>				<button class="btn" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>			  </div>
 	        </div>
 	    </div>
 	</div>
