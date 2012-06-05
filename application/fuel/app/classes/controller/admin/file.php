@@ -3,14 +3,21 @@
 class Controller_Admin_File extends Controller_Admin {
 
 	public function action_index() {
+
+		$data['total_items'] = Model_File::find()->count();
+		
+		$data['pagination'] = $this->set_pagination(Uri::create('admin/file/index'), 4, $data['total_items'], 20);
+
 		$data['files'] = Model_File::find('all', array(
 			    'related' => array(
 				'user'
 			    ),
+			    'limit' => Pagination::$per_page,
+			    'offset' => Pagination::$offset,
 			));
+		
 		$this->template->title = "Files";
-		$this->template->content = View::forge('admin/file/index', $data);
-
+		$this->template->content = View::forge('admin/file/index', $data, false);
 	}
 
 	public function action_view($id = null) {
@@ -78,29 +85,32 @@ class Controller_Admin_File extends Controller_Admin {
 
 		$fieldset = Fieldset::forge('file')->add_model('Model_File');
 
+		$fieldset->set_config('form', "\n\t\tCUNT{open}\n\t\t<table>\n\n\t\t</table>\n\t\t{close}\n");
+
+		$fieldset->build();
+
 		// For upload
 		$fieldset->set_config('form_attributes', array('enctype' => 'multipart/form-data'));
 
-		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn medium primary'));
+		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn btn-primary'));
 
 		$this->template->title = "Files";
 		$this->template->content = View::forge('admin/file/create');
 	}
 
 	public function action_delete($id = null) {
-		
+
 		// Tables are related at SQL level
-		
 		//Remove file
 		$file = Model_File::find($id);
 		unlink($file->path);
-		
-		
+
+
 		$query = DB::delete('files')
-		->where('id', '=', $id)
-		->execute();
-		
-		if($query) {
+			->where('id', '=', $id)
+			->execute();
+
+		if ($query) {
 			Session::set_flash('success', 'Deleted file #' . $id);
 		} else {
 			Session::set_flash('error', 'Could not delete file #' . $id);
