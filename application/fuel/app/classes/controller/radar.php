@@ -24,9 +24,26 @@ class Controller_Radar extends Controller
 		{
 			throw new HttpNotFoundException();
 		}
-		$res = DB::select('*')->from('file_wrks')->where('id', Input::get('id', $id))->execute()->as_array();
+
+		$res = DB::select('*')->from('file_wrks')->where('id', $id)->execute()->as_array();
+		if (count($res) != 1)
+		{
+			throw new HttpNotFoundException();
+		}
 		$res = $res[0];
-		if (!file_exists(DOCROOT . 'assets/radar/' . $res['id'] . '.png'))
+		$filename = DOCROOT . 'assets/radar/' . $res['id'] . '.png';
+		
+		$resp = new Response();
+		$resp->set_header('Cache-Control', 'private, max-age=10800, pre-check=10800');
+		$resp->set_header('Expires', date(DATE_RFC822, strtotime(" 7 day")));
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) and (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($img)))
+		{
+			// send the last mod time of the file back
+			$resp->set_header('Last-Modified', gmdate('D, d M Y H:i:s', filemtime($img)) . ' GMT');
+			$resp->set_status(304);
+			return $resp;
+		}
+		if (!file_exists($filename))
 		{
 			$colors = explode(' ', $res['pixel_values']);
 
@@ -141,11 +158,9 @@ class Controller_Radar extends Controller
 			}
 
 
-			imagepng($img, DOCROOT . 'assets/radar/' . $res['id'] . '.png');
+			imagepng($img, $filename);
 		}
-		//header('Content-Type: image/png');
-		$str = file_get_contents(DOCROOT . 'assets/radar/' . $res['id'] . '.png');
-		$resp = new Response();
+		$str = file_get_contents($filename);
 		$resp->set_header('Content-Type', 'image/png');
 		$resp->body = $str;
 		return $resp;
