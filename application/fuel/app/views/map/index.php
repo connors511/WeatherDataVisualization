@@ -96,30 +96,40 @@ $( "#dialog-form" ).dialog({
 <body>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar">			<div class="navbar-inner">				<div class="container-fluid">
-					<a class="brand" href="<?php Html::anchor('WeatherApp'); ?>">WeatherApp</a>
-		            	<ul class="nav">
-			                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-								<?php echo Html::anchor('', 'Map'); ?>
-							</li>
-			                
-							<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
-								
-								<?php
-								$section_segment = basename($controller, '.php');
-								$section_title = Inflector::humanize($section_segment);
-								?>
-								
-			                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-								<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
-							</li>
-							<?php endforeach; ?>
-			          	</ul>
-		          		<div class="btn-group" style="float:right;">
-							<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>							<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>						</div>
-						<div class="input-group" style="float:right; padding: 10px;">
-	 						<input type="text" class="input-medium" id="intervalfrom" value="From" />
-	 						<input type="text" class="input-medium" id="intervalto" value="To" />
+					<div class="row-fluid">
+	    				<div class="span4">
+							<a class="brand" href="<?php Html::anchor('WeatherApp');?>">WeatherApp</a>
+		            		<ul class="nav">
+					                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+										<?php echo Html::anchor('', 'Map'); ?>
+									</li>
+					                
+									<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
+										
+										<?php
+										$section_segment = basename($controller, '.php');
+										$section_title = Inflector::humanize($section_segment);
+										?>
+										
+					                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
+									</li>
+									<?php endforeach; ?>
+							</ul>
 						</div>
+						<div class="span1"></div>
+						<div class="span3">
+							<div class="input-group" style="padding-top:8px;">
+		 						<input type="text" class="input-medium" id="intervalfrom" value="From"/>
+		 						<input type="text" class="input-medium" id="intervalto" value="To"/>
+							</div>
+						</div>
+						<div class="span3"></div>
+						<div class="span1">
+			          		<div class="btn-group">
+								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>							</div>
+						</div>
+					</div>
 	        	</div>
 	        </div>
 	    </div>
