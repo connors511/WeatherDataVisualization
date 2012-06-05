@@ -36,6 +36,9 @@
 								<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
 									<?php echo Html::anchor('admin', 'Dashboard') ?>
 								</li>
+								<li>
+									<?php echo Html::anchor(Uri::base(false), 'Map'); ?>
+								</li>
 
 								<?php foreach (glob(APPPATH . 'classes/controller/admin/*.php') as $controller): ?>
 
