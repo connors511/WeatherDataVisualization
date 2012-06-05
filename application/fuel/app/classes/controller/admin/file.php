@@ -14,6 +14,7 @@ class Controller_Admin_File extends Controller_Admin {
 			    ),
 			    'limit' => Pagination::$per_page,
 			    'offset' => Pagination::$offset,
+			    'order_by' => array('updated_at' => 'desc')
 			));
 		
 		$this->template->title = "Files";

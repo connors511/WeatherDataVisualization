@@ -9,18 +9,17 @@
 		</style>
 		<?php
 		echo Asset::js(array(
-		    'http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js',
+		    'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
 		    'bootstrap.min.js'
 		));
 		?>
 	</head>
 	<body>
-
-<?php if ($current_user): ?>
+		<?php if ($current_user): ?>
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
-						<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class'=>'brand')) ?>
+						<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
 						<div class="btn-group pull-right">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 								<i class="icon-user"></i> <?php echo $current_user->username ?>
@@ -35,7 +34,7 @@
 						<div class="nav-collapse">
 							<ul class="nav">
 								<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-								<?php echo Html::anchor('admin', 'Dashboard') ?>
+									<?php echo Html::anchor('admin', 'Dashboard') ?>
 								</li>
 
 								<?php foreach (glob(APPPATH . 'classes/controller/admin/*.php') as $controller): ?>
@@ -46,38 +45,38 @@
 									?>
 
 									<li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-									<?php echo Html::anchor('admin/' . $section_segment, $section_title) ?>
+										<?php echo Html::anchor('admin/' . $section_segment, $section_title) ?>
 									</li>
-	<?php endforeach; ?>
+								<?php endforeach; ?>
 							</ul>
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>
 			</div>
-<?php endif; ?>
+		<?php endif; ?>
 
 		<div class="container">
 			<h1><?php echo $title; ?></h1>
 			<hr />
 			<div class="row">
 				<div class="span12">
-							<?php if (Session::get_flash('success')): ?>
+					<?php if (Session::get_flash('success')): ?>
 						<div class="alert alert-success">
 							<p>
-						<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
+								<?php echo implode('</p><p>', (array) Session::get_flash('success')); ?>
 							</p>
 						</div>
-<?php endif; ?>
-							<?php if (Session::get_flash('error')): ?>
+					<?php endif; ?>
+					<?php if (Session::get_flash('error')): ?>
 						<div class="alert alert-error">
 							<p>
-						<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
+								<?php echo implode('</p><p>', (array) Session::get_flash('error')); ?>
 							</p>
 						</div>
 					<?php endif; ?>
 				</div>
 				<div class="span12">
-<?php echo $content; ?>
+					<?php echo $content; ?>
 				</div>
 			</div>
 			<hr />
