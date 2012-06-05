@@ -45,14 +45,27 @@ class Preparedata {
 
 						$file_name = str_replace('\\\\\\\\', '\\\\', str_replace('\\', '\\\\', $file->path));
 						
-						$result = \Fuel\Core\DB::query("
-							LOAD DATA LOCAL INFILE '" . $file_name . "'
-							INTO TABLE fagprojekt.file_csvs
-							FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
-							LINES TERMINATED BY '\n'
-							IGNORE 2 LINES
-							(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
-						")->execute();
+						try {
+							$result = \Fuel\Core\DB::query("
+								LOAD DATA INFILE '" . $file_name . "'
+								INTO TABLE fagprojekt.file_csvs
+								FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
+								LINES TERMINATED BY '\n'
+								IGNORE 2 LINES
+								(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
+							")->execute();
+						} 
+						catch(\Database_Exception $e)
+						{
+							$result = \Fuel\Core\DB::query("
+								LOAD DATA LOCAL INFILE '" . $file_name . "'
+								INTO TABLE fagprojekt.file_csvs
+								FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
+								LINES TERMINATED BY '\n'
+								IGNORE 2 LINES
+								(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
+							")->execute();
+						}
 						break;
 					case 'wrk':
 
