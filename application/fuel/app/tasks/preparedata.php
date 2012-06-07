@@ -52,7 +52,7 @@ class Preparedata {
 								FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
 								LINES TERMINATED BY '\n'
 								IGNORE 2 LINES
-								(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
+								(".implode(',',\Model_File_Csv::get_columns()).")
 							")->execute();
 						} 
 						catch(\Database_Exception $e)
@@ -63,13 +63,11 @@ class Preparedata {
 								FIELDS TERMINATED BY ',' ENCLOSED BY '\"'
 								LINES TERMINATED BY '\n'
 								IGNORE 2 LINES
-								(TimeStamps,PossiblePower,WindSpeed,RegimePossible,OutputPower,RegimeOutput,TimeStampsR,file_id)
+								(".implode(',',\Model_File_Csv::get_columns()).")
 							")->execute();
 						}
 						break;
 					case 'wrk':
-
-						$columns = 'sig,tot_bytes,trailer_offset,trailer_size,img_type,mm_predict,pixel_size,date_time,east_uppb,north_uppb,hei_uppb,store_slope,store_icept,store_offset,store_quant,signal2,pixel_values,file_id';
 
 						$fp = @fopen(str_replace($file->type, 'csv', $file->path), 'r');
 						if ($fp) {
@@ -80,7 +78,7 @@ class Preparedata {
 						$file->longitude = $lng;
 						$file->name = $name;
 
-						\Fuel\Core\DB::insert('file_wrks')->columns(explode(',', $columns))->values(explode(',', $array[2]))->execute();
+						\Fuel\Core\DB::insert('file_wrks')->columns(\Model_File_Wrk::get_columns())->values(explode(',', $array[2]))->execute();
 
 						break;
 					default:

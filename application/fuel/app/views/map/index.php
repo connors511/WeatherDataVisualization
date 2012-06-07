@@ -1,158 +1,123 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Cunt</title>
-<style type="text/css">
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-
-/* remember to define focus styles! */
-:focus {
-	outline: 0;
-}
-
-/* remember to highlight inserts somehow! */
-ins {
-	text-decoration: none;
-}
-del {
-	text-decoration: line-through;
-}
-
-/* tables still need 'cellspacing="0"' in the markup */
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-a img {
-	border: none;
-}
-
-#map {
-	width: 100%;
-	height: 100%;
-}
-body { font-size: 62.5%; }
-label, input { display:block; }
-input.text { margin-bottom:12px; width:95%; padding: .4em; }
-fieldset { padding:0; border:0; margin-top:25px; }
-h1 { font-size: 1.2em; margin: .6em 0; }
-div#users-contain { width: 350px; margin: 20px 0; }
-div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-.ui-dialog .ui-state-error { padding: .3em; }
-.validateTips { border: 1px solid transparent; padding: 0.3em; }
-</style>
-<link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" />
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherApp Map</title>
+<?php
+echo Asset::css(array(
+    'bootstrap.min.css',
+    'bootstrap-responsive.min.css',
+    'leaflet.css'
+));
+?>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />
-<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.8.19/jquery-ui.min.js" type="text/javascript"></script>
-<script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
-<script src="http://trentrichardson.com/examples/timepicker/js/jquery-ui-timepicker-addon.js"></script>
-<?php echo Asset::js('map.content.js'); ?>
-<?php echo Asset::css('bootstrap.css'); ?>
-<?php echo Asset::css('style.css'); ?>
-<script>
-$(function() {
-$( "#dialog-form" ).dialog({
+<style type="text/css">
+	html, body, #map { /* html,body needs this for the map */
+		width: 100%; 
+		height: 100%;
+		margin:0;
+		padding:0;
+	}
+
+	fieldset { padding:0; border:0; margin-top:25px; }
+	h1 { font-size: 1.2em; margin: .6em 0; }
+	div#users-contain { width: 350px; margin: 20px 0; }
+	div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+	div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+	.ui-dialog .ui-state-error { padding: .3em; }
+	.validateTips { border: 1px solid transparent; padding: 0.3em; }
+</style>
+<?php
+echo Asset::js(array(
+    'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+    'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js',
+    'bootstrap.min.js',
+    'leaflet.js',
+    'map.content.js',
+    'jquery.ui.timepicker.js'
+));
+?>
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
+			<div class="btn-group pull-right">
+				<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
+				<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
+			</div>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+						<?php echo Html::anchor('', 'Map'); ?>
+					</li>
+					
+						<?php if($current_user): ?>
+					<li><?php echo Html::anchor('admin/index', 'Admin'); ?></li>
+					<?php else: ?>
+					<li><?php echo Html::anchor('admin/login','Login'); ?></li>
+					<?php endif; ?>
+				</ul>		
+				<div class="pull-right navbar-search">
+					<input type="text" class="span2 search-query" id="intervalfrom" placeholder="From" value="" />
+					<input type="text" class="span2 search-query" id="intervalto" placeholder="To" value="" />
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<div id="map" style="width:100%;height:100%;"></div>
+<script type="text/javascript">
+	$('#intervalfrom').datetimepicker();
+	$('#intervalto').datetimepicker();
+
+	WDV.Settings.Windfarm.positions = [<?php
+		$mills = array();
+		foreach ($windmills as $mill) {
+			$mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}']";
+		} echo implode(',', $mills);
+	?>];
+
+	WDV.Settings.Radar.positions = [<?php
+		$rads = array();
+		foreach ($radars as $rad) {
+			$rads[] = "[{$rad['latitude']},{$rad['longitude']}]";
+		} echo implode(',', $rads);
+	?>];
+
+	WDV.Settings.Radar.images = [[<?php
+		$arr = array();
+		for ($i = 1; $i <= 141; $i++) {
+			$arr[] = "['radar/{$i}']";
+		} echo implode(",", $arr);
+	?>],
+	[<?php
+		$arr = array();
+		for ($i = 142; $i <= 285; $i++) {
+			$arr[] = "['radar/{$i}']";
+		} echo implode(",", $arr);
+	?>]];
+
+WDV.Settings.Radar.speed = 200;
+WDV.Init();
+
+	$(function() {
+		$( "#dialog-form" ).dialog({
 			autoOpen: false,
 			height: 300,
 			width: 350,
 			modal: true
 		});
-});
+	});
 </script>
-</head>
-<body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<div class="container-fluid">
-					<div class="row-fluid">
-	    				<div class="span4">
-							<a class="brand" href="<?php Html::anchor('WeatherApp');?>">WeatherApp</a>
-		            		<ul class="nav">
-					                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
-										<?php echo Html::anchor('', 'Map'); ?>
-									</li>
-					                
-									<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
-										
-										<?php
-										$section_segment = basename($controller, '.php');
-										$section_title = Inflector::humanize($section_segment);
-										?>
-										
-					                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
-										<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
-									</li>
-									<?php endforeach; ?>
-							</ul>
-						</div>
-						<div class="span1"></div>
-						<div class="span3">
-							<div class="input-group" style="padding-top:8px;">
-		 						<input type="text" class="input-medium" id="intervalfrom" value="From"/>
-		 						<input type="text" class="input-medium" id="intervalto" value="To"/>
-							</div>
-						</div>
-						<div class="span3"></div>
-						<div class="span1">
-			          		<div class="btn-group">
-								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
-								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
-							</div>
-						</div>
-					</div>
-	        	</div>
-	        </div>
-	    </div>
-	</div>
-<div id="map"></div>
-<script type="text/javascript">
-$('#intervalfrom').datetimepicker();
-$('#intervalto').datetimepicker();
-
-WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}','{$mill['id']}']"; } echo implode(',',$mills); ?>];
-
-WDV.Settings.Radar.positions = [<?php $rads = array(); foreach($radars as $rad) { $rads[] = "[{$rad['latitude']},{$rad['longitude']}]"; } echo implode(',',$rads); ?>];
-WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>],
-				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>]];
-WDV.Settings.Radar.speed = 200;
-WDV.Init();
-
-</script>
-<div id="dialog-form" title="Chart">
-</div>
+<div id="dialog-form" title="Chart"></div>
 </body>
 </html>

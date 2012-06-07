@@ -9,7 +9,7 @@
  * @package  app
  * @extends  Controller
  */
-class Controller_Map extends Controller
+class Controller_Map extends Controller_Base
 {
 	
 	/**
