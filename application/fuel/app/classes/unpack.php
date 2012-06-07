@@ -8,12 +8,12 @@ class Unpack {
 		self::$_output_files = array();
 	}
 
-	public static function extract($path) {
-		self::_unpack($path);
+	public static function extract($path, $config) {
+		self::_unpack($path, $config);
 		return self::$_output_files;
 	}
 
-	protected static function _unpack($path) {
+	protected static function _unpack($path, $config) {
 
 		$ext = substr($path, strrpos($path, '.') + 1);
 		switch ($ext) {
@@ -44,7 +44,10 @@ class Unpack {
 
 				$unzip = new Fuel\Core\Unzip();
 				try {
-					$unzip->allow(array('csv', 'zip', 'wrk'));
+					// Whitelisted extensions
+					$unzip->allow($config['ext_whitelist']);
+					
+					// Unpack
 					$files = $unzip->extract($path);
 					
 					foreach ($files as $file) {
@@ -63,7 +66,18 @@ class Unpack {
 			//case 'tar':
 			//	break;
 			default:
-				self::$_output_files[] = $path;
+				
+				$newpath = $path;
+				if($config['normalize']) {
+					// Get file info
+					$path_parts = pathinfo($path);
+
+					// Rename
+					$newpath = $path_parts['dirname'].'/'.\Fuel\Core\Inflector::friendly_title($path_parts['filename'],$config['normalize_separator']).'.'.$path_parts['extension'];
+					rename($path, $newpath);
+				}
+
+				self::$_output_files[] = $newpath;
 				break;
 		}
 	}
