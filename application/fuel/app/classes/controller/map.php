@@ -20,8 +20,10 @@ class Controller_Map extends Controller_Base
 	 */
 	public function action_index()
 	{
-		$radars = DB::select('latitude','longitude')
+		$radars = DB::select('latitude','longitude',DB::expr('(pixel_size * east_uppb) as _range'))
 			->from('files')
+			->join('file_wrks')
+			->on('file_wrks.file_id','=','files.id')
 			->where('type','=','wrk')
 			->where('name','NOT IN',array('0','1'))
 			->group_by('latitude')

@@ -50,6 +50,7 @@ echo Asset::js(array(
 			</a>
 			<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
 			<div class="btn-group pull-right">
+				<button class="btn small" onClick="javascript:WDV.PlayAllRadars();"><i class="icon-play"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
 			</div>
@@ -89,7 +90,7 @@ echo Asset::js(array(
 	WDV.Settings.Radar.positions = [<?php
 		$rads = array();
 		foreach ($radars as $rad) {
-			$rads[] = "[{$rad['latitude']},{$rad['longitude']}]";
+			$rads[] = "[{$rad['latitude']},{$rad['longitude']},{$rad['_range']}]";
 		} echo implode(',', $rads);
 	?>];
 

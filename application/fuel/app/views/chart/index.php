@@ -30,7 +30,7 @@ $id = $_GET['id'];
 ?>
 $(document).ready(function() {
 	WDV.Chart._url = '<?php echo Uri::create('file/csv/list.json'); ?>';
-	WDV.Chart._id = '<?php echo $id; ?>';
+	WDV.Chart._id = '<?php echo $mill->id; ?>';
 	WDV.Chart.Init();
 });
 <?php 
@@ -49,7 +49,7 @@ foreach($columns as $c)
 				<div class="navbar-inner">
 					<div class="container-fluid">
 						<div class="row-fluid">
-							<a class="brand" href="<?php Html::anchor('WeatherApp'); ?>">HR1 (56.200, 11.100)</a>
+							<a class="brand" href="<?php Html::anchor('WeatherApp'); ?>"><?php echo $mill->name; ?> (<?php echo $mill->latitude . ', ' . $mill->longitude; ?>)</a>
 
 							<ul class="nav">
 								<li class="dropdown">

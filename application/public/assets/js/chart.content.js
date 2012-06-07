@@ -2,7 +2,6 @@ WDV.Chart = {
 	_columns: [],
 	_data: [],
 	_today: null,
-	_now: null,
 	_month: [
 	"January",
 	"February",
@@ -90,8 +89,7 @@ WDV.Chart = {
 	Init: function() {
 		// Temp fix for date
 		WDV.Chart.getArray(new Date(2010, 01, 01), new Date(2010, 01, 14));
-		WDV.Chart._now  = new Date(2010, 01, 01);
-		WDV.Chart._today = WDV.Chart._now;
+		WDV.Chart._today = new Date(2010, 01, 01);
 		
 			
 		$('.label_check').each(function(){
@@ -168,19 +166,19 @@ WDV.Chart = {
 
 		// WDV.Chart._today button
 		$("#play").click(function () {
-			//WDV.Chart._today = WDV.Chart._now;
-			//WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRange(), 0, 0); 
 			if (WDV.Chart._interval == 0)
 			{
 				$("#viewtype button:last-child").click();
+				WDV.Chart.moveChart(1,0);
 				WDV.Chart._interval = setInterval(function() {
 					WDV.Chart.moveChart(0, 1);
-				}, /*WDV.Settings.Radar.speed*/1000 * 6);
+				}, /*WDV.Settings.Radar.speed*/200 * 6);
 				$(this).children('i').removeClass('icon-play').addClass('icon-pause');
 			}
 			else
 			{
 				clearTimeout(WDV.Chart._interval);
+				WDV.Chart._interval = 0;
 				$(this).children('i').removeClass('icon-pause').addClass('icon-play');
 			}
 		});

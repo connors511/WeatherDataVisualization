@@ -112,6 +112,7 @@ WDV = {
 			this._radars[i].images = WDV.Settings.Radar.images[i];
 			this._radars[i].current = 0;
 			this._radars[i].index = i;
+			this._radars[i].range = WDV.Settings.Radar.positions[i][2];
 			this._radars[i].animate = function() {
 				WDV.RotateRadar(this.index);
 				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", WDV.Settings.Radar.speed);
@@ -207,9 +208,9 @@ WDV = {
 		maxMeters = maxMeters,
 		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * WDV.Settings.Radar.range
 		];
-		var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV.Settings.Radar.range;
 		for(var i = 0; i < WDV._radars.length; i++)
 		{
+			var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV._radars[i].range;
 			WDV._radars[i]._icon.style.width = _width + 'px';
 			WDV._radars[i]._icon.style.height = _width + 'px';
 			WDV._radars[i]._icon.style.marginTop = (-1*(_width/2)) + 'px';

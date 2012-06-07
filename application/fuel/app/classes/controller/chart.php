@@ -23,8 +23,11 @@ class Controller_Chart extends Controller
 		$cols = Model_File_Csv::properties();
 		unset($cols['id'], $cols['TimeStamps'], $cols['TimeStampsR'], $cols['file_id']);
 		View::set_global('columns', array_keys($cols));
-		View::set_global('lat',Input::get('lat'));
-		View::set_global('lng',Input::get('lng'));
+		$mill = Model_File::find(Input::get('id'));
+		if ($mill == null) {
+			throw new HttpNotFoundException();
+		}
+		View::set_global('mill', $mill);
 		return Response::forge(View::forge('chart/index'));
 	}
 
