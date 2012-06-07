@@ -68,8 +68,7 @@ WDV = {
 			WDV.InitWindfarms();
 			WDV.InitRadars();
 			WDV.UpdateRadarSizes();
-			// Move the zoom control
-			//$('.leaflet-control-zoom').css('margin-top','50px');
+			// Remove the zoom control
 			$('.leaflet-control-zoom').css('display','none');
 		}
 	},
@@ -81,11 +80,12 @@ WDV = {
 				icon: new this._iconTemplateWM()
 			});
 			this._windfarms[i].name = WDV.Settings.Windfarm.positions[i][2];
+			this._windfarms[i].id = WDV.Settings.Windfarm.positions[i][3];
 			this._windfarms[i].setZIndexOffset(WDV.Settings.Marker.zIndexOffset);
 			
 			// Click event
 			this._windfarms[i].on('click', function(e) {
-				var page = "chart/?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
+				var page = "chart/?id=" + this.id;
 				var $dialog = $( "#dialog-form" )
 				.html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
 				.dialog({
@@ -94,15 +94,23 @@ WDV = {
 					height: WDV.Settings.Marker.height,
 					width: WDV.Settings.Marker.width,
 					title: WDV.Settings.Marker.title.replace('LAT', this.getLatLng().lat.toFixed(3)).replace('LNG', this.getLatLng().lng.toFixed(3)).replace('NAME',this.name),
-					close: WDV.Settings.Marker.close
+					close: WDV.Settings.Marker.close,
+					zIndex: 3000,
+					resizable: false,
+					position: 'bottom',
+					dialogClass: 'popup'
 				});
-				$("#map").fadeTo("slow", 0.3);
+				$("#dialog-form").css('padding','0'); // minimize white border
+				$(".ui-dialog-titlebar.ui-widget-header").remove(); // Remove the jquery UI header
 				$dialog.dialog('open');
 			});
 			
 			// Put it on the map
 			WDV._map.addLayer(this._windfarms[i]);
 		}
+	},
+	CloseDialog: function() {
+		$("#dialog-form").dialog('close');
 	},
 	InitRadars: function() {
 		this._radars = [];
@@ -243,14 +251,14 @@ WDV.Settings = {
 	},
 	Marker: {
 		autoOpen: false,
-		modal: true,
-		height: screen.height * 0.7,
-		width: screen.width * 0.8,
+		modal: false,
+		height: screen.height * 0.4,
+		width: '100%',
 		title: 'Chart for NAME (LAT, LNG)',
 		close: function(ev, ui) {
 			$("#map").fadeTo("slow", 1);
 		},
-		zIndexOffset: 100
+		zIndexOffset: 500
 	},
 	Windfarm: {
 		positions: []
@@ -259,6 +267,6 @@ WDV.Settings = {
 		positions: [],
 		images: [],
 		speed: 1000, // Change image every milliseconds
-		range: 240000 // Range in meters
+		range: 480000 // Range in meters
 	}
 };

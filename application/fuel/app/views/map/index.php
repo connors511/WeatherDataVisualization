@@ -95,7 +95,9 @@ $( "#dialog-form" ).dialog({
 </head>
 <body>
 	<div class="navbar navbar-fixed-top">
-		<div class="navbar">			<div class="navbar-inner">				<div class="container-fluid">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
 					<div class="row-fluid">
 	    				<div class="span4">
 							<a class="brand" href="<?php Html::anchor('WeatherApp');?>">WeatherApp</a>
@@ -127,7 +129,9 @@ $( "#dialog-form" ).dialog({
 						<div class="span3"></div>
 						<div class="span1">
 			          		<div class="btn-group">
-								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><b>+</b></button>								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><b>-</b></button>							</div>
+								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
+								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
+							</div>
 						</div>
 					</div>
 	        	</div>
@@ -139,11 +143,11 @@ $( "#dialog-form" ).dialog({
 $('#intervalfrom').datetimepicker();
 $('#intervalto').datetimepicker();
 
-WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}']"; } echo implode(',',$mills); ?>];
+WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}','{$mill['id']}']"; } echo implode(',',$mills); ?>];
 
 WDV.Settings.Radar.positions = [<?php $rads = array(); foreach($radars as $rad) { $rads[] = "[{$rad['latitude']},{$rad['longitude']}]"; } echo implode(',',$rads); ?>];
-WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}']"; } echo implode(",",$arr); ?>],
-				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}']"; } echo implode(",",$arr); ?>]];
+WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>],
+				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>]];
 WDV.Settings.Radar.speed = 200;
 WDV.Init();
 

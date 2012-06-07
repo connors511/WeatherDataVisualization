@@ -29,7 +29,7 @@ class Controller_Map extends Controller
 			->execute()
 			->as_array();
 		
-		$wind = DB::select('latitude','longitude','name')
+		$wind = DB::select('latitude','longitude','name','id')
 			->from('files')
 			->where('type','=','csv')
 			->where('name','NOT IN',array('0','1'))
