@@ -68,13 +68,9 @@ WDV.Chart = {
 	},
 	
 	moveChart: function(days, hours) {
-		console.log("Moving " + days + " days, " + hours + " hours");
-		
 		WDV.Chart._today.setDate(WDV.Chart._today.getDate() + days);
 		WDV.Chart._today.setHours(WDV.Chart._today.getHours() + hours);
 		var offsetDays = this.GetViewRange();
-		
-		console.log("Offset days: " + offsetDays);
 		var f = new Date(WDV.Chart._today.getFullYear(), WDV.Chart._today.getMonth(), WDV.Chart._today.getDate() + offsetDays, WDV.Chart._today.getHours(), WDV.Chart._today.getMinutes(), WDV.Chart._today.getSeconds(), WDV.Chart._today.getMilliseconds());
 		if (f > WDV.Chart._today)
 		{
@@ -147,7 +143,7 @@ WDV.Chart = {
 	
 		// Backfast button (-14 days in 2-week view, -7 days in weekly view, -1 day in daily)
 		$("#fast-backward").click(function () {
-			WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0, 0);
+			WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0);
 		});
 
 		// Back button (- 7 days, - 1 day, - 1 hour)
@@ -155,12 +151,12 @@ WDV.Chart = {
 			if (WDV.Chart.isWeekly() || WDV.Chart.isTwoWeeks())
 			{
 				// Move in days (1 or 7 days)
-				WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0, 0);
+				WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0);
 			}
 			else
 			{
 				// Move in hours
-				WDV.Chart.moveChart(0, -1, 0);
+				WDV.Chart.moveChart(0, -1);
 			}
 		});
 
@@ -168,8 +164,9 @@ WDV.Chart = {
 		$("#play").click(function () {
 			if (WDV.Chart._interval == 0)
 			{
+				//WDV.Chart.moveChart(1,0);
 				$("#viewtype button:last-child").click();
-				WDV.Chart.moveChart(1,0);
+				
 				WDV.Chart._interval = setInterval(function() {
 					WDV.Chart.moveChart(0, 1);
 				}, /*WDV.Settings.Radar.speed*/200 * 6);
@@ -188,26 +185,33 @@ WDV.Chart = {
 			if (WDV.Chart.isWeekly() || WDV.Chart.isTwoWeeks())
 			{
 				// Move in days (1 or 7 days)
-				WDV.Chart.moveChart(WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0, 0);
+				WDV.Chart.moveChart(WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0);
 			}
 			else
 			{
 				// Move in hours
-				WDV.Chart.moveChart(0, 1, 0);
+				WDV.Chart.moveChart(0, 1);
 			}
 		});
 
 		// Forwardfast button (14 days in 2-week view, 7 days in weekly view, 1 day in daily)
 		$("#fast-forward").click(function () {
-			WDV.Chart.moveChart(WDV.Chart.GetViewRange(), 0, 0);
+			WDV.Chart.moveChart(WDV.Chart.GetViewRange(), 0);
 		});
 	
 		// Change view - checks if 2-week or weekly view is activated.  
 		$("#viewtype button").click(function () {
 			WDV.Chart._view = $(this).val();
-			
-			WDV.Chart._today = new Date(WDV.Chart._today.getFullYear(), WDV.Chart._today.getMonth(), WDV.Chart._today.getDate()-WDV.Chart.GetViewRange())
-			var f = new Date(WDV.Chart._today.getFullYear(), WDV.Chart._today.getMonth(), WDV.Chart._today.getDate()-WDV.Chart.GetViewRange());
+			var dayoffset = 0;
+			if (WDV.Chart._view == 1) {
+				dayoffset = 1;
+			} else if (WDV.Chart._view == 2) {
+				dayoffset = 7;
+			} else if (WDV.Chart._view == 3) {
+				dayoffset = 14;
+			}
+			WDV.Chart._today = new Date(WDV.Chart._today.getFullYear(), WDV.Chart._today.getMonth(), WDV.Chart._today.getDate()-WDV.Chart.GetViewRange() + dayoffset, WDV.Chart._today.getHours(), WDV.Chart._today.getMinutes(), WDV.Chart._today.getSeconds(), WDV.Chart._today.getMilliseconds());
+			var f = new Date(WDV.Chart._today.getFullYear(), WDV.Chart._today.getMonth(), WDV.Chart._today.getDate()-WDV.Chart.GetViewRange(), WDV.Chart._today.getHours(), WDV.Chart._today.getMinutes(), WDV.Chart._today.getSeconds(), WDV.Chart._today.getMilliseconds());
 			WDV.Chart.plotdata(f, WDV.Chart._today);
 		});
 		
@@ -219,12 +223,9 @@ WDV.Chart = {
 		var d = "0" + (date.getDate()+1);
 		var m = "0" + (date.getMonth()+1);
 		var y = "" + date.getFullYear();
-		var h = "" + date.getHours();
-		var min = "" + date.getMinutes();
-		if (h < 10) {
-			h = "0" + h;
-		}
-		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+h+"00";
+		var h = "0" + date.getHours();
+		var min = "0" + date.getMinutes();
+		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+h.substring(h.length-2, h.length)+min.substring(min.length-2, min.length);
 	},
 	plotdata: function(sDate, eDate) {
 		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
