@@ -1,15 +1,30 @@
-<h2>Listing Files <small>Viewing <?php echo Pagination::$offset+1 ?> - <?php echo Pagination::$offset+count($files); ?> of <?php echo $total_items; ?></small></h2>
+<h2>Listing Files <small>Viewing <?php echo (count($files) ? (Pagination::$offset+1).' - '.(Pagination::$offset+count($files)).' of '.$total_items : ''); ?></small></h2>
 <br />
-<p>
-<?php echo Html::anchor('admin/file/create', 'Add new File', array('class' => 'btn btn-primary')); ?>
-</p>
+
+<?php echo Form::open('admin/file/mass'); ?>
+
+<div class="control-group">
+<?php echo Html::anchor('admin/file/create', '<i class="icon-white icon-pencil"></i> Add New Files', array('class' => 'btn btn-primary')); ?>
+		
+<div class="controls pull-right">
+<div class="input-append">
+		<?php
+		echo Form::select('submit_type', null, array('Bulk Actions','del'=>'Delete'), array('class'=>'span3')).
+			Form::button('submit', 'Apply', array('type'=>'submit','class'=>'btn','onclick' => "return confirm('Are you sure?')")) ?>
+	</div>
+</div>	
+	
+</div>
+
 <?php if ($files): ?>
+
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
+			<th><?php echo Form::checkbox('chk_all') ?></th>
 			<th>Name</th>
 			<th>Location</th>
-			<th>File</th>
+			<th>Path</th>
 			<th>Type</th>
 			<th>User</th>
 			<th>Updated At</th>
@@ -19,7 +34,7 @@
 	</thead>
 	<tbody>
 <?php foreach ($files as $file): ?>		<tr>
-
+			<td><?php echo Form::checkbox('chk[]', $file->id, false, array('id'=>'form_chk_'.$file->id,'class'=>'form_chk')) ?></td>
 			<td><?php switch($file->name) {
 				case '0':
 					echo 'Parsing';
@@ -31,16 +46,15 @@
 					echo $file->name;
 					break;
 			}?></td>
+			
 			<td><?php if ($file->name != '0' and $file->name != '1') echo $file->latitude.','.$file->longitude; ?></td>
 			<td><?php echo $file->path; ?></td>
 			<td><?php echo $file->type; ?></td>
 			<td><?php echo $file->user->username; ?></td>
-			<td><?php echo date('d-m-Y H:i',$file->updated_at); ?></td>
+			<td><span title="<?php echo date('d-m-Y H:i',$file->updated_at); ?>"><?php echo Date::time_ago($file->updated_at); ?></span></td>
 			<td><?php echo date('d-m-Y H:i',$file->created_at); ?></td>
 			<td>
-				<?php echo Html::anchor('admin/file/view/'.$file->id, 'View'); ?> |
-				<?php echo Html::anchor('admin/file/delete/'.$file->id, 'Delete', array('onclick' => "return confirm('Are you sure?')")); ?>
-
+				<?php echo Html::anchor('admin/file/delete/'.$file->id, '<i class="icon-trash icon-white"></i>', array('class'=>'btn btn-mini btn-danger','onclick' => "return confirm('Are you sure?')")); ?>
 			</td>
 		</tr>
 <?php endforeach; ?>	</tbody>
@@ -52,3 +66,9 @@
 <p>No Files.</p>
 
 <?php endif; ?>
+<?php echo Form::close(); ?>
+<script type="text/javascript">
+	$('#form_chk_all').change( function() {
+		$('.form_chk').attr('checked',$(this).is(':checked'));
+	});
+</script>

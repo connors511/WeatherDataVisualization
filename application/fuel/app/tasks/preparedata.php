@@ -8,10 +8,10 @@ class Preparedata {
 
 		// Get files not yet data parsed
 		$files = \Model_File::find('all', array(
-			    'where' => array(
+			'where' => array(
 				array('name', '=', '0')
-			    ),
-			));
+			),
+		));
 
 		foreach ($files as $file) {
 
@@ -33,7 +33,7 @@ class Preparedata {
 				switch ($file->type) {
 
 					case 'csv':
-
+						
 						// read 1st line
 						$fh = fopen($file->path, 'r');
 						list($lat, $lng, $name) = str_replace('"', '', explode(",", fgets($fh, 4096)));
@@ -45,6 +45,7 @@ class Preparedata {
 
 						$file_name = str_replace('\\\\\\\\', '\\\\', str_replace('\\', '\\\\', $file->path));
 						
+						// Import CSV to SQL
 						try {
 							$result = \Fuel\Core\DB::query("
 								LOAD DATA INFILE '" . $file_name . "'
@@ -66,6 +67,15 @@ class Preparedata {
 								(".implode(',',\Model_File_Csv::get_columns()).")
 							")->execute();
 						}
+						
+						// Convert timezones to UTC
+						$update = \Fuel\Core\DB::update('file_csvs')->
+							set(array(
+							    'file_csvs.TimeStamps' => \Fuel\Core\DB::expr("DATE_FORMAT(CONVERT_TZ(STR_TO_DATE(file_csvs.TimeStamps, '%Y%m%d%H%i'),'{$file->offset}','UTC'),'%Y%m%d%H%i')"),
+							    'file_csvs.TimeStampsR' => \Fuel\Core\DB::expr("CONVERT_TZ(file_csvs.TimeStampsR,'{$file->offset}','UTC')")
+							))->
+							where('file_csvs.file_id','=',$file->id)->
+							execute();
 						break;
 					case 'wrk':
 
@@ -74,12 +84,22 @@ class Preparedata {
 							$array = explode("\n", fread($fp, filesize(str_replace($file->type, 'csv', $file->path))));
 						}
 						list($lat, $lng, $name) = explode(",", $array[0]);
+						
 						$file->latitude = $lat;
 						$file->longitude = $lng;
 						$file->name = $name;
+						
+						$columns = \Model_File_Wrk::get_columns();
+						$values = explode(',',$array[2]);
+						
+						// $columns starts with 1 because [0] => id is unset.
+						$date_time_key = array_search('date_time',$columns)-1;
+						
+						// Convert timezone to UTC
+						$values[$date_time_key] = \Fuel\Core\DB::expr("DATE_FORMAT(CONVERT_TZ(STR_TO_DATE('{$values[$date_time_key]}', '%Y%m%d%H%i%s'),'{$file->offset}','UTC'),'%Y%m%d%H%i%s')");
 
-						\Fuel\Core\DB::insert('file_wrks')->columns(\Model_File_Wrk::get_columns())->values(explode(',', $array[2]))->execute();
-
+						$query = \Fuel\Core\DB::insert('file_wrks')->columns($columns)->values($values)->execute();
+						
 						break;
 					default:
 						break;

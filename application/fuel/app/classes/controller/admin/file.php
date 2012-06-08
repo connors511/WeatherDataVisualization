@@ -21,13 +21,6 @@ class Controller_Admin_File extends Controller_Admin {
 		$this->template->content = View::forge('admin/file/index', $data, false);
 	}
 
-	public function action_view($id = null) {
-		$data['file'] = Model_File::find($id);
-
-		$this->template->title = "File";
-		$this->template->content = View::forge('admin/file/view', $data);
-	}
-
 	public function action_create($id = null) {
 
 		if (Input::param() != array()) {
@@ -46,12 +39,13 @@ class Controller_Admin_File extends Controller_Admin {
 				);
 				
 				Upload::process($upload_config);
+				Unpack::setup($upload_config);
 
 				// Called upon upload save
 				Upload::register('after', function (&$file) {
 
 						// Extract files (if necessary) and return array
-						$files = Unpack::extract($file['saved_to'].$file['saved_as'],$upload_config);
+						$files = Unpack::extract($file['saved_to'].$file['saved_as']);
 
 						foreach ($files as $f) {
 
@@ -61,6 +55,7 @@ class Controller_Admin_File extends Controller_Admin {
 
 							$model->path = $f;
 							$model->type = $ext;
+							$model->offset = Input::param('offset');
 							$model->name = '0';
 							$model->latitude = '';
 							$model->longitude = '';
@@ -97,8 +92,7 @@ class Controller_Admin_File extends Controller_Admin {
 		$fieldset->set_config('form_attributes', array('enctype' => 'multipart/form-data'));
 
 		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn btn-primary'));
-		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn btn-primary'));
-
+		
 		$this->template->title = "Files";
 		$this->template->content = View::forge('admin/file/create');
 	}
@@ -121,6 +115,49 @@ class Controller_Admin_File extends Controller_Admin {
 			Session::set_flash('error', 'Could not delete file #' . $id);
 		}
 
+		Response::redirect('admin/file');
+	}
+	
+	public function action_mass() {
+		
+		$files = Input::param('chk');
+		$submit_type = Input::param('submit_type');
+		
+		if($files && $submit_type) {	
+			switch($submit_type) {
+				case 'del':		
+					$message = array(
+					    'success' => 'Deleted '.count($files).' files',
+					    'error' => 'Could not delete files'
+					);
+					
+					foreach($files as $id) {
+						$file = Model_File::find($id);
+						unlink($file->path);
+					}
+
+					$query = DB::delete('files')
+					->where('id', 'IN', Input::param('chk'))
+					->execute();
+					
+					break;
+				default:
+					$query = false;
+					$message = array(
+					    'error' => 'How did you get here?'
+					);
+					break;
+			}
+		
+			if ($query) {
+				Session::set_flash('success', $message['success']);
+			} else {
+				Session::set_flash('error', $message['error']);
+			}
+		}
+
+		
+		
 		Response::redirect('admin/file');
 	}
 

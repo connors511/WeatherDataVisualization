@@ -3,17 +3,22 @@
 class Unpack {
 
 	protected static $_output_files = array();
+	protected static $_config = array();
 
 	public function __construct() {
 		self::$_output_files = array();
 	}
 
-	public static function extract($path, $config) {
-		self::_unpack($path, $config);
+	public static function extract($path) {
+		self::_unpack($path);
 		return self::$_output_files;
 	}
+	
+	public static function setup($config) {
+		self::$_config = $config;
+	}
 
-	protected static function _unpack($path, $config) {
+	protected static function _unpack($path) {
 
 		$ext = substr($path, strrpos($path, '.') + 1);
 		switch ($ext) {
@@ -45,7 +50,7 @@ class Unpack {
 				$unzip = new Fuel\Core\Unzip();
 				try {
 					// Whitelisted extensions
-					$unzip->allow($config['ext_whitelist']);
+					$unzip->allow(self::$_config['ext_whitelist']);
 					
 					// Unpack
 					$files = $unzip->extract($path);
@@ -73,7 +78,7 @@ class Unpack {
 					$path_parts = pathinfo($path);
 
 					// Rename
-					$newpath = $path_parts['dirname'].'/'.\Fuel\Core\Inflector::friendly_title($path_parts['filename'],$config['normalize_separator']).'.'.$path_parts['extension'];
+					$newpath = $path_parts['dirname'].'/'.\Fuel\Core\Inflector::friendly_title($path_parts['filename'],self::$_config['normalize_separator']).'.'.$path_parts['extension'];
 					rename($path, $newpath);
 				}
 
