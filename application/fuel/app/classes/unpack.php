@@ -73,7 +73,7 @@ class Unpack {
 			default:
 				
 				$newpath = $path;
-				if($config['normalize']) {
+				if(self::$_config['normalize']) {
 					// Get file info
 					$path_parts = pathinfo($path);
 

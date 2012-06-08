@@ -55,7 +55,7 @@ class Controller_Admin_File extends Controller_Admin {
 
 							$model->path = $f;
 							$model->type = $ext;
-							$model->offset = Input::param('offset');
+							$model->offset = Input::param('offset', 0);
 							$model->name = '0';
 							$model->latitude = '';
 							$model->longitude = '';

@@ -95,6 +95,7 @@ class Model_File extends \Orm\Model {
 			}
 			//}
 		}
+		return array();
 		return $locations;
 	}
 
