@@ -29,7 +29,7 @@
 $id = $_GET['id'];
 ?>
 $(document).ready(function() {
-	WDV.Chart._url = '<?php echo Uri::create('file/csv/list.json'); ?>';
+	WDV.Chart._url = '<?php echo Uri::create('rest/csv/list.json'); ?>';
 	WDV.Chart._id = '<?php echo $mill->id; ?>';
 	WDV.Chart.Init();
 });

@@ -60,6 +60,24 @@ WDV = {
 			WDV.UpdateRadarSizes();
 			// Remove the zoom control
 			$('.leaflet-control-zoom').css('display','none');
+			
+			// Init time pickers
+			$('#intervalfrom').datetimepicker({
+				onSelect: function() {
+					WDV.UpdateRadarData();
+				}
+			});
+			var prevWeek = new Date();
+			prevWeek.setDate(prevWeek.getDate() - 7);
+			$('#intervalfrom').datetimepicker('setDate', prevWeek);
+			$('#intervalto').datetimepicker({
+				onSelect: function() {
+					WDV.UpdateRadarData();
+				}
+			});
+			$('#intervalto').datetimepicker('setDate', new Date());
+			
+			WDV.UpdateRadarData();
 		}
 	},
 	InitWindfarms: function() {
@@ -199,15 +217,6 @@ WDV = {
 
 		meters = pow10 * d;
 
-		var t = [
-		width = Math.round(opt_px * (meters / maxMeters)) + 'px',
-		meters = meters,
-		centerLat = centerLat,
-		left = left,
-		right = right,
-		maxMeters = maxMeters,
-		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * WDV.Settings.Radar.range
-		];
 		for(var i = 0; i < WDV._radars.length; i++)
 		{
 			var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV._radars[i].range;
@@ -218,12 +227,49 @@ WDV = {
 		}
 		console.log("changed size to " + _width);
 	},
-	PlayAllRadars: function() {
-		for (i = 0; i < WDV._radars.length; i++) {
-			
-			this._radars[i].current = 0;
-			this._radars[i].animate();
+	UpdateRadarData: function() {
+		for(var i = 0; i < WDV._radars.length; i++)
+		{
+			var from = $('#intervalfrom').datetimepicker('getDate');
+			if (from != null)
+			{
+				from = WDV.getTimeStamp(from);
+			}
+			var to = $('#intervalto').datetimepicker('getDate');
+			if (to != null)
+			{
+				to = WDV.getTimeStamp(to);
+			}
+			WDV._radars[i].images = WDV.loadData(WDV._radars[i].getLatLng(), from, to)
 		}
+	},
+	loadData: function (pos, from, to) {
+		var json = null;
+		var _url = WDV.Settings.Radar.url + '?&lat=' + pos.lat.toFixed(3) + '&lng=' + pos.lng.toFixed(3);
+		if (from != undefined && from != null) {
+			_url = _url + '&f='+from;
+		}
+		if (to != undefined && from != null) {
+			_url = _url + '&t='+to;
+		}
+		$.ajax({
+			'async': false,
+			'global': false,
+			'url': _url,
+			'dataType': "json",
+			'success': function (data) {
+				json = data;
+			}
+		});
+		return json;  
+	},
+	getTimeStamp: function(date) {
+		var d = "0" + (date.getDate()+1);
+		var m = "0" + (date.getMonth()+1);
+		var y = "" + date.getFullYear();
+		var h = "0" + date.getHours();
+		var min = "0" + date.getMinutes();
+		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+h.substring(h.length-2, h.length)+min.substring(min.length-2, min.length);
 	}
 };
 
@@ -263,6 +309,7 @@ WDV.Settings = {
 	Radar: {
 		positions: [],
 		images: [],
+		url: '',
 		speed: 1000, // Change image every milliseconds
 		range: 480000 // Range in meters
 	}
