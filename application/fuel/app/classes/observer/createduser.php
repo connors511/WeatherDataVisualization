@@ -19,6 +19,6 @@ class Observer_CreatedUser extends \Orm\Observer
         public function before_insert(\Orm\Model $obj)
         {
                 list($driver, $id) = Auth::get_user_id();
-                $obj->{$this->_property} = $id;
+		$obj->{$this->_property} = $id;
         }
 }
