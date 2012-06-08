@@ -40,6 +40,51 @@ echo Asset::js(array(
 ?>
 </head>
 <body>
+<<<<<<< HEAD
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<div class="row-fluid">
+	    				<div class="span4">
+							<a class="brand" href="<?php Html::anchor('WeatherApp');?>">WeatherApp</a>
+		            		<ul class="nav">
+					                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">
+										<?php echo Html::anchor('', 'Map'); ?>
+									</li>
+					                
+									<?php foreach (glob(APPPATH.'classes/controller/admin/*.php') as $controller): ?>
+										
+										<?php
+										$section_segment = basename($controller, '.php');
+										$section_title = Inflector::humanize($section_segment);
+										?>
+										
+					                <li class="<?php echo Uri::segment(2) == $section_segment ? 'active' : '' ?>">
+										<?php echo Html::anchor('admin/'.$section_segment, $section_title) ?>
+									</li>
+									<?php endforeach; ?>
+							</ul>
+						</div>
+						<div class="span1"></div>
+						<div class="span3">
+							<div class="input-group" style="padding-top:8px;">
+		 						<input type="text" class="input-medium" id="intervalfrom" value="From"/>
+		 						<input type="text" class="input-medium" id="intervalto" value="To"/>
+							</div>
+						</div>
+						<div class="span3"></div>
+						<div class="span1">
+			          		<div class="btn-group">
+								<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
+								<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
+							</div>
+						</div>
+					</div>
+	        	</div>
+	        </div>
+	    </div>
+=======
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
@@ -50,7 +95,6 @@ echo Asset::js(array(
 			</a>
 			<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
 			<div class="btn-group pull-right">
-				<button class="btn small" onClick="javascript:WDV.PlayAllRadars();"><i class="icon-play"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
 			</div>
@@ -73,31 +117,42 @@ echo Asset::js(array(
 			</div>
 			
 		</div>
+>>>>>>> 26aedefde708c21a2145049ddbf9bdc92d936222
 	</div>
 </div>
 <div id="map" style="width:100%;height:100%;"></div>
 <script type="text/javascript">
+<<<<<<< HEAD
+$('#intervalfrom').datetimepicker();
+$('#intervalto').datetimepicker();
+
+WDV.Settings.Windfarm.positions = [<?php $mills = array(); foreach($windmills as $mill) { $mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}','{$mill['id']}']"; } echo implode(',',$mills); ?>];
+
+WDV.Settings.Radar.positions = [<?php $rads = array(); foreach($radars as $rad) { $rads[] = "[{$rad['latitude']},{$rad['longitude']}]"; } echo implode(',',$rads); ?>];
+WDV.Settings.Radar.images = [[<?php $arr = array(); for($i=1;$i<=141;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>],
+				[<?php $arr = array(); for($i=142;$i<=285;$i++){ $arr[] = "['radar/{$i}.png']"; } echo implode(",",$arr); ?>]];
+=======
 	$('#intervalfrom').datetimepicker();
 	$('#intervalto').datetimepicker();
 
 	WDV.Settings.Windfarm.positions = [<?php
 		$mills = array();
 		foreach ($windmills as $mill) {
-			$mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}','{$mill['id']}']";
+			$mills[] = "[{$mill['latitude']},{$mill['longitude']},'{$mill['name']}']";
 		} echo implode(',', $mills);
 	?>];
 
 	WDV.Settings.Radar.positions = [<?php
 		$rads = array();
 		foreach ($radars as $rad) {
-			$rads[] = "[{$rad['latitude']},{$rad['longitude']},{$rad['_range']}]";
+			$rads[] = "[{$rad['latitude']},{$rad['longitude']}]";
 		} echo implode(',', $rads);
 	?>];
 
 	WDV.Settings.Radar.images = [[<?php
 		$arr = array();
 		for ($i = 1; $i <= 141; $i++) {
-			$arr[] = "['radar/{$i}.png']";
+			$arr[] = "['radar/{$i}']";
 		} echo implode(",", $arr);
 	?>],
 	[<?php
@@ -107,6 +162,7 @@ echo Asset::js(array(
 		} echo implode(",", $arr);
 	?>]];
 
+>>>>>>> 26aedefde708c21a2145049ddbf9bdc92d936222
 WDV.Settings.Radar.speed = 200;
 WDV.Init();
 

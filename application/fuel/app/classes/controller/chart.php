@@ -20,8 +20,14 @@ class Controller_Chart extends Controller
 	 */
 	public function action_index()
 	{
-		View::set_global('lat',Input::get('lat'));
-		View::set_global('lng',Input::get('lng'));
+		$cols = Model_File_Csv::properties();
+		unset($cols['id'], $cols['TimeStamps'], $cols['TimeStampsR'], $cols['file_id']);
+		View::set_global('columns', array_keys($cols));
+		$mill = Model_File::find(Input::get('id'));
+		if ($mill == null) {
+			throw new HttpNotFoundException();
+		}
+		View::set_global('mill', $mill);
 		return Response::forge(View::forge('chart/index'));
 	}
 

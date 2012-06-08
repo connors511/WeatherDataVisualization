@@ -29,38 +29,28 @@ WDV = {
 			WDV._map.setView(WDV._pos, 7).addLayer(WDV._cloudmade);
 			
 			WDV._iconTemplateWM = L.Icon.extend({
-				iconUrl: WDV.Settings.Icon.iconUrl.windmill,
-				shadowUrl: WDV.Settings.Icon.shadowUrl,
-				iconSize: WDV.Settings.Icon.iconSize,
-				shadowSize: WDV.Settings.Icon.shadowSize,
-				iconAnchor: WDV.Settings.Icon.iconAnchor,
-				popupAnchor: WDV.Settings.Icon.popupAnchor
+				iconUrl: WDV.Settings.Icon.windmill.iconUrl,
+				shadowUrl: WDV.Settings.Icon.windmill.shadowUrl,
+				iconSize: WDV.Settings.Icon.windmill.iconSize,
+				shadowSize: WDV.Settings.Icon.windmill.shadowSize,
+				iconAnchor: WDV.Settings.Icon.windmill.iconAnchor,
+				popupAnchor: WDV.Settings.Icon.windmill.popupAnchor
 			});
 			WDV._iconTemplateRD = L.Icon.extend({
-				iconUrl: WDV.Settings.Icon.iconUrl.radar,
-				shadowUrl: WDV.Settings.Icon.shadowUrl,
-				iconSize: WDV.Settings.Icon.iconSize,
-				shadowSize: WDV.Settings.Icon.shadowSize,
-				iconAnchor: WDV.Settings.Icon.iconAnchor,
-				popupAnchor: WDV.Settings.Icon.popupAnchor
+				iconUrl: WDV.Settings.Icon.radar.iconUrl,
+				shadowUrl: WDV.Settings.Icon.radar.shadowUrl,
+				shadowSize: WDV.Settings.Icon.radar.shadowSize,
+				iconAnchor: WDV.Settings.Icon.radar.iconAnchor,
+				popupAnchor: WDV.Settings.Icon.radar.popupAnchor
 			});
 			WDV._iconTemplateRDimg = L.Icon.extend({
-				iconUrl: WDV.Settings.Icon.iconUrl.radar,
-				shadowUrl: WDV.Settings.Icon.shadowUrl,
-				iconSize: new L.Point(240, 240),
-				shadowSize: WDV.Settings.Icon.shadowSize,
-				iconAnchor: WDV.Settings.Icon.iconAnchor,
-				popupAnchor: WDV.Settings.Icon.popupAnchor
+				iconUrl: WDV.Settings.Icon.radar.iconUrl,
+				shadowUrl: WDV.Settings.Icon.radar.shadowUrl,
+				iconSize: WDV.Settings.Icon.radar.iconSize,
+				shadowSize: WDV.Settings.Icon.radar.shadowSize,
+				iconAnchor: WDV.Settings.Icon.radar.iconAnchor,
+				popupAnchor: WDV.Settings.Icon.radar.popupAnchor
 			});
-			
-			/*WDV._map.on('click', function(e) {
-				var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
-				var popup = new L.Popup();
-				popup.setLatLng(e.latlng);
-				popup.setContent("You clicked the map at " + latlngStr);
-
-				WDV._map.openPopup(popup);
-			});*/
 			
 			WDV._map.on('viewreset', function() {
 				WDV.UpdateRadarSizes();
@@ -68,8 +58,7 @@ WDV = {
 			WDV.InitWindfarms();
 			WDV.InitRadars();
 			WDV.UpdateRadarSizes();
-			// Move the zoom control
-			//$('.leaflet-control-zoom').css('margin-top','50px');
+			// Remove the zoom control
 			$('.leaflet-control-zoom').css('display','none');
 		}
 	},
@@ -81,11 +70,12 @@ WDV = {
 				icon: new this._iconTemplateWM()
 			});
 			this._windfarms[i].name = WDV.Settings.Windfarm.positions[i][2];
+			this._windfarms[i].id = WDV.Settings.Windfarm.positions[i][3];
 			this._windfarms[i].setZIndexOffset(WDV.Settings.Marker.zIndexOffset);
 			
 			// Click event
 			this._windfarms[i].on('click', function(e) {
-				var page = "chart/?lat=" + this.getLatLng().lat.toFixed(3) + "&lng=" + this.getLatLng().lng.toFixed(3);
+				var page = "chart/?id=" + this.id;
 				var $dialog = $( "#dialog-form" )
 				.html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
 				.dialog({
@@ -94,15 +84,23 @@ WDV = {
 					height: WDV.Settings.Marker.height,
 					width: WDV.Settings.Marker.width,
 					title: WDV.Settings.Marker.title.replace('LAT', this.getLatLng().lat.toFixed(3)).replace('LNG', this.getLatLng().lng.toFixed(3)).replace('NAME',this.name),
-					close: WDV.Settings.Marker.close
+					close: WDV.Settings.Marker.close,
+					zIndex: 3000,
+					resizable: false,
+					position: 'bottom',
+					dialogClass: 'popup'
 				});
-				$("#map").fadeTo("slow", 0.3);
+				$("#dialog-form").css('padding','0'); // minimize white border
+				$(".ui-dialog-titlebar.ui-widget-header").remove(); // Remove the jquery UI header
 				$dialog.dialog('open');
 			});
 			
 			// Put it on the map
 			WDV._map.addLayer(this._windfarms[i]);
 		}
+	},
+	CloseDialog: function() {
+		$("#dialog-form").dialog('close');
 	},
 	InitRadars: function() {
 		this._radars = [];
@@ -114,6 +112,7 @@ WDV = {
 			this._radars[i].images = WDV.Settings.Radar.images[i];
 			this._radars[i].current = 0;
 			this._radars[i].index = i;
+			this._radars[i].range = WDV.Settings.Radar.positions[i][2];
 			this._radars[i].animate = function() {
 				WDV.RotateRadar(this.index);
 				this.intval = setInterval("WDV.RotateRadar('"+this.index+"')", WDV.Settings.Radar.speed);
@@ -167,7 +166,7 @@ WDV = {
 			clearTimeout(this._radars[radar].intval);
 			this._radars[radar].intval = 0;
 			this._radars[radar].current = 0;
-			this._radars[radar]._icon.src = WDV.Settings.Icon.iconUrl.radar;
+			this._radars[radar]._icon.src = WDV.Settings.Icon.radar.iconUrl;
 			// Restore windfarms
 			if (this._radars[radar].hiding != undefined && this._radars[radar].hiding.length > 0)
 			{
@@ -209,14 +208,13 @@ WDV = {
 		maxMeters = maxMeters,
 		xx = (Math.round(opt_px * (meters / maxMeters)) / meters) * WDV.Settings.Radar.range
 		];
-		var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV.Settings.Radar.range;
 		for(var i = 0; i < WDV._radars.length; i++)
 		{
-			WDV._radars[i]._icon.style.width = _width;
-			WDV._radars[i]._icon.style.height = _width;
-			WDV._radars[i]._icon.style.marginTop = (-1*(_width/2));
-			WDV._radars[i]._icon.style.marginLeft = (-1*(_width/2));
-			
+			var _width = ((Math.round(opt_px * (meters / maxMeters))-1) / meters) * WDV._radars[i].range;
+			WDV._radars[i]._icon.style.width = _width + 'px';
+			WDV._radars[i]._icon.style.height = _width + 'px';
+			WDV._radars[i]._icon.style.marginTop = (-1*(_width/2)) + 'px';
+			WDV._radars[i]._icon.style.marginLeft = (-1*(_width/2)) + 'px';
 		}
 		console.log("changed size to " + _width);
 	},
@@ -231,26 +229,33 @@ WDV = {
 
 WDV.Settings = {
 	Icon: {
-		iconUrl: {
-			windmill: 'assets/img/windmill.png',
-			radar: 'assets/img/radar.png'
+		windmill: {
+			iconUrl: 'assets/img/windmill.png',
+			shadowUrl: null,
+			iconSize: new L.Point(64, 64),
+			shadowSize: null,
+			iconAnchor: new L.Point(32, 32),
+			popupAnchor: new L.Point(-3, -75)
 		},
-		shadowUrl: null,
-		iconSize: new L.Point(64, 64),
-		shadowSize: null,
-		iconAnchor: new L.Point(32, 32),
-		popupAnchor: new L.Point(-3, -75)
+		radar: {
+			iconUrl: 'assets/img/radar.png',
+			shadowUrl: null,
+			iconSize: new L.Point(480, 480),
+			shadowSize: null,
+			iconAnchor: new L.Point(240, 240),
+			popupAnchor: new L.Point(-3, -75)
+		}
 	},
 	Marker: {
 		autoOpen: false,
-		modal: true,
-		height: screen.height * 0.7,
-		width: screen.width * 0.8,
+		modal: false,
+		height: screen.height * 0.4,
+		width: '100%',
 		title: 'Chart for NAME (LAT, LNG)',
 		close: function(ev, ui) {
 			$("#map").fadeTo("slow", 1);
 		},
-		zIndexOffset: 100
+		zIndexOffset: 500
 	},
 	Windfarm: {
 		positions: []
@@ -259,6 +264,6 @@ WDV.Settings = {
 		positions: [],
 		images: [],
 		speed: 1000, // Change image every milliseconds
-		range: 240000 // Range in meters
+		range: 480000 // Range in meters
 	}
 };

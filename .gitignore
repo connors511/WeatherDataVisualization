@@ -10,3 +10,4 @@ application/fuel/app/config/development/*
 application/fuel/app/config/development/db.php
 application/public/assets/radar/*
 application/fuel/app/logs/*
+application/fuel/app/cache/*
