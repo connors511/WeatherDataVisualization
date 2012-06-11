@@ -140,6 +140,15 @@ WDV = {
 			// Click event
 			this._radars[i].on('click', function(e) {
 				// rotate images
+				if (this.images == null)
+				{
+					WDV.UpdateRadarData();
+				}
+				if (this.images == null)
+				{
+					alert("No radar images available for the selected from date.\nPlease try again later.");
+					return;
+				}
 				if (this.intval == 0 || this.intval == undefined)
 				{
 					this.animate();
@@ -155,6 +164,24 @@ WDV = {
 					clearTimeout(this.intval);
 					this.intval = 0;
 				}
+			});
+			this._radars[i].on('dblclick',function() {
+				// Stop animation
+				clearTimeout(this.intval);
+				this.intval = 0;
+				this.current = 0;
+				this._icon.src = WDV.Settings.Icon.radar.iconUrl;
+				// Restore windfarms
+				if (this.hiding != undefined && this.hiding.length > 0)
+				{
+
+					for(i = 0; i < this.hiding.length; i++)
+					{
+						$(WDV._windfarms[this.hiding[i]]._icon).fadeIn('slow');
+
+					}
+				}
+				this.hiding = [];
 			});
 			
 			// Put it on the map
@@ -235,22 +262,15 @@ WDV = {
 			{
 				from = WDV.getTimeStamp(from);
 			}
-			var to = $('#intervalto').datetimepicker('getDate');
-			if (to != null)
-			{
-				to = WDV.getTimeStamp(to);
-			}
-			WDV._radars[i].images = WDV.loadData(WDV._radars[i].getLatLng(), from, to)
+			
+			WDV._radars[i].images = WDV.loadData(WDV._radars[i].getLatLng(), from)
 		}
 	},
-	loadData: function (pos, from, to) {
+	loadData: function (pos, from) {
 		var json = null;
 		var _url = WDV.Settings.Radar.url + '?&lat=' + pos.lat.toFixed(3) + '&lng=' + pos.lng.toFixed(3);
 		if (from != undefined && from != null) {
 			_url = _url + '&f='+from;
-		}
-		if (to != undefined && from != null) {
-			_url = _url + '&t='+to;
 		}
 		$.ajax({
 			'async': false,
