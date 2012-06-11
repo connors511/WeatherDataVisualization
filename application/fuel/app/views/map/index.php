@@ -50,7 +50,6 @@ echo Asset::js(array(
 			</a>
 			<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
 			<div class="btn-group pull-right">
-				<button class="btn small" onClick="javascript:WDV.PlayAllRadars();"><i class="icon-play"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
 			</div>
@@ -77,9 +76,6 @@ echo Asset::js(array(
 </div>
 <div id="map" style="width:100%;height:100%;"></div>
 <script type="text/javascript">
-	$('#intervalfrom').datetimepicker();
-	$('#intervalto').datetimepicker();
-
 	WDV.Settings.Windfarm.positions = [<?php
 		$mills = array();
 		foreach ($windmills as $mill) {
@@ -106,7 +102,7 @@ echo Asset::js(array(
 			$arr[] = "['radar/{$i}']";
 		} echo implode(",", $arr);
 	?>]];
-
+WDV.Settings.Radar.url = '<?php echo Uri::create('rest/radar/list.json'); ?>';
 WDV.Settings.Radar.speed = 200;
 WDV.Init();
 

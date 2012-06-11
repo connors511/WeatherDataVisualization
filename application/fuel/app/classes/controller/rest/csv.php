@@ -1,6 +1,6 @@
 <?php
 
-class Controller_File_Csv extends Controller_Rest {
+class Controller_Rest_Csv extends Controller_Rest {
 
 	public function get_list() {
 

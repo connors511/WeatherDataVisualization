@@ -34,7 +34,6 @@ WDV.Chart = {
 	
 	getJson: function (col, from, to) {
 		var json = null;
-		console.log(WDV.Chart._url + '?id=' + WDV.Chart._id + '&c='+col+'&f='+from+'&t='+to);
 		$.ajax({
 			'async': false,
 			'global': false,
@@ -164,8 +163,11 @@ WDV.Chart = {
 		$("#play").click(function () {
 			if (WDV.Chart._interval == 0)
 			{
-				//WDV.Chart.moveChart(1,0);
-				$("#viewtype button:last-child").click();
+				if (!WDV.Chart.isDaily())
+				{
+					$("#viewtype button:last-child").click();
+					WDV.Chart.moveChart(0,0); // Prevent it skipping the first day
+				}
 				
 				WDV.Chart._interval = setInterval(function() {
 					WDV.Chart.moveChart(0, 1);
@@ -220,12 +222,7 @@ WDV.Chart = {
 		WDV.Chart.moveChart(0, 0);
 	},
 	getTimeStamp: function(date) {
-		var d = "0" + (date.getDate()+1);
-		var m = "0" + (date.getMonth()+1);
-		var y = "" + date.getFullYear();
-		var h = "0" + date.getHours();
-		var min = "0" + date.getMinutes();
-		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+h.substring(h.length-2, h.length)+min.substring(min.length-2, min.length);
+		return WDV.getTimeStamp(date);
 	},
 	plotdata: function(sDate, eDate) {
 		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
