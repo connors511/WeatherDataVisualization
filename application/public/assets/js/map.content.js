@@ -26,7 +26,7 @@ WDV = {
 			// Our view position
 			WDV._pos = new L.LatLng(56.200, 11.200); 
 			// Set the view
-			WDV._map.setView(WDV._pos, 7).addLayer(WDV._cloudmade);
+			WDV._map.setView(WDV._pos, 5).addLayer(WDV._cloudmade);
 			
 			WDV._iconTemplateWM = L.Icon.extend({
 				iconUrl: WDV.Settings.Icon.windmill.iconUrl,
@@ -70,12 +70,6 @@ WDV = {
 			var prevWeek = new Date();
 			prevWeek.setDate(prevWeek.getDate() - 7);
 			$('#intervalfrom').datetimepicker('setDate', prevWeek);
-			$('#intervalto').datetimepicker({
-				onSelect: function() {
-					WDV.UpdateRadarData();
-				}
-			});
-			$('#intervalto').datetimepicker('setDate', new Date());
 			
 			WDV.UpdateRadarData();
 		}
