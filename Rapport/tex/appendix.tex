@@ -4,10 +4,14 @@
 %\lstinputlisting[language=c,caption={benchmark.c},label=benchmark.c]{./appendix/benchmark.c}
 
 \chapter{Appendix}
-asd
-%\label{ap:def:csv}
-%\begin[language=csv]{lstlisting}
-%asd,asd,fas,fd
-%\end{lstlisting}
-%\lstinputlisting[language=c,caption={bmp.h},label=bmp.h]{./appendix/bmp.h}
-%\lstinputlisting[language=c,caption={bmp.c},label=bmp.c]{./appendix/bmp.c}
+\label{ap:csv}
+The wind farm data is of the file type csv. The file can be split up into 2 pieces.
+\section*{The header}
+The header consists of two lines. The first line defines the latitude, longitude and the name of the wind farm from which the data originates.
+The second line defines the columns, which \textbf{has} to be the same as shown in listing \ref{ap:ex:csv}.
+
+\section*{The body}
+The third and following lines contains the data itself.
+
+\section*{Template}
+\lstinputlisting[language=sql,caption={CSV template},label=ap:ex:csv]{./appendix/template.csv}
