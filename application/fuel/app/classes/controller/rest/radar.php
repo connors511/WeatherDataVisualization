@@ -52,7 +52,7 @@ class Controller_Rest_Radar extends Controller_Rest
 			foreach ($query as $row)
 			{
 				//JS handles dates in microseconds
-				$result[] = array(/*(int) strtotime($row['date_time']) * 1000,*/ "radar/{$row['id']}.png");
+				$result[] = array((int) strtotime($row['date_time']) * 1000, "radar/{$row['id']}.png");
 			}
 
 			Cache::set($cache, $result);

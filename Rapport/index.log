@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=latex 2012.5.7)  30 MAY 2012 15:06
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=latex 2012.5.7)  7 JUN 2012 16:44
 entering extended mode
 **index.tex
 (\\SERENITY\www\WeatherDataVisualization\Rapport\index.tex
@@ -1275,55 +1275,98 @@ Chapter 2.
 Chapter 3.
 [3
 
-]) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\conclusion.tex
+]) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\considerations.tex
 [4]
 Chapter 4.
-) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\futurework.tex [5
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 4.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\ts1lmr.fd"
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+))
+(\\SERENITY\www\WeatherDataVisualization\Rapport\tex\mapchoice.tex [5
 
 ]
 Chapter 5.
-) [6
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 4.
+) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\requirements.tex
+[6
+
+]
+Chapter 6.
+) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\smartphones.tex [7
+
+]
+Chapter 7.
+) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\workflow.tex [8
+
+]
+Chapter 8.
+) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\conclusion.tex [9
+
+]
+Chapter 9.
+
+Underfull \hbox (badness 10000) in paragraph at lines 3--6
+
+ []
+
+) (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\futurework.tex
+Underfull \hbox (badness 10000) in paragraph at lines 8--1
+
+ []
+
+[10
+
+]
+Chapter 10.
+) [11
 
 ] (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\references.tex
 LaTeX Font Info:    Try loading font information for T1+lmtt on input line 6.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)) [7
+)) [12
 
 
 
 ]
 (\\SERENITY\www\WeatherDataVisualization\Rapport\tex\appendix.tex
 Appendix A.
-) [8
+) [13
 
 
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 202.
+(Font)              <12> on input line 207.
 \tf@thm=\write11
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 206.
- [9
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 211.
+ [14
 
 
 
-] [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 206.
+] [15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 211.
  (\\SERENITY\www\WeatherDataVisualization\Rapport\index.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 206.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 206.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 211.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 211.
 Package rerunfilecheck Info: File `index.out' has not changed.
-(rerunfilecheck)             Checksum: 39563628FFF82BBBB831CAF1F0093908;1564.
+(rerunfilecheck)             Checksum: C35409802580C16FF11558DE610DF128;1812.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 13308 strings out of 494046
- 193761 string characters out of 3145984
+ 13389 strings out of 494046
+ 195678 string characters out of 3145984
  324773 words of memory out of 3000000
- 16272 multiletter control sequences out of 15000+200000
- 99162 words of font info for 77 fonts, out of 3000000 for 9000
+ 16323 multiletter control sequences out of 15000+200000
+ 116517 words of font info for 91 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  60i,17n,94p,461b,477s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on index.dvi (20 pages, 52972 bytes).
+Output written on index.dvi (25 pages, 70288 bytes).

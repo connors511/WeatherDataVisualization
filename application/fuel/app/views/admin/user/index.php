@@ -24,7 +24,7 @@
 			<td>
 				<?php echo $user->username; ?>
 			</td>
-			<td><?php echo isset($groups[$user->group]) ? $groups[$user->group]['name'] : $user->group; ?></td>
+			<td><?php echo isset($groups[$user->group]) ? \Fuel\Core\Inflector::singularize($groups[$user->group]['name']) : $user->group; ?></td>
 			<td><?php echo $user->email; ?></td>
 			<td><?php echo $user->last_login ? '<span title="'.date('d-m-Y H:i',$user->last_login).'">'.Date::time_ago($user->last_login).'</span>' : 'Never'; ?></td>
 			<td><span title="<?php echo date('d-m-Y H:i',$user->updated_at); ?>"><?php echo Date::time_ago($user->updated_at); ?></span></td>

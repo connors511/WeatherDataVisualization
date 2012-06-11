@@ -251,7 +251,7 @@ WDV.Chart = {
 		for(i = 0; i < this._columns.length; i++)
 		{
 			if ($("#cb_" + this._columns[i]).is(':checked')) {
-				if (WDV.Chart._data[this._columns[i]].length == 0)
+				if (WDV.Chart._data[this._columns[i]] == null || WDV.Chart._data[this._columns[i]].length == 0)
 				{
 					WDV.Chart._data[this._columns[i]] = WDV.Chart.getJson(this._columns[i], WDV.Chart.getTimeStamp(mind), WDV.Chart.getTimeStamp(maxd));
 				}

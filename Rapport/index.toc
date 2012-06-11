@@ -19,10 +19,15 @@
 \contentsline {subsection}{\numberline {3.3.3}Speed optimizations}{4}{subsection.3.3.3}
 \contentsline {subsubsection}{\numberline {3.3.3.1}Caching}{4}{subsubsection.3.3.3.1}
 \contentsline {subsection}{\numberline {3.3.4}The data}{4}{subsection.3.3.4}
-\contentsline {chapter}{\numberline {4}Conclusion}{5}{chapter.4}
-\contentsline {section}{\numberline {4.1}What's been implemented}{5}{section.4.1}
-\contentsline {section}{\numberline {4.2}What's been left out}{5}{section.4.2}
-\contentsline {chapter}{\numberline {5}Future work}{6}{chapter.5}
-\contentsline {chapter}{References}{7}{section*.13}
-\contentsline {chapter}{Appendix}{8}{section*.15}
-\contentsline {chapter}{\numberline {A}Appendix}{8}{appendix.A}
+\contentsline {chapter}{\numberline {4}Considerations}{5}{chapter.4}
+\contentsline {chapter}{\numberline {5}Map choice}{6}{chapter.5}
+\contentsline {chapter}{\numberline {6}Requirements}{7}{chapter.6}
+\contentsline {chapter}{\numberline {7}Smartphones}{8}{chapter.7}
+\contentsline {chapter}{\numberline {8}Work flow}{9}{chapter.8}
+\contentsline {chapter}{\numberline {9}Conclusion}{10}{chapter.9}
+\contentsline {section}{\numberline {9.1}What's been implemented}{10}{section.9.1}
+\contentsline {section}{\numberline {9.2}What's been left out}{10}{section.9.2}
+\contentsline {chapter}{\numberline {10}Future work}{11}{chapter.10}
+\contentsline {chapter}{References}{12}{section*.13}
+\contentsline {chapter}{Appendix}{13}{section*.15}
+\contentsline {chapter}{\numberline {A}Appendix}{13}{appendix.A}

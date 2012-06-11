@@ -8,7 +8,8 @@
 echo Asset::css(array(
     'bootstrap.min.css',
     'bootstrap-responsive.min.css',
-    'leaflet.css'
+    'leaflet.css',
+    'style.css'
 ));
 ?>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />
@@ -49,6 +50,14 @@ echo Asset::js(array(
 				<span class="icon-bar"></span>
 			</a>
 			<?php echo Html::anchor(Uri::base(false), 'WeatherApp', array('class' => 'brand')) ?>
+			<ul id="loading" class="nav">
+				<li>
+					<a href="javascript:void(0)">
+						<img src="assets/img/loading.png" width="24px" height="24px" />
+						Parsing data <span id="jobCount"></span>
+					</a>
+				</li>
+			</ul>
 			<div class="btn-group pull-right">
 				<button class="btn small" onClick="javascript:WDV._map.zoomIn();"><i class="icon-plus"></i></button>
 				<button class="btn small" onClick="javascript:WDV._map.zoomOut();"><i class="icon-minus"></i></button>
@@ -67,7 +76,6 @@ echo Asset::js(array(
 				</ul>		
 				<div class="pull-right navbar-search">
 					<input type="text" class="span2 search-query" id="intervalfrom" placeholder="From" value="" />
-					<input type="text" class="span2 search-query" id="intervalto" placeholder="To" value="" />
 				</div>
 			</div>
 			
@@ -103,6 +111,7 @@ echo Asset::js(array(
 		} echo implode(",", $arr);
 	?>]];
 WDV.Settings.Radar.url = '<?php echo Uri::create('rest/radar/list.json'); ?>';
+WDV.Settings.Jobs.url = '<?php echo Uri::create('rest/jobs/list.json'); ?>';
 WDV.Settings.Radar.speed = 200;
 WDV.Init();
 
