@@ -39,7 +39,13 @@ foreach($columns as $c)
 {
 	echo "WDV.Chart._data['{$c}'] = [];\n";
 }
+$date = Input::get('f',date('Ymd'));
+$year = substr($date,0,4);
+$month = substr($date,4,2);
+$day = substr($date,6,2);
+echo "WDV.Chart._today = new Date({$year}, {$month}, {$day});\n";
 ?>
+	WDV.Chart._today.setDate(WDV.Chart._today.getDate() - 2);
 		   </script>
 	</head>
 	<body>

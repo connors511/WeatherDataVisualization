@@ -82,10 +82,8 @@ WDV.Chart = {
 	},
 			
 	Init: function() {
-		// Temp fix for date
-		WDV.Chart.getArray(new Date(2010, 01, 01), new Date(2010, 01, 14));
-		WDV.Chart._today = new Date(2010, 01, 01);
-		
+		// Temp fix for date	
+		console.log("now" + this._today);
 			
 		$('.label_check').each(function(){
 			if ($(this).children('input').is(':checked'))

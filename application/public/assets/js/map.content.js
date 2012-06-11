@@ -92,7 +92,7 @@ WDV = {
 			
 			// Click event
 			this._windfarms[i].on('click', function(e) {
-				var page = "chart/?id=" + this.id;
+				var page = "chart/?id=" + this.id + "&f=" + WDV.getTimeStamp($('#intervalfrom').datetimepicker('getDate'));
 				var $dialog = $( "#dialog-form" )
 				.html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
 				.dialog({
