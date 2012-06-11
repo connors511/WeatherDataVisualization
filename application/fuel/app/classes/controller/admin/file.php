@@ -20,6 +20,28 @@ class Controller_Admin_File extends Controller_Admin {
 		$this->template->title = "Files";
 		$this->template->content = View::forge('admin/file/index', $data, false);
 	}
+	
+	public function action_search($term = null) {
+		
+		$data['total_items'] = Model_File::find()->where('name','LIKE','%'.$term.'%')->count();
+		
+		$data['pagination'] = $this->set_pagination(Uri::create('admin/file/search/'.$term), 5, $data['total_items'], 20);
+
+		$data['files'] = Model_File::find('all', array(
+			    'related' => array(
+				'user'
+			    ),
+			    'where' => array(
+				array('name','LIKE','%'.$term.'%')
+			    ),
+			    'limit' => Pagination::$per_page,
+			    'offset' => Pagination::$offset,
+			    'order_by' => array('updated_at' => 'desc')
+			));
+		
+		$this->template->title = "Files";
+		$this->template->content = View::forge('admin/file/index', $data, false);
+	}
 
 	public function action_create($id = null) {
 
@@ -36,6 +58,7 @@ class Controller_Admin_File extends Controller_Admin {
 				    'path_chmod' => 0777,
 				    'normalize' => true,
 				    'normalize_separator' => '_',
+				    'auto_rename' => false,
 				);
 				
 				Upload::process($upload_config);
@@ -43,10 +66,10 @@ class Controller_Admin_File extends Controller_Admin {
 
 				// Called upon upload save
 				Upload::register('after', function (&$file) {
-
 						// Extract files (if necessary) and return array
 						$files = Unpack::extract($file['saved_to'].$file['saved_as']);
-
+						
+						$uploaded = 0;
 						foreach ($files as $f) {
 
 							$ext = substr($f, strrpos($f, '.') + 1);
@@ -59,22 +82,49 @@ class Controller_Admin_File extends Controller_Admin {
 							$model->name = '0';
 							$model->latitude = '';
 							$model->longitude = '';
-
-							$model->save();
+							
+							$existing_file = Model_File::find('first', array(
+							    'where' => array(
+								array('path', 'LIKE', '%'.basename($model->path)),
+							    )
+							));
+							
+							// Check for duplicates
+							if(!$existing_file) {
+								$model->save();
+								$uploaded++;
+							} else {
+								// Remove only the duplicate file if it is on another path
+								if($existing_file->path != $model->path)
+									unlink($model->path);
+							}
 						}
+						
+						// Set messages
+						$messages[] = "Saved ".$uploaded." files.";
+						if(($skipped = count($files) - $uploaded) != 0) {
+							$messages[] = "Skipped ".$skipped." files.";
+						}
+						Session::set_flash('success', $messages);
 					});
 
-				// Check for any errors
+				// Check for any errors.
+				// Note: A file with an already existing filename will not be uploaded, nor will be yield errors.
 				if (!Upload::get_errors()) {
-
-					// Try to save upload
+					
+					// Save upload
 					Upload::save();
 
-					// Redirect to header
+					// Redirect
 					Response::redirect('admin/file');
 				} else {
-					Debug::dump(Upload::get_errors());
-					Session::set_flash('error', "Something went wrong with upload.");
+					// Set errors
+					foreach(Upload::get_errors() as $file_error) {
+						foreach($file_error['errors'] as $error) {
+							$messages[] = $error['message'];
+						}
+					}
+					Session::set_flash('error', $messages);
 				}
 			} catch (Orm\ValidationFailed $e) {
 

@@ -5,6 +5,15 @@ namespace Fuel\Tasks;
 class Preparedata {
 
 	public static function run() {
+		while(true) {
+			\Cli::write('Checking for new files','blue');
+			Preparedata::parse();
+			\Cli::write('Waiting for next run','yellow');
+			sleep(5);
+		}
+	}
+	
+	public static function parse() {
 
 		// Get files not yet data parsed
 		$files = \Model_File::find('all', array(
@@ -78,11 +87,14 @@ class Preparedata {
 							execute();
 						break;
 					case 'wrk':
+						
+						$new_file = str_replace($file->type, 'csv', $file->path);
 
-						$fp = @fopen(str_replace($file->type, 'csv', $file->path), 'r');
+						$fp = @fopen($new_file, 'r');
 						if ($fp) {
-							$array = explode("\n", fread($fp, filesize(str_replace($file->type, 'csv', $file->path))));
+							$array = explode("\n", fread($fp, filesize($new_file)));
 						}
+						fclose($fp);
 						list($lat, $lng, $name) = explode(",", $array[0]);
 						
 						$file->latitude = $lat;
@@ -100,6 +112,9 @@ class Preparedata {
 
 						$query = \Fuel\Core\DB::insert('file_wrks')->columns($columns)->values($values)->execute();
 						
+						// Remove new file, no need for that anymore.
+						unlink($new_file);
+						
 						break;
 					default:
 						break;
@@ -107,6 +122,7 @@ class Preparedata {
 			}
 			else
 			{
+				echo $retval;
 				$file->name = '1';
 			}
 			
