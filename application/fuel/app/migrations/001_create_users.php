@@ -18,6 +18,7 @@ class Create_users
 			'created_at' => array('constraint' => 11, 'type' => 'int', 'unsigned' => true),
 			'updated_at' => array('constraint' => 11, 'type' => 'int', 'unsigned' => true),
 		), array('id'), true, 'InnoDB');
+		\Auth::create_user('admin','admin','test@example.com',100);
 	}
 
 	public function down()
