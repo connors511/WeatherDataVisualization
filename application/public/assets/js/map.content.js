@@ -311,15 +311,16 @@ WDV = {
 					data = 0;
 				}
 				data = parseInt(data);
-				console.log(data);
 				if (data == 0 && WDV._currentJobs > 0) {
-					console.log("hide");
 					$('#loading').fadeOut('slow');
 				} else if (data > 0 && $('#loading').is(':hidden')) {
-					console.log("show");
 					$('#loading').fadeIn('slow');
 				}
-				$('#jobCount').html('('+data+' files)');
+				var $files = 'file';
+				if (data > 1) {
+					$files = $files+'s';
+				}
+				$('#jobCount').html('('+data+' '+$files+')');
 				WDV._currentJobs = data;
 			}
 		});
