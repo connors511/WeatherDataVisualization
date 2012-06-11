@@ -25,6 +25,7 @@ class Model_File_Wrk extends \Orm\Model
 		'file_id' //has to be last. is appended later in data file
 	);
 	
+	// Relations set on SQL level
 	protected static $_belongs_to = array(
 		'file' => array(
 			'cascade_save'		=> false,
