@@ -27,6 +27,7 @@ WDV = {
 			WDV._pos = new L.LatLng(56.200, 11.200); 
 			// Set the view
 			WDV._map.setView(WDV._pos, 5).addLayer(WDV._cloudmade);
+			WDV._map.locate({setView: true, maxZoom: 6});
 			
 			WDV._iconTemplateWM = L.Icon.extend({
 				iconUrl: WDV.Settings.Icon.windmill.iconUrl,
