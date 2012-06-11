@@ -33,7 +33,6 @@ class Controller_Rest_Radar extends Controller_Rest
 				throw $e;
 			}
 			$from = Input::get('f', false);
-			$to = Input::get('t', false);
 			// ORM is too slow!
 			$query = DB::select('file_wrks.id', 'date_time')
 				->from('file_wrks')
@@ -41,23 +40,19 @@ class Controller_Rest_Radar extends Controller_Rest
 				->on('files.id', '=', 'file_wrks.file_id')
 				->where('latitude', '=', Input::get('lat'))
 				->and_where('longitude', '=', Input::get('lng'));
-			/*if ($from and $to)
-			{
-				$query->and_where('date_time', 'between', array(Input::get('f'), Input::get('t')));
-			}
-			else if ($from and !$to)
+			if ($from)
 			{
 				$query->and_where('date_time', '>', $from);
-			}*/
-			$query->order_by('date_time')
+			}
+			$query = $query->order_by('date_time')
 				->execute()
 				->as_array();
-
+			
 			$result = array();
 			foreach ($query as $row)
 			{
 				//JS handles dates in microseconds
-				$result[] = array((int) strtotime($row['date_time']) * 1000, "radar/{$row['id']}.png");
+				$result[] = array(/*(int) strtotime($row['date_time']) * 1000,*/ "radar/{$row['id']}.png");
 			}
 
 			Cache::set($cache, $result);

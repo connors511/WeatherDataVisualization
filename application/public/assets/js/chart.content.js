@@ -225,11 +225,6 @@ WDV.Chart = {
 		return WDV.getTimeStamp(date);
 	},
 	plotdata: function(sDate, eDate) {
-		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
-		var tempe = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate()+1);
-		$("#zoom").text(temps.getDate() + ". " + WDV.Chart._month[temps.getMonth()] + " " + temps.getFullYear() + " \t - \t " + tempe.getDate() + ". " + WDV.Chart._month[tempe.getMonth()] + " " + tempe.getFullYear());
-	
-	
 		for(i = 0; i < this._columns.length; i++)
 		{
 			if ($("#cb_" + this._columns[i]).is(':checked')) 
@@ -237,7 +232,12 @@ WDV.Chart = {
 				WDV.Chart._data[this._columns[i]] = WDV.Chart.getJson(this._columns[i], WDV.Chart.getTimeStamp(sDate), WDV.Chart.getTimeStamp(eDate));
 			}
 		}
-		plot = $.plot(placeholder, WDV.Chart.getArray(sDate, eDate), {
+		
+		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
+		var tempe = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate()+1);
+		$("#zoom").text(temps.getDate() + ". " + WDV.Chart._month[temps.getMonth()] + " " + temps.getFullYear() + " \t - \t " + tempe.getDate() + ". " + WDV.Chart._month[tempe.getMonth()] + " " + tempe.getFullYear());
+	
+		plot = $.plot($('#placeholder'), WDV.Chart.getArray(sDate, eDate), {
 			xaxis: {
 				mode: "time"
 			}
