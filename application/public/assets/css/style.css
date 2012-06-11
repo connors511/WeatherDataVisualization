@@ -43,3 +43,11 @@ label {
 .popup {
 	box-sizing: border-box;
 }
+#loading {
+	position: absolute;
+	left: 50%;
+	margin-left: -60px;
+}
+#loading a {
+	color: #942a25;
+}

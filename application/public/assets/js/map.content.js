@@ -14,6 +14,8 @@ WDV = {
 	_iconTemplateWM: null,
 	_iconTemplateRD: null,
 	_iconTemplateRDimg: null,
+	_indicatorIntval: 0,
+	_currentJobs: 0,
 		
 	Init: function() {
 		if (!this._initialized) {
@@ -68,11 +70,13 @@ WDV = {
 					WDV.UpdateRadarData();
 				}
 			});
-			var prevWeek = new Date();
-			prevWeek.setDate(prevWeek.getDate() - 7);
+			var prevWeek = new Date(2010,2,2);
+			//prevWeek.setDate(prevWeek.getDate() - 7);
 			$('#intervalfrom').datetimepicker('setDate', prevWeek);
 			
 			WDV.UpdateRadarData();
+			$('#loading').hide();
+			WDV.StartIndicator();
 		}
 	},
 	InitWindfarms: function() {
@@ -188,7 +192,7 @@ WDV = {
 		//console.log(this._radars[radar]);
 		if (this._radars[radar].current < this._radars[radar].images.length)
 		{
-			this._radars[radar]._icon.src = this._radars[radar].images[this._radars[radar].current++];
+			this._radars[radar]._icon.src = this._radars[radar].images[this._radars[radar].current++][1];
 			if (this._radars[radar].hiding == undefined || this._radars[radar].hiding.length == 0)
 			{
 				for(i = 0; i < WDV._windfarms.length; i++)
@@ -285,6 +289,40 @@ WDV = {
 		var h = "0" + date.getHours();
 		var min = "0" + date.getMinutes();
 		return y+m.substring(m.length-2, m.length)+d.substring(d.length-2, d.length)+h.substring(h.length-2, h.length)+min.substring(min.length-2, min.length);
+	},
+	StartIndicator: function() {
+		console.log("Starting indicator");
+		if (this._indicatorIntval == 0)
+		{
+			WDV.checkJobs();
+			this._indicatorIntval = setInterval(function() {
+				WDV.checkJobs();
+			}, 5000);
+		}
+	},
+	checkJobs: function() {
+		$.ajax({
+			'async': false,
+			'global': false,
+			'url': WDV.Settings.Jobs.url,
+			'dataType': "json",
+			'success': function (data) {
+				if (data == null) {
+					data = 0;
+				}
+				data = parseInt(data);
+				console.log(data);
+				if (data == 0 && WDV._currentJobs > 0) {
+					console.log("hide");
+					$('#loading').fadeOut('slow');
+				} else if (data > 0 && $('#loading').is(':hidden')) {
+					console.log("show");
+					$('#loading').fadeIn('slow');
+				}
+				$('#jobCount').html('('+data+' files)');
+				WDV._currentJobs = data;
+			}
+		});
 	}
 };
 
@@ -327,5 +365,9 @@ WDV.Settings = {
 		url: '',
 		speed: 1000, // Change image every milliseconds
 		range: 480000 // Range in meters
+	},
+	Jobs: {
+		url: '',
+		loader: 'assets/img/loader.gif'
 	}
 };
