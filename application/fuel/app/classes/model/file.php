@@ -50,8 +50,14 @@ class Model_File extends \Orm\Model {
 		'form' => array('type' => false),
 	    ),
 	);
+	
+	// Relations set on SQL level
 	protected static $_has_many = array(
 	    'file_csvs' => array(
+		'cascade_save' => false,
+		'cascade_delete' => false,
+	    ),
+	    'file_wrks' => array(
 		'cascade_save' => false,
 		'cascade_delete' => false,
 	    ),

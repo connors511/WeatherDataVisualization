@@ -4,6 +4,7 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+# Application #
 application/nbproject/*
 application/public/files/*
 application/fuel/app/config/development/*
@@ -11,3 +12,27 @@ application/fuel/app/config/development/db.php
 application/public/assets/radar/*
 application/fuel/app/logs/*
 application/fuel/app/cache/*
+# Latex files #
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
