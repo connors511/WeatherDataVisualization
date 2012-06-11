@@ -26,7 +26,7 @@ class Model_User extends \Orm\Model
 			'data_type' => 'int',
 			'label' => 'Group',
 			'validation' => array('required', 'max_length' => array(255)),
-			'form' => array('type' => 'select', 'class' => 'span4', 'options' => array(),'value'=>''),
+			'form' => array('type' => 'select', 'class' => 'span4', 'options' => array(),'value'=>1),
 		),
 		'last_login' => array(
 			'data_type' => 'int',
@@ -69,11 +69,4 @@ class Model_User extends \Orm\Model
 		),
 	);
 	
-	public static function _init() {
-		foreach(\Config::get('simpleauth.groups') as $group_id => $group) {
-			$groups[$group_id] = Inflector::singularize($group['name']);
-		}
-		self::$_properties['group']['form']['options'] = $groups;
-		self::$_properties['group']['form']['value'] = 1;
-	}
 }

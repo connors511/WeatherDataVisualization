@@ -51,6 +51,9 @@ class Controller_Admin_User extends Controller_Admin
 		$fieldset = Fieldset::forge('user')->add_model($user)->populate($user, true);
 		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn btn-primary'));
 		
+		$fieldset->field('group')->set_options($this->_get_group_options());
+		$fieldset->field('group')->set_value(1);
+		
 		$view = View::forge('admin/user/create');
 		
 		$this->template->title = "Users";
@@ -92,6 +95,8 @@ class Controller_Admin_User extends Controller_Admin
 		
 		$fieldset->field('password')->set_value('');
 		
+		$fieldset->field('group')->set_options($this->_get_group_options());
+		
 		$view = View::forge('admin/user/edit');
 		$this->template->set_global('user', $user, false);
 		
@@ -116,6 +121,13 @@ class Controller_Admin_User extends Controller_Admin
 
 		Response::redirect('admin/user');
 
+	}
+	
+	private function _get_group_options() {
+		foreach(\Config::get('simpleauth.groups') as $group_id => $group) {
+			$groups[$group_id] = Inflector::singularize($group['name']);
+		}
+		return $groups;
 	}
 
 

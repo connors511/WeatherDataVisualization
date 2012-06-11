@@ -82,26 +82,4 @@ class Model_File extends \Orm\Model {
 	    ),
 	);
 
-	public static function _init() {
-		self::$_properties['offset']['form']['options'] = self::timezone_options();
-		self::$_properties['offset']['form']['value'] = date_default_timezone_get();
-	}
-
-	public static function timezone_options() {
-
-		//$timezones = array('Africa','America','Antarctica','Arctic','Asia','Atlantic','Australia','Europe','Indian','Pacific','UTC');
-
-		foreach (DateTimeZone::listIdentifiers() as $zone) {
-			$zone = explode('/', $zone); // 0 => Continent, 1 => City
-			//if (in_array($zone[0], $timezones)) {
-			if (isset($zone[1]) != '') {
-				$locations[$zone[0]][$zone[0] . '/' . $zone[1]] = str_replace('_', ' ', $zone[1]);
-			} else {
-				$locations[$zone[0]][$zone[0]] = $zone[0];
-			}
-			//}
-		}
-		return $locations;
-	}
-
 }
