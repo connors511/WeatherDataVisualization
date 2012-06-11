@@ -313,6 +313,7 @@ WDV = {
 				data = parseInt(data);
 				if (data == 0 && WDV._currentJobs > 0) {
 					$('#loading').fadeOut('slow');
+					WDV.UpdateRadarData();
 				} else if (data > 0 && $('#loading').is(':hidden')) {
 					$('#loading').fadeIn('slow');
 				}
