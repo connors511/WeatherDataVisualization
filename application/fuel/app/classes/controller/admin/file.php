@@ -137,6 +137,9 @@ class Controller_Admin_File extends Controller_Admin {
 		//$fieldset->set_config('form', "\n\t\tCUNT{open}\n\t\t<table>\n\n\t\t</table>\n\t\t{close}\n");
 
 		$fieldset->build();
+		
+		$fieldset->field('offset')->set_options($this->_get_timezone_options());
+		$fieldset->field('offset')->set_value(date_default_timezone_get());
 
 		// For upload
 		$fieldset->set_config('form_attributes', array('enctype' => 'multipart/form-data'));
@@ -209,6 +212,23 @@ class Controller_Admin_File extends Controller_Admin {
 		
 		
 		Response::redirect('admin/file');
+	}
+	
+	private function _get_timezone_options() {
+
+		//$timezones = array('Africa','America','Antarctica','Arctic','Asia','Atlantic','Australia','Europe','Indian','Pacific','UTC');
+
+		foreach (DateTimeZone::listIdentifiers() as $zone) {
+			$zone = explode('/', $zone); // 0 => Continent, 1 => City
+			//if (in_array($zone[0], $timezones)) {
+			if (isset($zone[1]) != '') {
+				$locations[$zone[0]][$zone[0] . '/' . $zone[1]] = str_replace('_', ' ', $zone[1]);
+			} else {
+				$locations[$zone[0]][$zone[0]] = $zone[0];
+			}
+			//}
+		}
+		return $locations;
 	}
 
 }
