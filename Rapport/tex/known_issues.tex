@@ -1,0 +1,21 @@
+\chapter{Known issues}
+This chapter is dedicated to highlight the known issues in the application that was not resolved due to lack of time.
+\begin{itemize}
+\item Due to the reset feature implemented on the radars, the windmills might do more fade in and outs than intended if the radar is clicked before an animation has finished.
+This could be resolved by adding a check to see if an animation is in progress, before queuing a new one.
+\item When viewing a chart, it is possible to scroll to a date that is newer than the last data of that wind farm. A check should be implemented and inform the user that the wind farm does not have any more data.
+\item No versions of Internet Explorer is supported, so the application might or might not work as intended in that browser. Firefox or Google Chrome is recommended. See section \ref{sec:cross-platform} for more info.
+\item If a file is uploaded with the same name as one that already exists on server, the file is skipped.
+\end{itemize}
+
+\section{Restrictions and limitations}
+Under the development of the application, a few assumptions has been made, and has resulted in the following restrictions and limitations.
+
+For the radar images to display properly, the values of \textsf{east\_uppb} and \textsf{north\_uppb} will have to be equal in the \textsf{wrk} files.
+
+The range of the radar is calculated from \textsf{east\_uppb} and \textsf{pixel\_size}, which underlines the need for the radar image to be a perfect square.
+
+All users have a limit on the size of the username on 50 characters and 100 characters for the email.
+Also, all usernames and passwords \textbf{has} to be at least 3 characters long.
+
+Time zone names is limited to 50 characters. Should the time zone names from zoneinfo\footnote{See section \ref{sec:application_requirements} on info about zoneinfo} exceed 50 characters, the limit can be increased by altering the database column and changing the constraint in the file model.
