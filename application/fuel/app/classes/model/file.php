@@ -32,6 +32,7 @@ class Model_File extends \Orm\Model {
 	    'offset' => array(
 		'data_type' => 'varchar',
 		'label' => 'Timezone',
+		'validation' => array('required'),
 		'form' => array('type' => 'select', 'class' => 'span3', 'options' => array(),'value'=>'','description'=>'All dates will be converted to UTC'),
 	    ),
 	    'user_id' => array(

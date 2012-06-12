@@ -7,7 +7,7 @@ class Create_file_wrks
 	public function up()
 	{
 		\DBUtil::create_table('file_wrks', array(
-			'id' => array('constraint' => 11, 'type' => 'int', 'auto_increment' => true, 'unsigned' => true),
+			'id' => array('type' => 'bigint', 'auto_increment' => true, 'unsigned' => true),
 			'sig' => array('constraint' => 1, 'type' => 'char'),
 			'tot_bytes' => array('constraint' => 3, 'type' => 'varchar'),
 			'trailer_offset' => array('constraint' => 3, 'type' => 'varchar'),
