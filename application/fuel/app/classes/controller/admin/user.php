@@ -52,7 +52,7 @@ class Controller_Admin_User extends Controller_Admin
 		$fieldset->add('submit', '', array('type' => 'submit', 'value' => 'Create', 'class' => 'btn btn-primary'));
 		
 		$fieldset->field('group')->set_options($this->_get_group_options());
-		$fieldset->field('group')->set_value(1);
+		//$fieldset->field('group')->set_value(1);
 		
 		$view = View::forge('admin/user/create');
 		

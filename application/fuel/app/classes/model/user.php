@@ -7,7 +7,7 @@ class Model_User extends \Orm\Model
 		'username' => array(
 			'data_type' => 'varchar',
 			'label' => 'Username',
-			'validation' => array('required', 'min_length' => array(3), 'max_length' => array(255)),
+			'validation' => array('required', 'min_length' => array(3), 'max_length' => array(50)),
 			'form' => array('type' => 'text', 'class' => 'span4'),
 		),
 		'password' => array(
@@ -19,13 +19,13 @@ class Model_User extends \Orm\Model
 		'email' => array(
 			'data_type' => 'varchar',
 			'label' => 'E-mail',
-			'validation' => array('required', 'valid_email', 'min_length' => array(3), 'max_length' => array(255)),
+			'validation' => array('required', 'valid_email', 'min_length' => array(3), 'max_length' => array(100)),
 			'form' => array('type' => 'text', 'class' => 'span4'),
 		),
 		'group' => array(
-			'data_type' => 'int',
+			'data_type' => 'tinyint',
 			'label' => 'Group',
-			'validation' => array('required', 'max_length' => array(255)),
+			'validation' => array('required', 'numeric_min'=>array(-1),'numeric_max'=>array(100)),
 			'form' => array('type' => 'select', 'class' => 'span4', 'options' => array(),'value'=>1),
 		),
 		'last_login' => array(
