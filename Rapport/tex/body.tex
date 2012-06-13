@@ -5,15 +5,19 @@ Using frameworks because of the decreased development time due to already develo
 \section{The C++ application}
 \subsection{Why a C++ application?}
 We're using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
-The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
+The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is a procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
 
 We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
 
 \subsection{Why Qt?}
 We've decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
 
+Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies as Google, HP, Philips and Samsung uses it.
+
+Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we've opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
+
 \subsection{Return codes}
-The C++ application returns the following codes to the PHP after processing data:
+The PHP part of the application gets a return code from the C++ application depending on how the parsing went and reacts accordingly. A list of the return codes can be seen in table \ref{tab:cppReturnCodes}.
 \begin{table}[htbp]
 \centering
 \begin{tabular}{|l|l|}
@@ -49,8 +53,8 @@ The C++ application returns the following codes to the PHP after processing data
 34 & Could not delete output file\\
 \hline
 \end{tabular}
-\label{tab:cppReturnCodes}
 \caption{Return codes from the C++ application}
+\label{tab:cppReturnCodes}
 \end{table}
 
 \subsection{Extensibility}
@@ -78,7 +82,7 @@ Radar & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 m
 Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
 \hline
 \end{tabular}
-\label{tab:cppReturnCodes}
+\label{tab:cache_benchmarks}
 \caption{Cache benchmarks}
 \end{table}
 
@@ -91,11 +95,12 @@ If no cache is found on the server, or it has expired, the server retrieves the 
 The application support the upload of the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
-\item[wrk] Weather image from a radar. The file most obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
+\item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
 \item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
 \end{description}
 
 \section{Cross-platform compability}
+\label{sec:cross-platform}
 The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
 
 We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
