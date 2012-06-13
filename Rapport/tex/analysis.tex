@@ -1,4 +1,4 @@
-\chapter{Considerations}
+\chapter{Analysis}
 A lot of considerations has gone into the development process of the application. The following chapter explains the considerations with the most impact on the application.
 
 \section{Comparison}
@@ -74,3 +74,53 @@ It was suggested that the administration panel grouped the wrk files per day, or
 The idea of letting the data parser to handle the merge was dropped due to the complexity. A merge in the data parser would also increase the memory usage by the data parser, which might not be available on the web server running the application.
 
 Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
+
+\subsection{Choice of map}
+\todo[inline]{Rewrite section}
+We considered two options in the selection of map - Openstreetmap and Google maps. We have tried using google maps on google, facebook, etc.. The older weather project were using google maps, so at the beginning we were thinking about using google maps
+After reading about the two maps, it became openstreetmap. We did this partly because of google wants money if the map are used for commercial purposes. This wasn't the way we were thinking about opensource.
+
+\missingfigure{Comparison with pro / con of Google Maps and OSM with their respective views?}
+
+Openstreetmap wasn't that difficult to work with, due to the documentations from leaflet\footnote{Documentations for openstreetmap - \url{http://leaflet.cloudmade.com}}.
+
+\subsection{Frontend design}
+There have been several design ideas. Many changes through the project and many considerations.
+\subsubsection{Map}
+At the beginning we had a sidebar which could be visible or hidden. Later we found out that there is no need for a big menu, so we removed the sidebar and added a tiny top bar, with only the necessary options.\\
+First mockup:
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[scale=.3]{figure/design_map_v1.eps}
+   \caption{Map - version 1}
+\end{figure}
+
+We would like to have different layers on the map at the beginning, but this was unnecessary, so it was quickly removed.\\
+Now we have created a cool design which is easy to get used to and all relevant informations can be accessed easily and without to much clicking.
+There have also been added some gestures to control the radar easily.\\
+The top bar has a date field to know which date the radar should get data from. This date will be transferred to the chart window.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=1\linewidth]{figure/design_map_final.eps}
+   \caption{Map - final}
+\end{figure}
+
+\subsubsection{Chart}
+At the beginning we had the same sidebar as on the map, but with other options. This was also replaced by a top bar like on the map.\\
+First mockup: 
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=1\linewidth]{figure/design_chart_v1.eps}
+   \caption{Chart pop up - version 1}
+\end{figure}
+
+This has, through the whole project, been determined to be a pop up on the map.
+The control buttons were before 'fast backward', 'backward', 'today', 'forward' and 'fast forward', but 'today' was replaced with 'play'. The 'play' button moves the chart every second, so the user can view the chart animated.\\
+The new design also have three different views '2-week', 'weekly' and 'daily view'. Control buttons adjust to the view the user has selected.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=1\linewidth]{figure/design_chart_final.eps}
+   \caption{Chart pop up - final}
+\end{figure}

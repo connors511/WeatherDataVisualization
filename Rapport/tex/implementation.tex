@@ -1,22 +1,23 @@
-\chapter{Body}
+\chapter{Implementation}
 \section{The use of frameworks}
 Using frameworks because of the decreased development time due to already developed and tested libraries for various tasks such as database accesss, file handling and file uploading.
 
-\section{The C++ application}
-\subsection{Why a C++ application?}
+\section{Backend}
+\subsection{The C++ application}
+\subsubsection{Why a C++ application?}
 We're using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
 The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is a procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
 
 We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
 
-\subsection{Why Qt?}
+\subsubsection{Why Qt?}
 We've decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
 
 Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies as Google, HP, Philips and Samsung uses it.
 
 Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we've opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
 
-\subsection{Return codes}
+\subsubsection{Return codes}
 The PHP part of the application gets a return code from the C++ application depending on how the parsing went and reacts accordingly. A list of the return codes can be seen in table \ref{tab:cppReturnCodes}.
 \begin{table}[htbp]
 \centering
@@ -57,17 +58,18 @@ The PHP part of the application gets a return code from the C++ application depe
 \label{tab:cppReturnCodes}
 \end{table}
 
-\subsection{Extensibility}
+\subsubsection{Extensibility}
 The application is coded with extensibility in mind, and all parsers is therefore extending the base class \emph{Parser}.
 The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.
 
-\section{The PHP site}
-\subsection{Why PHP?}
+\subsection{The PHP site}
+\subsubsection{Why PHP?}
 
-\subsection{Why FuelPHP?}
+\subsubsection{Why FuelPHP?}
 
-\subsection{Speed optimizations}
+\subsubsection{Speed optimizations}
 At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
+
 \subsubsection{Caching}
 Caching has been implemented both server and client side, to allow for maximum performance when viewing charts and radar image animations.
 
@@ -91,7 +93,7 @@ If the browser does not have a cache, or it is too old, the server sends the con
 If no cache is found on the server, or it has expired, the server retrieves the needed info from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
 
 
-\subsection{The data}
+\subsubsection{The data}
 The application support the upload of the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
@@ -99,8 +101,27 @@ The application support the upload of the following file types:
 \item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
 \end{description}
 
+\section{Frontend}
+\subsection{jQuery}
+\todo[inline]{Quick roundup about the use of jQuery}
+
+\subsection{Bootstrap}
+\todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets}
+Today many people keep them updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
+
+The only problem with smartphone is the smaller screen, sometimes it can be difficult to get a good look, specially the charts are a problem.
+
+We have tried accessing the software with iPhone and Android. On the iPhone the only problem was the chart, because you couldn't see the whole chart. Radar and map were working just fine, like on a normal PC.
+
 \section{Cross-platform compability}
 \label{sec:cross-platform}
 The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
 
 We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
+
+% db.tex should start at section level
+\input{tex/db}
+
+% api.tex should start at section level
+\input{tex/api}
+
