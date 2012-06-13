@@ -62,7 +62,7 @@ The massive amount of data forced a prioritized list of the order of which the d
 
 After a quick look at the data, it was decided that the data from the wind farm was the first one to be implemented due to its simplicity.
 
-Research showed that the wrk file was in a relatively easy format with decent documentation\footnote{See \cite{VRIS} for the documentation}, where as the NetCDF format was very complex with little documentation\footnote{A framework for the file type was found but with very little documentation}.
+Research showed that the wrk file was in a relatively easy format with decent documentation\footnote{See \cite{VRIS} for the documentation}, where as the NetCDF\todo[color=red,fancyline]{foodnote / reference} format was very complex with little documentation\footnote{A framework for the file type was found but with very little documentation}.
 
 After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
 
@@ -82,11 +82,13 @@ After reading about the two maps, it became openstreetmap. We did this partly be
 
 \missingfigure{Comparison with pro / con of Google Maps and OSM with their respective views?}
 
-Openstreetmap wasn't that difficult to work with, due to the documentations from leaflet\footnote{Documentations for openstreetmap - \url{http://leaflet.cloudmade.com}}.
+Openstreetmap wasn't that difficult to work with, due to the documentations from leaflet\footnote{Documentations for openstreetmap - \url{http://leaflet.cloudmade.com}}\todo[color=red,fancyline]{move to references list?}.
 
 \subsection{Frontend design}
+\todo[inline]{More text}
 There have been several design ideas. Many changes through the project and many considerations.
 \subsubsection{Map}
+\todo[inline]{reference to the figures throughout the section}
 At the beginning we had a sidebar which could be visible or hidden. Later we found out that there is no need for a big menu, so we removed the sidebar and added a tiny top bar, with only the necessary options.\\
 First mockup:
 \begin{figure}[htbp]

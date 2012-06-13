@@ -6,9 +6,9 @@ The application requires a few things in order to run.
 \begin{description}
 \item[Web server] A web server is needed in order to run the web site. It is also required to have permissions to run executables. The included data parser is compiled for Windows, OSX and Ubuntu. If the web server is not allowed to run the included executables, they should be ran as a CGI script - This has not been tested however.
 \item[PHP] The web server should support PHP version 5.3+.
-\item[GD] The application uses GD 2.0.1+ (2.0.28+ is recommended) to create radar images.
-\item[MySQL] FuelPHP supports multiple databases through drivers, but in order to support time zones correctly, we've chosen to take advantage of MySQLs own methods. This means that MySQL 5.5.20+ is required.
-\item[Zoneinfo] MySQL needs Zoneinfo in order for the time zones to work properly\footnote{On linux, the following command can be executed in the terminal to import zoneinfo: \mbox{\textsf{> mysql\_tzinfo\_to\_sql /usr/share/zoneinfo | mysql -u root -p mysql}}. Other operating systems might not have the zoneinfo, and will have to download it from \url{http://dev.mysql.com/downloads/timezones.html} and import it to the mysql database.}
+\item[GD] The application uses GD\todo[color=red,fancyline]{reference} 2.0.1+ (2.0.28+ is recommended) to create radar images.
+\item[MySQL] FuelPHP\todo[color=red,fancyline]{reference} supports multiple databases through drivers, but in order to support time zones correctly, we've chosen to take advantage of MySQLs own methods. This means that MySQL 5.5.20+ is required.
+\item[Zoneinfo] MySQL\todo[color=red,fancyline]{reference} needs Zoneinfo\todo[color=red,fancyline]{reference} in order for the time zones to work properly\footnote{On linux, the following command can be executed in the terminal to import zoneinfo: \mbox{\textsf{> mysql\_tzinfo\_to\_sql /usr/share/zoneinfo | mysql -u root -p mysql}}. Other operating systems might not have the zoneinfo, and will have to download it from \url{http://dev.mysql.com/downloads/timezones.html} and import it to the mysql database.}
 \item[Safe mode] Safe mode might need to be disabled in the PHP configuration, if \textsf{fopen}\footnote{See \url{http://php.net/manual/en/function.fopen.php}.} is not allowed to access some files.
 \end{description}
 

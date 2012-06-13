@@ -60,7 +60,7 @@ The PHP part of the application gets a return code from the C++ application depe
 
 \subsubsection{Extensibility}
 The application is coded with extensibility in mind, and all parsers is therefore extending the base class \emph{Parser}.
-The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.
+The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.\todo[color=red,fancyline]{Explain more in-depth?}
 
 \subsection{The PHP site}
 \subsubsection{Why PHP?}
@@ -106,11 +106,11 @@ The application support the upload of the following file types:
 \todo[inline]{Quick roundup about the use of jQuery}
 There has been used JavaScript to load and visualize data. It gives a more smooth design, since the pages don't have to reload every time, but can be loaded in background.
 
-The JavaScript framework there has been used is jQuery, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software. The animations for map and chart are made by using jQuery.
+The JavaScript framework there has been used is jQuery\todo[color=red,fancyline]{reference}, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software. The animations for map and chart are made by using jQuery.
  
-One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}, which enables the chart to send data to, and retrieve data from, the server without reloading page. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation}.
+One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}\todo[color=red,fancyline]{reference or explanation in footnote / nomenclature}, which enables the chart to send data to, and retrieve data from, the server without reloading page. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation}\todo[color=red,fancyline]{reference or explanation in footnote / nomenclature}.
 
-If the browser doesn't support JavaScript or it isn't up-to-date, the user still have access to upload files, but not viewing data from map or chart.
+If the browser doesn't support JavaScript\todo[color=red,fancyline]{If this is the first time its mentioned, explain its client side scripting} or it isn't up-to-date, the user still have access to upload files, but not viewing data from map or chart.
 
 \subsection{Bootstrap}
 \todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets}
