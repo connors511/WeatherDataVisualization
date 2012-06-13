@@ -1,0 +1,114 @@
+We have two types of actor:
+\begin{itemize}
+\item User: Person like everyone else. A user who doesn't have special permissions.
+\item Admin: Person with permission to files upload and user management.
+\end{itemize}
+
+\section{Clicking on a radar at the map}
+\textbf{Actor:} User
+
+\textbf{Scenario:}
+\begin{itemize}
+\item Checks if there is data for the date
+\item If images isn't generated, it will generate them real time.
+\item Radar shows images over an interval.
+\item \emph{One click for play/pause and doubleclick for reset.}
+\item When there is no more data, the radar resets.
+\end{itemize}
+\textbf{Alternative scenario:} 
+\begin{enumerate}
+\item No data is available for that moment and a message appears.
+\end{enumerate}
+
+\section{Clicking on a wind farm at the map}
+\textbf{Actor:} User
+
+\textbf{Scenario:}
+\begin{itemize}
+\item Visualize data for that given wind farm.
+\end{itemize}
+
+\section{Changing view in chart for wind farm}
+\textbf{Actor:} User
+
+\textbf{Scenario:}
+\begin{enumerate}
+\item Changing to 2-week view.
+\begin{itemize}
+\item Changing chart view interval to 2 weeks.
+\item Load new data for the new interval.
+\end{itemize}
+\item Changing to weekly view.
+\begin{itemize}
+\item Changing chart view interval to 1 week.
+\item Load new data for the new interval.
+\end{itemize}
+\item Changing to daily view.
+\begin{itemize}
+\item Changing chart view interval to 1 day.
+\item Load new data for the new interval.
+\end{itemize}
+\end{enumerate}
+
+\section{Changing data to be shown}
+\textbf{Actor:} User
+
+\textbf{Scenario:}
+\begin{itemize}
+\item The data is shown.
+\end{itemize}
+\textbf{Alternative scenario}
+\begin{enumerate}
+\item The data is removed.
+\end{enumerate}
+
+\section{Using control buttons in chart for wind farm}
+\textbf{Actor:} User
+
+\textbf{Scenario:}
+\begin{enumerate}
+\item Pressing fast backward.
+\begin{itemize}
+\item Go two weeks back on 2-week view, one week back on weekly view and one day on daily view.
+\item Loads new data.
+\end{itemize}
+\item Pressing backward.
+\begin{itemize}
+\item Go one week back on 2-week view, one day back on weekly view and one hour on daily view.
+\item Loads new data.
+\end{itemize}
+\item Pressing play.
+\begin{itemize}
+\item Change to daily view and go one hour forward every second.
+\item Loads new data.
+\end{itemize}
+\item Pressing forward.
+\begin{itemize}
+\item Go one week forward on 2-week view, one day forward on weekly view and one hour on daily view.
+\item Loads new data.
+\end{itemize}
+\item Pressing fast forward.
+\begin{itemize}
+\item Go two weeks forward on 2-week view, one week forward on weekly view and one day on daily view.
+\item Loads new data.
+\end{itemize}
+\end{enumerate}
+
+\section{Upload file}
+\textbf{Actor:} Admin
+
+\textbf{Scenario:}
+\begin{itemize}
+\item Sign in with correct username and password.
+\item Add new file (CSV, WRK, ZIP) and enter correct timezone.
+\item If file is ZIP, it will decompress.
+\item File is uploaded.
+\item File is being parsed.
+\end{itemize}
+\textbf{Alternative scenario:} 
+\begin{enumerate}
+\item Sign in with wrong username or password.
+\item Adding file that isn't correct format and get an error message.
+\item Adding ZIP file, but files inside zip isn't correct. It will get an error message.
+\item File exists and will not be uploaded.
+\end{enumerate}
