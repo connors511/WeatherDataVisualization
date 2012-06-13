@@ -15,7 +15,7 @@ All tables will contain an \textsf{id} column, such that all rows in the same ta
 \textsf{files} table should at minimum contain the columns \textsf{name, latitude, longitude, path, type} and \textsf{offset}.
 Also, as it would be convenient to know who uploaded the file, a \textsf{user\_id} field should also be created.
 
-There will be a table for all supported file types (currently \textsf{csv} and \textsf{wrk}). \textsf{csv} table should contain columns as stated in SEKTION 3.3.4\todo[color=red,fancyline]{reference}, and \textsf{wrk} as defined by the VRIS file format. Besides these columns, all file type tables should contain a \textsf{file\_id} field so all data is related to the source file (in the database).
+There will be a table for all supported file types (currently \textsf{csv} and \textsf{wrk}). \textsf{csv} table should contain columns as stated in SEKTION 3.3.4 (see appendix \ref{ap:csv}), and \textsf{wrk} as defined by the VRIS file format. Besides these columns, all file type tables should contain a \textsf{file\_id} field so all data is related to the source file (in the database).
 
 As the database should be able to handle a large amount of data, it is crucial that all columns are of correct and optimal data types, e.g. \textsf{id} columns are either \textit{int} or \textsf{bigint} and are \textsf{unsigned}. By comparison, \textsf{unsigned int} can take the maximum value $2^{32}-1 (\approx 4.29 \cdot 10^{9})$ while it for \textsf{unsigned bigint} is $ 2^{64}-1 (\approx 18.45 \cdot 10^{18})$.
 

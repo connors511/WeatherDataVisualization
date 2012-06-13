@@ -76,12 +76,12 @@ The idea of letting the data parser to handle the merge was dropped due to the c
 Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
 
 \subsection{Choice of map}
-There were two obvious map options - Openstreetmap and Google maps. We know Google maps from Google, Facebook, etc.. The previous weather project were using Google maps, so at the beginning it was obvious that we were going to use Google maps.
+There were two obvious map options - OpenStreetMap and Google maps. We know Google maps from Google, Facebook, etc.. The previous weather project were using Google maps, so at the beginning it was obvious that we were going to use Google maps.
 
 \begin{figure}[htbp]
 \begin{tabular}{| l | l | l |}
 \hline
-& \textbf{Openstreetmap} & \textbf{Google maps} \\
+& \textbf{OpenStreetMap} & \textbf{Google maps} \\
 \hline
 \textbf{Price} & Free & Free* \\
 \hline
@@ -92,27 +92,27 @@ There were two obvious map options - Openstreetmap and Google maps. We know Goog
 \textbf{API} & Yes & Yes \\
 \hline
 \end{tabular}
-\caption{Comparing Openstreetmap and Google maps}
+\caption{Comparing OpenStreetMap and Google maps}
 \end{figure}
 *Has a commercial price.
 
-After comparing the two maps, it became quickly Openstreetmap. It was partly because of Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
+After comparing the two maps, it became quickly OpenStreetMap. It was partly because of Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
 
-Openstreetmap wasn't that difficult to work with, due to the very well documentation from leaflet\footnote{Documentations for openstreetmap - \url{http://leaflet.cloudmade.com}}\todo[color=red,fancyline]{move to references list?}.
+OpenStreetMap wasn't that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
 
 There have been several design ideas. Many changes through the project and many considerations.
 \subsubsection{Map}
-\todo[inline]{reference to the figures throughout the section}
-At the beginning we had a sidebar which could be visible or hidden. Later we found out that there is no need for a big menu, so we removed the sidebar and added a tiny top bar, with only the necessary options.\\
+At the beginning we had a sidebar which could be visible or hidden (figure \ref{fig:map_v1}). Later we found out that there is no need for a big menu, so we removed the sidebar and added a tiny top bar, with only the necessary options.\\
 First mockup:
 \begin{figure}[htbp]
    \centering
    \includegraphics[scale=.3]{figure/design_map_v1.eps}
    \caption{Map - version 1}
+   \label{fig:map_v1}
 \end{figure}
 
 We would like to have different layers on the map at the beginning, but this was unnecessary, so it was quickly removed.\\
-Now we have created a cool design which is easy to get used to and all relevant informations can be accessed easily and without to much clicking.
+Now we have created a cool design which is easy to get used to and all relevant informations can be accessed easily and without to much clicking (figure \ref{fig:map_final}).
 There have also been added some gestures to control the radar easily.\\
 The top bar has a date field to know which date the radar should get data from. This date will be transferred to the chart window.
 
@@ -120,23 +120,26 @@ The top bar has a date field to know which date the radar should get data from. 
    \centering
    \includegraphics[width=1\linewidth]{figure/design_map_final.eps}
    \caption{Map - final}
+   \label{fig:map_final}
 \end{figure}
 
 \subsubsection{Chart}
-At the beginning we had the same sidebar as on the map, but with other options. This was also replaced by a top bar like on the map.\\
+At the beginning we had the same sidebar as on the map, but with other options (figure \ref{fig:chart_v1}). This was also replaced by a top bar like on the map.\\
 First mockup: 
 \begin{figure}[htbp]
    \centering
    \includegraphics[width=1\linewidth]{figure/design_chart_v1.eps}
    \caption{Chart pop up - version 1}
+   \label{fig:chart_v1}
 \end{figure}
 
 This has, through the whole project, been determined to be a pop up on the map.
 The control buttons were before 'fast backward', 'backward', 'today', 'forward' and 'fast forward', but 'today' was replaced with 'play'. The 'play' button moves the chart every second, so the user can view the chart animated.\\
-The new design also have three different views '2-week', 'weekly' and 'daily view'. Control buttons adjust to the view the user has selected.
+The new design also have three different views '2-week', 'weekly' and 'daily view' (figure \ref{fig:chart_final}). Control buttons adjust to the view the user has selected.
 
 \begin{figure}[htbp]
    \centering
    \includegraphics[width=1\linewidth]{figure/design_chart_final.eps}
    \caption{Chart pop up - final}
+   \label{fig:chart_final}
 \end{figure}
