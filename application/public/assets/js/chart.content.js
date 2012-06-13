@@ -140,7 +140,7 @@ WDV.Chart = {
 	
 		// Backfast button (-14 days in 2-week view, -7 days in weekly view, -1 day in daily)
 		$("#fast-backward").click(function () {
-			WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRangeFor(WDV.Chart._view - 1), 0);
+			WDV.Chart.moveChart(-1 * WDV.Chart.GetViewRange(), 0);
 		});
 
 		// Back button (- 7 days, - 1 day, - 1 hour)
@@ -169,7 +169,7 @@ WDV.Chart = {
 				
 				WDV.Chart._interval = setInterval(function() {
 					WDV.Chart.moveChart(0, 1);
-				}, /*WDV.Settings.Radar.speed*/200 * 6);
+				}, 1000);
 				$(this).children('i').removeClass('icon-play').addClass('icon-pause');
 			}
 			else
