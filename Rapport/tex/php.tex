@@ -1,12 +1,13 @@
-\subsection{PHP}
+\section{PHP}
 
 The main programming language chosen for the backend development of the application is PHP. This language has been chosen for several reasons, namely that we are familiar with it, it is well-documented and that it is open source.
 
-\subsubsection{FuelPHP Framework}
-From the FuelPHP website\cite{FuelPHP}:
+\subsection{FuelPHP Framework}
+
 \begin{quote}
 FuelPHP is a simple, flexible, community driven PHP 5.3 web framework based on the best ideas of other frameworks with a fresh start.
 \end{quote}
+\cite{FuelPHP}
 
 FuelPHP uses a HMVC (hierarchical model-view-controller) pattern and comes with different tools for fast and flexible development of web applications. Past experience with the framework and the fact that it takes advantage of the object orientation of PHP has been the main reason why it was chosen. Notable tools and packages that has been heavily used while developing the application are:
 
@@ -27,11 +28,11 @@ When first uploading files in the administration, data was parsed in real time, 
 
 \subsubsection{Timezones}
 
-ANALYSE\todo[fancyline]{Fix}
+ANALYSE
 
 As a interactive world map with dynamic data sources have been used, timezones must be dealt with in order to show the proper data across the globe and get a consistent UX.
 
-IMPLEMENTATION\todo[fancyline]{Fix}
+IMPLEMENTATION
 
 When a user uploads a file in the administration, he must pick what timezone the data has been observed in. As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is considered automatically. All data in the application will therefore be in UTC.
 
@@ -39,9 +40,13 @@ When a user uploads a file in the administration, he must pick what timezone the
 
 The application, especially the models, has been developed with flexibility and extendibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with Oil. KODESTUMP. The created table will have to be related with the \textsf{files} table on sql level. SE DB RELATIONS. 
 
-\subsubsection{Speed optimizations}
-At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.\todo[fancyline]{Write more?}
+\section{Speed optimizations}
 
+rader images saved and cached in browser
+minify and combine js css recude size and requests
+fuelphps cache
+
+At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
 \subsubsection{Caching}
 Caching has been implemented both server and client side, to allow for maximum performance when viewing charts and radar image animations.
 
@@ -65,7 +70,7 @@ If the browser does not have a cache, or it is too old, the server sends the con
 If no cache is found on the server, or it has expired, the server retrieves the needed info from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
 
 
-\subsubsection{The data}
+\subsection{The data}
 The application support the upload of the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
