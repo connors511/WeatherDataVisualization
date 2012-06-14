@@ -48,7 +48,7 @@ return array(
 	/**
 	 * Settings for Cache class
 	 */
-	'caching'         => false,
+	'caching'         => true,
 	'cache_dir'       => APPPATH.'cache/',
 	'cache_lifetime'  => 3600, // In Seconds
 
@@ -188,6 +188,7 @@ return array(
 		'packages'  => array(
 			'orm',
                         'auth',
+			'casset'
                         
 		),
 

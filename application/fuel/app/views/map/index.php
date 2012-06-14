@@ -5,14 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WeatherApp Map</title>
 <?php
-echo Asset::css(array(
+Casset::css('bootstrap.css', 'bootstrap.min.css');
+Casset::css('bootstrap-responsive.css', 'bootstrap-responsive.min.css');
+Casset::css('leaflet.css');
+Casset::css('style.css');
+Casset::css('jquery-ui-1.8.21.custom.css');
+echo Casset::render_css();
+/*echo Asset::css(array(
     'bootstrap.min.css',
     'bootstrap-responsive.min.css',
     'leaflet.css',
     'style.css'
-));
+));*/
+Casset::js('jquery.js');
+Casset::js('jquery-ui-1.8.21.custom.min.js');
+Casset::js('bootstrap.js','bootstrap.min.js');
+Casset::js('leaflet.js');
+Casset::js('map.content.js');
+Casset::js('jquery.ui.timepicker.js');
+echo Casset::render_js();
 ?>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />
+<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.19/themes/base/jquery-ui.css" type="text/css" media="all" />-->
 <style type="text/css">
 	html, body, #map { /* html,body needs this for the map */
 		width: 100%; 
@@ -30,14 +43,14 @@ echo Asset::css(array(
 	.validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
 <?php
-echo Asset::js(array(
+/*echo Asset::js(array(
     'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
     'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js',
     'bootstrap.min.js',
     'leaflet.js',
     'map.content.js',
     'jquery.ui.timepicker.js'
-));
+));*/
 ?>
 </head>
 <body>
