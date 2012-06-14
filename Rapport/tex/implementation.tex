@@ -67,52 +67,12 @@ The application is coded with extensibility in mind, and all parsers is therefor
 The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.\todo[color=red,fancyline]{Explain more in-depth?}
 
 \todo[inline]{PHP}
-The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with Oil. 
-\begin{lstlisting}[language=sh,caption={SQL realations and actions},label={lst:sql}]
-php oil g model
+The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with Oil. Listing \ref{lst:oil_command} is an example of how oil commands was used to create the model and migration for the csv file type.
+\begin{lstlisting}[language=sh,caption={Oil command for creating model and migration},label={lst:oil_command}]
+php oil g model file_csv TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed:varchar[10] RegimePossible:varchar[10] OutputPower:varchar[10] RegimeOutput:varchar[10] TimeStampsR:char[19] file_id:bigint
 \end{lstlisting}
 
 The created table will have to be related with the \textsf{files} table on sql level\footnote{See \ref{lst:sql} for relations}.
-
-\section{Speed optimizations}
-
-rader images saved and cached in browser
-minify and combine js css recude size and requests
-fuelphps cache
-
-At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
-\subsection{Caching}
-Caching has been implemented both server and client side, to allow for maximum performance when viewing charts and radar image animations.
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-\textbf{Area} & \textbf{Before} & \textbf{Server side} & \textbf{Server + client side}\\
-\hline
-Radar & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 ms\\
-\hline
-Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
-\hline
-\end{tabular}
-\label{tab:cache_benchmarks}
-\caption{Cache benchmarks}
-\end{table}
-
-When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already have a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file.
-If the browser does not have a cache, or it is too old, the server sends the contents of the new cache to the browser.
-If no cache is found on the server, or it has expired, the server retrieves the needed info from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
-
-\section{File type support}
-The application support the upload of the following file types:
-\begin{description}
-\item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
-\item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
-\item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
-\end{description}
-\todo[inline,color=red]{NOTE: NC not supported. Rewrite}
-After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
-
 
 \section{Frontend}
 \subsection{jQuery}
@@ -133,22 +93,7 @@ The only problem with smartphone is the smaller screen, sometimes it can be diff
 
 We have tried accessing the software with iPhone and Android. On the iPhone the only problem was the chart, because you couldn't see the whole chart. Radar and map were working just fine, like on a normal PC.
 
-\section{Cross-platform compability}
-\label{sec:cross-platform}
-\todo[inline, color=red]{As stated in bootstrap, smartphones and laptops is somewhat supported because of bootstrap. Rewrite}
-The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
-
-We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
-
-% db.tex should start at section level
-\input{tex/db}
-
-% api.tex should start at section level
-\input{tex/api}
-
-
-
-\section{Radar annotation}
+\subsection{Radar annotation}
 In the final stages of the application, it was discussed if radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
 
 Figure \ref{fig:mock_up_inactive_radar} and \ref{fig:mock_up_active_radar} shows the mock ups for the radar in both inactive and active state.
@@ -171,7 +116,60 @@ The added name and time stamp might pose as a problem, if two radars were placed
 
 This could be somewhat solved, by fading out the radars too close to an active radar, in the same way that windmills inside the range of a radar is faded out when a radar animation starts.
 
-\section{Data date range}
+\section{Speed optimizations}
+\todo[inline,color=red]{rader images saved and cached in browser. minify and combine js css. reduce size and requests. fuelphps cache}
+At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
+
+\subsection{Caching}
+Caching has been implemented both server and client side, to allow for maximum performance when viewing charts and radar image animations.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Area} & \textbf{Before} & \textbf{Server side} & \textbf{Server + client side}\\
+\hline
+Radar & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 ms\\
+\hline
+Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
+\hline
+\end{tabular}
+\label{tab:cache_benchmarks}
+\caption{Cache benchmarks}
+\end{table}
+
+When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already have a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file.
+If the browser does not have a cache, or it is too old, the server sends the contents of the new cache to the browser.
+If no cache is found on the server, or it has expired, the server retrieves the needed info from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
+
+\section{Cross-platform compability}
+\label{sec:cross-platform}
+\todo[inline, color=red]{As stated in bootstrap, smartphones and laptops is somewhat supported because of bootstrap. Rewrite}
+The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
+
+We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
+
+\section{The data}
+\subsection{File type support}
+The application support the upload of the following file types:
+\begin{description}
+\item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
+\item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
+\item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
+\end{description}
+\todo[inline,color=red]{NOTE: NC not supported. Rewrite}
+After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
+
+\subsection{Grouping wrk}
+The big amount of wrk files for each radar (1 every \textasciitilde 10 minutes for a total of 144 files per day) causes a bit of confusion in the file administration of the control panel.
+
+It was suggested that the administration panel grouped the wrk files per day, or that the data parser combined one day of wrk files into one file before importing it into the database.
+
+The idea of letting the data parser to handle the merge was dropped due to the complexity. A merge in the data parser would also increase the memory usage by the data parser, which might not be available on the web server running the application.
+
+Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
+
+\subsection{Data date range}
 As time goes by, one would expect the application to contain massive amounts of data.
 In the provided test data\footnote{Data02122.tar.gz provided by Pierre-Julien Trombe on CampusNet}, the application contains \textasciitilde 140 rows of data for \textsf{wrk} files and \textasciitilde 73,000 rows of data for the wind farm data.
 
@@ -185,19 +183,6 @@ Another problem was the radar images. Without any data range, they would all sta
 The `to' field was removed and the `from' field now decides the starting date for all radars and wind farm charts.
 All radars will start their animation on the first image taken after the selected from date.
 The chart will also start at the selected start date, but the navigation buttons allows one to go either back or forth in time independent of the selected from date.
-
-\section{The data}
-\subsection{Implementation}
-After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
-
-\subsection{Grouping wrk}
-The big amount of wrk files for each radar (1 every \textasciitilde 10 minutes for a total of 144 files per day) causes a bit of confusion in the file administration of the control panel.
-
-It was suggested that the administration panel grouped the wrk files per day, or that the data parser combined one day of wrk files into one file before importing it into the database.
-
-The idea of letting the data parser to handle the merge was dropped due to the complexity. A merge in the data parser would also increase the memory usage by the data parser, which might not be available on the web server running the application.
-
-Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
 
 \subsection{Choice of map}
 After comparing the two maps, it quickly became OpenStreetMap. It was partly because of Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
@@ -248,3 +233,9 @@ The new design also have three different views '2-week', 'weekly' and 'daily vie
    \caption{Chart pop up - final}
    \label{fig:chart_final}
 \end{figure}
+
+% db.tex should start at section level
+\input{tex/db}
+
+% api.tex should start at section level
+\input{tex/api}
