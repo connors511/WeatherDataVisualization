@@ -3,7 +3,7 @@ The application has a small API\footnote{Application programming interface} that
 
 \subsection{Radars}
 A list of images for a radar can be retrieved by calling
-\begin{lstlisting}[language=sh]
+\begin{lstlisting}[language=sh,caption={Url for retrieving images for a radar}]
 GET http://WEBROOT/rest/radar/list.TYPE?lat=LAT&lng=LNG&f=FROM
 \end{lstlisting}
 Where \textsf{WEBROOT} is the domain name of the server, \text{TYPE} is the return type\footnote{All formats supported by FuelPHPs REST controller is supported. A list of supported formats can be found at \url{http://docs.fuelphp.com/general/controllers/rest.html\#/formats}.\label{fn:fuel_rest}}, \textsf{LAT} is the latitude of the radar, \textsf{LNG} is the longitude of the radar and \text{FROM} is a date from which the data should start from.
@@ -12,7 +12,7 @@ The returned data is in array format, where each element is an array consisting 
 
 \subsection{Wind farms}
 A list of data from a given wind farm can be retrieved by calling
-\begin{lstlisting}[language=sh]
+\begin{lstlisting}[language=sh,caption={Url for retrieving data for a wind farm}]
 GET http://WEBROOT/rest/csv/list.TYPE?id=ID&c=COL&f=FROM&t=TO
 \end{lstlisting}
 Where \textsf{WEBROOT} is the domain name of the server, \textsf{TYPE} is the return type\footref{fn:fuel_rest}, \textsf{ID} is ID of the wind farm, \textsf{COL} is the column\footnote{Currently \textsf{PossiblePower}, \textsf{OutputPower}, \textsf{WindSpeed}, \textsf{RegimePossible} and \textsf{OutputRegime}. Note that the columns are case-sensitive.} to fetch data from, \text{FROM} is a date from which the data should start from and \text{TO} is a date at which the data stops at.
@@ -21,19 +21,19 @@ The returned data is in array format, where each element is an array consisting 
 
 \subsection{Jobs}
 A number of files currently in queue to be parsed can be retrieved by calling
-\begin{lstlisting}[language=sh]
+\begin{lstlisting}[language=sh,caption={Url for retrieving the number of files queued for process}]
 GET http://WEBROOT/rest/jobs/list.TYPE
 \end{lstlisting}
 Where \textsf{WEBROOT} is the domain name of the server.
 
 \subsection{Upload}
 It is possible to send data to the application, just as if they were being uploaded manually. This allows for remote services to send `real time' data to the application. To send data to the server, the following call should be made:
-\begin{lstlisting}[language=sh]
+\begin{lstlisting}[language=sh,caption={cURL call to send file}]
 curl -F "path=@FILE" http://WEBROOT/api/upload -H "X-KEY: KEY=" -H "X-TIMEZONE: ZONE" -X POST
 \end{lstlisting}
 Where \textsf{FILE} is the path to the file on the senders machine, \textsf{WEBROOT} is the domain name of the server, \textsf{KEY} is an API key and \textsf{ZONE} is the time zone given by MySQLs Zoneinfo\footnote{See section \ref{sec:application_requirements} for notes about installation of Zoneinfo}.
 
 An example call, to upload \textsf{ekxr20101218\_2350.wrk} with UTC timestamps to the \textsf{WEBROOT} server with the default admin user woudl look like this:
-\begin{lstlisting}[language=sh]
+\begin{lstlisting}[language=sh,caption={Example cURL call to send a file}]
 curl -F "path=@ekxr20101218_2350.wrk" http://WEBROOT/api/upload -H "X-KEY: YWqmPGH+dOEvOh6pf83a62lzJ1QQLHRMPHhNIaohB3s=" -H "X-TIMEZONE: UTC" -X POST
 \end{lstlisting}
