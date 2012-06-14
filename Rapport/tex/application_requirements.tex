@@ -9,7 +9,7 @@ The application requires a few things in order to run.
 \item[GD] The application uses GD\footnote{GD Image library. See \cite{GD} for a more in depth explanation} 2.0.1+ (2.0.28+ is recommended) to create radar images.
 \item[MySQL] FuelPHP\footnote{See \cite{FuelPHP} for more documentation} supports multiple databases through drivers, but in order to support time zones correctly, we've chosen to take advantage of MySQLs own methods. This means that MySQL 5.5.20+ is required.
 \item[Zoneinfo] MySQL\footnote{A relational database management system. See \cite{MySQL}} needs Zoneinfo\footnote{Zoneinto is information about timesonzes used by the application to convert between timezones. See \cite{Zoneinfo} for explanation} in order for the time zones to work properly\footnote{On linux, the following command can be executed in the terminal to import zoneinfo: \mbox{\textsf{> mysql\_tzinfo\_to\_sql /usr/share/zoneinfo | mysql -u root -p mysql}}. Other operating systems might not have the zoneinfo, and will have to download it from \cite{Zoneinfo_download} and import it to the mysql database. See \cite{Zoneinfo_install} for installation notes}
-\item[Safe mode] Safe mode might need to be disabled in the PHP configuration, if \textsf{fopen}\footnote{See \url{http://php.net/manual/en/function.fopen.php}.} is not allowed to access some files.
+\item[Safe mode] Safe mode\footnote{This function has been marked as deprecated as of PHP 5.3.0 and removed as of PHP 5.4.0} might need to be disabled in the PHP configuration, if \textsf{fopen}\footnote{See \url{http://php.net/manual/en/function.fopen.php}.} is not allowed to access some files.
 \end{description}
 
 \section{Client side}
