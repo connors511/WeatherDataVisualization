@@ -1,0 +1,14 @@
+\chapter{Installation}
+
+In the following it is implied that the chosen solutions for each step - e.g. if more than one option is possible - are compliant with the TECHNICAL REQUIREMENTS.
+
+\begin{enumerate}
+\item Download the source from \url{https://github.com/connors511/WeatherDataVisualization} in \textsf{/application}.
+\item Set up a webserver to host the application, either locally or on the World Wide Web.
+\item Create a database and set the connection information in \textsf{App/fuel/config/development/db.php}
+\item Create the database tables. This can be done by running the following with \textsf{Oil} in command line:
+\begin{lstlisting}[language=sh]
+php oil g r migrate
+\end{lstlisting}
+\item Log in to the application with username/password: \textsf{admin/admin}.
+\end{enumerate}
