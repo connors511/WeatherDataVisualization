@@ -283,7 +283,7 @@ WDV = {
 		return json;  
 	},
 	getTimeStamp: function(date) {
-		var d = "0" + (date.getDate()+1);
+		var d = "0" + (date.getDate());
 		var m = "0" + (date.getMonth()+1);
 		var y = "" + date.getFullYear();
 		var h = "0" + date.getHours();
