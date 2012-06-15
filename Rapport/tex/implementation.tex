@@ -75,7 +75,7 @@ Likewise, \textsf{Oil} can be used to add columns in existing tables with the fo
 php oil g migration add_column_to_file_csvs column:type
 \end{lstlisting}
 
-After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/\<model\>.php} for the application to recognize it.
+After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/<model>.php} for the application to recognize it.
 
 The \textsf{DataParser} is also coded so that one can create a parser, extending the \textsf{Parser} class, for each file type. The \textsf{Parser} class contains the basic methods of setting the file name, opening for read and write and closing the open file handle. As the \textsf{Task preparedata} runs the \textsf{DataParser}, it is needed that one modifies this to tell it how to insert the parsed data in the database. This is easily done by adding a \textsf{case}, for the specific file type, in the code.
 
@@ -138,26 +138,31 @@ Sometimes, \textsf{ORM}\footnote{Object Relational Mapping}, has been used. This
 
 \subsection{JS & CSS Minization and combination}
 
-In order to reduce the number and size of requests in the frontend, thus making the page load faster, a FuelPHP package \textsf{Casset} has been implemented. This package can minify and combine a selected number of \textsf{JS} and \textsf{CSS} files and save the results on the webserver, which it only does, if the result files do not exist, when a user visits the application. If they do, these files are fetched instead - the minimization and combination execution is therefore only executed once.
+In order to reduce the number and size of requests in the frontend, thus making the page load faster, a FuelPHP package \textsf{Casset} has been implemented. This package can minify and combine a selected number of \textsf{JS} and \textsf{CSS} files and save the results on the webserver, which it only does, if the result files do not exist, when a user visits the application. If they do, these files are fetched instead - the minimization and combination execution is therefore only executed once. Benchmarks are below:
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{| c | c | c | c | c |}
 \hline
-\textbf{Files} & \textbf{Before} & \textbf{On server side} & \textbf{On server + client side}\\
-\hline
-JS & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 ms\\
-\hline
-CSS & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
-\hline
+\multicolumn{1}{|c|}{\multirow{1}{*}{}} & \multicolumn{2}{|c|}{\textbf{Before}} & \multicolumn{2}{|c|}{\textbf{After}} \\ \cline{2-5}
+\textbf{Files} & 
+Size [kB] & Count & Size [kB] & Count \\ \hline
+
+\textbf{JS} &
+% EDIT
+525 & 6 & 370 & 1     \\ \hline
+
+\textbf{CSS} &
+% EDIT
+146 & 5 & 120 & 1\\ \hline
 \end{tabular}
-\label{tab:cache_benchmarks}
-\caption{Cache benchmarks}
+\label{tab:minify_css}
+\caption{Minification and combination benchmarks}
 \end{table}
 
 \subsection{Caching}
 Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations. The server side cache FuelPHP  
-In FuelPHP a server side cache is available, and this has been activated too.
+In FuelPHP a server side cache is available, and this has been activated too. Benchmarks are below:
 
 \begin{table}[htbp]
 \centering
