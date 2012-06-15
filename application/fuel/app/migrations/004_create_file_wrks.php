@@ -15,7 +15,7 @@ class Create_file_wrks
 			'img_type' => array('constraint' => 1, 'type' => 'char'),
 			'mm_predict' => array('type' => 'smallint'),
 			'pixel_size' => array('type' => 'smallint'),
-			'date_time' => array('constraint' => 4, 'type' => 'char'),
+			'date_time' => array('constraint' => 12, 'type' => 'char'),
 			'rad_name' => array('constraint' => 20, 'type' => 'varchar'),
 			'east_uppb' => array('type' => 'smallint'),
 			'north_uppb' => array('type' => 'smallint'),

@@ -81,11 +81,10 @@ The \textsf{DataParser} is also coded so that one can create a parser, extending
 
 \section{Frontend}
 \subsection{jQuery}
-\todo[inline]{Quick roundup about the use of jQuery. Minor rewrite}
 JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages do not have to reload every time, but can be loaded in the background.
 
-\todo[fancyline,color=green]{Adam @ sentence: ?}jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation} has been used as JavaScript framework, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software, so there is a lot of help to get on the web.\\
-The animations for radar visualization and chart are made by using jQuery.
+jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation} is a JavaScript framework and used, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software, so there is a lot of help to get on the web.\\
+The animations for radar visualization and chart are made using jQuery.
  
 One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}, which enables the chart to send data to, and retrieve data from, the server asynchronously. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation - representing simple data structures and associative arrays - see \cite{json}}.
 
@@ -132,17 +131,44 @@ The added name and time stamp might pose as a problem, if two radars were placed
 This could be somewhat solved, by fading out the radars too close to an active radar, in the same way that windmills inside the range of a radar is faded out when a radar animation starts.
 
 \section{Speed optimizations}
-\todo[inline,color=red]{rader images saved and cached in browser. minify and combine js css. reduce size and requests. fuelphps cache}
-At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance was so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
+
+At the beginning, the chart had monthly, weekly and daily views, but when loading data for an entire month, the performance was poor. This was fixed by changing the views to 2-weekly, weekly and daily view - However, the API has no limitation to this and it has been done in the \textsf{view} only to get a better UX.
+
+Sometimes, \textsf{ORM}\footnote{Object Relational Mapping}, has been used. This method is great for bringing the number of database requests down and makes use of model relations, so one easily can perform CRUD actions. It has been used a lot in the administration panel, but has been omitted in the map and chart views, as these use of an ordinary \textsf{Query Builder} instead. While \textsf{ORM} is more intuitive to use when manipulating with data, the \textsf{Query Builder} is faster, because \textsf{ORM} creates objects for the rows in the result set. 
+
+\subsection{JS & CSS Minization and combination}
+
+In order to reduce the number and size of requests in the frontend, thus making the page load faster, a FuelPHP package \textsf{Casset} has been implemented. This package can minify and combine a selected number of \textsf{JS} and \textsf{CSS} files and save the results on the webserver, which it only does, if the result files do not exist, when a user visits the application. If they do, these files are fetched instead - the minimization and combination execution is therefore only executed once. Benchmarks are below:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+\multicolumn{1}{|c|}{\multirow{1}{*}{}} & \multicolumn{2}{|c|}{\textbf{Before}} & \multicolumn{2}{|c|}{\textbf{After}} \\ \cline{2-5}
+\textbf{Files} & 
+Size [kB] & Count & Size [kB] & Count \\ \hline
+
+\textbf{JS} &
+% EDIT
+525 & 6 & 370 & 1     \\ \hline
+
+\textbf{CSS} &
+% EDIT
+146 & 5 & 120 & 1\\ \hline
+\end{tabular}
+\label{tab:minify_css}
+\caption{Minification and combination benchmarks}
+\end{table}
 
 \subsection{Caching}
-Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations.
+Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations. The server side cache FuelPHP  
+In FuelPHP a server side cache is available, and this has been activated too. Benchmarks are below:
 
 \begin{table}[htbp]
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
-\textbf{Area} & \textbf{Before} & \textbf{Server side} & \textbf{Server + client side}\\
+\textbf{Area} & \textbf{Before} & \textbf{On server side} & \textbf{On server + client side}\\
 \hline
 Radar & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 ms\\
 \hline
@@ -153,7 +179,7 @@ Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
 \caption{Cache benchmarks}
 \end{table}
 
-When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already has a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file.
+When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already has a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file. If radar images do not exist, they are generated in real time when requesting them.
 If the browser does not have a cache, or it is too old, the server sends the contents of the new cache to the browser.
 If no cache is found on the server, or it has expired, the server retrieves the needed information from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
 
