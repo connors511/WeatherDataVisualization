@@ -9,7 +9,7 @@ FuelPHP is a simple, flexible, community driven PHP 5.3 web framework based on t
 \end{quote}
 
 
-FuelPHP uses a HMVC (hierarchical model-view-controller) pattern and comes with different tools for fast and flexible development of web applications. Past experience with the framework and the fact that it takes advantage of the object orientation of PHP has been the main reason why it was chosen. Notable tools and packages that has been heavily used while developing the application are:
+FuelPHP uses a HMVC (hierarchical model-view-controller) pattern and comes with different tools for fast and flexible development of web applications. Past experience with the framework, and the fact that it takes advantage of the object orientation of PHP has been the main reason for why it was chosen. Notable tools and packages that have been heavily used while developing the application are:
 
 \begin{itemize}
 \item Oil - a command line utility that can be used for development, such as code scaffolding and running tasks. 
@@ -24,7 +24,7 @@ An administration panel has been created to provide management of the data witho
 
 \paragraph{Tasks}
 
-When first uploading files in the administration, data was parsed in real time, which could lead to a time out by the server, if too many files were uploaded. To avoid this, a task was created to handle the parsing of the data, that is, running DataParser.exe and inserting the data in the database. As the task is running, it will check whether there are any uploaded files, that has not yet got their data parsed - if there are, these will be parsed. This check will be performed every 5 seconds, until the task is stopped manually.
+When first uploading files in the administration, data was parsed in real time, which could lead to a time out by the server if too many files were uploaded. To avoid this, a task was created to handle the parsing of the data, that is, running DataParser.exe and inserting the data in the database. As the task is running, it will check whether there are any uploaded files, that has not yet got their data parsed - if there are, these will be parsed. This check will be performed every 5 seconds, until the task is stopped manually.
 
 \paragraph{Timezones}
 When a user uploads a file in the administration, he must pick what timezone the data has been observed in. As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is considered automatically. All data in the application will therefore be in UTC.

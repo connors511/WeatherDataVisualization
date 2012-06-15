@@ -13,7 +13,7 @@ We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our
 \subsubsection{Why Qt?}
 We've decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
 
-Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies as Google, HP, Philips and Samsung uses it.
+Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies such as Google, HP, Philips and Samsung use it.
 
 Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we've opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
 
@@ -77,24 +77,24 @@ The created table will have to be related with the \textsf{files} table on sql l
 \section{Frontend}
 \subsection{jQuery}
 \todo[inline]{Quick roundup about the use of jQuery. Minor rewrite}
-There has been used JavaScript\footnote{Client-side scripting language for web pages} to load and visualize data. It gives a more smooth design, since the pages don't have to reload every time, but can be loaded in background.
+JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages don't have to reload every time, but can be loaded in the background.
 
-The JavaScript framework there has been used is jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation}, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software. The animations for map and chart are made by using jQuery.
+\todo[fancyline,color=green]{Adam @ sentence: ?}The JavaScript framework there has been used is jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation}, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software. The animations for map and chart are made by using jQuery.
  
 One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}, which enables the chart to send data to, and retrieve data from, the server asynchronously. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation - representing simple data structures and associative arrays - see \cite{json}}.
 
-If the browser doesn't support JavaScript or it isn't up-to-date, the user still have access to upload files, but not viewing data from map or chart.
+If the browser doesn't support JavaScript or it isn't up-to-date, the user still has access to upload files, but not viewing data from map or chart.
 
 \subsection{Bootstrap}
 \todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets. Rewrite}
-Today many people keep them updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
+Today many people keep themselves updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
 
 The only problem with smartphone is the smaller screen, sometimes it can be difficult to get a good look, specially the charts are a problem.
 
-We have tried accessing the software with iPhone and Android. On the iPhone the only problem was the chart, because you couldn't see the whole chart. Radar and map were working just fine, like on a normal PC.
+We have tried accessing the software with iPhone and Android. On the iPhone the only problem was the chart, because you couldn't see the whole chart. Radar and map were working just fine, like on a normal PC.\todo[fancyline,color=green]{Adam: What about android?}
 
 \subsection{Radar annotation}
-In the final stages of the application, it was discussed if radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
+In the final stages of the application, it was discussed if the radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
 
 Figure \ref{fig:mock_up_inactive_radar} and \ref{fig:mock_up_active_radar} shows the mock ups for the radar in both inactive and active state.
 \begin{figure}[htbp]
@@ -118,10 +118,10 @@ This could be somewhat solved, by fading out the radars too close to an active r
 
 \section{Speed optimizations}
 \todo[inline,color=red]{rader images saved and cached in browser. minify and combine js css. reduce size and requests. fuelphps cache}
-At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance were so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
+At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance was so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
 
 \subsection{Caching}
-Caching has been implemented both server and client side, to allow for maximum performance when viewing charts and radar image animations.
+Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations.
 
 \begin{table}[htbp]
 \centering
@@ -138,9 +138,9 @@ Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
 \caption{Cache benchmarks}
 \end{table}
 
-When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already have a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file.
+When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already has a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file.
 If the browser does not have a cache, or it is too old, the server sends the contents of the new cache to the browser.
-If no cache is found on the server, or it has expired, the server retrieves the needed info from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
+If no cache is found on the server, or it has expired, the server retrieves the needed information from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
 
 \section{Cross-platform compability}
 \label{sec:cross-platform}
@@ -151,7 +151,7 @@ We have, however, chosen to drop support for all version of Internet Explorer, b
 
 \section{The data}
 \subsection{File type support}
-The application support the upload of the following file types:
+The application supports the upload of the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
 \item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
@@ -185,7 +185,7 @@ All radars will start their animation on the first image taken after the selecte
 The chart will also start at the selected start date, but the navigation buttons allows one to go either back or forth in time independent of the selected from date.
 
 \subsection{Choice of map}
-After comparing the two maps, it quickly became OpenStreetMap. It was partly because of Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
+After comparing the two maps, it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
 
 OpenStreetMap wasn't that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
 
@@ -201,9 +201,9 @@ First mockup:
    \label{fig:map_v1}
 \end{figure}
 
-We would like to have different layers on the map at the beginning, but this was unnecessary, so it was quickly removed.\\
+We\todo[fancyline,color=green]{Remove we} would have like to have had different layers on the map at the beginning, but this was unnecessary, so it was quickly removed.\\
 Now we have created a cool design which is easy to get used to and all relevant informations can be accessed easily and without to much clicking (figure \ref{fig:map_final}).
-There have also been added some gestures to control the radar easily.\\
+There had also been added some gestures to control the radar easily.\\
 The top bar has a date field to know which date the radar should get data from. This date will be transferred to the chart window.
 
 \begin{figure}[htbp]
@@ -225,7 +225,7 @@ First mockup:
 
 This has, through the whole project, been determined to be a pop up on the map.
 The control buttons were before 'fast backward', 'backward', 'today', 'forward' and 'fast forward', but 'today' was replaced with 'play'. The 'play' button moves the chart every second, so the user can view the chart animated.\\
-The new design also have three different views '2-week', 'weekly' and 'daily view' (figure \ref{fig:chart_final}). Control buttons adjust to the view the user has selected.
+The new design also has three different views '2-week', 'weekly' and 'daily view' (figure \ref{fig:chart_final}). Control buttons adjust to the view the user has selected.
 
 \begin{figure}[htbp]
    \centering
