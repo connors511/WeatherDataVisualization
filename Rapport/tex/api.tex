@@ -1,6 +1,6 @@
 \section{API}
 \label{sec:api}
-The application has a small API\footnote{Application programming interface} that the application itself uses to retrieve some of the data.
+The application has a small API that the application itself uses to retrieve some of the data.
 
 \subsection{Radars}
 \label{sec:api_radars}
@@ -34,11 +34,11 @@ Where \textsf{WEBROOT} is the domain name of the server.
 \label{sec:api_upload}
 It is possible to send data to the application, just as if they were being uploaded manually. This allows for remote services to send `real time' data to the application. To send data to the server, the following call should be made:
 \begin{lstlisting}[language=sh,caption={cURL call to send file}]
-curl -F "path=@FILE" http://WEBROOT/api/upload -H "X-KEY: KEY=" -H "X-TIMEZONE: ZONE" -X POST
+curl -F "path=@FILE" http://WEBROOT/api/upload -H "X-KEY: KEY" -H "X-TIMEZONE: ZONE" -X POST
 \end{lstlisting}
 Where \textsf{FILE} is the path to the file on the senders machine, \textsf{WEBROOT} is the domain name of the server, \textsf{KEY} is an API key and \textsf{ZONE} is the time zone given by MySQLs Zoneinfo\footnote{See section \ref{sec:application_requirements} for notes about installation of Zoneinfo}.
 
-An example call, to upload \textsf{ekxr20101218\_2350.wrk} with UTC timestamps to the \textsf{WEBROOT} server with the default admin user woudl look like this:
+An example call, to upload \textsf{ekxr20101218\_2350.wrk} with UTC timestamps to the \textsf{WEBROOT} server with the default admin account would look like this:
 \begin{lstlisting}[language=sh,caption={Example cURL call to send a file}]
 curl -F "path=@ekxr20101218_2350.wrk" http://WEBROOT/api/upload -H "X-KEY: YWqmPGH+dOEvOh6pf83a62lzJ1QQLHRMPHhNIaohB3s=" -H "X-TIMEZONE: UTC" -X POST
 \end{lstlisting}

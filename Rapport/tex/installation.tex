@@ -1,13 +1,16 @@
-In the following it is implied that the chosen solutions for each step - e.g. if more than one option is possible - are compliant with the TECHNICAL REQUIREMENTS.
+In the following it is implied that the chosen solutions for each step - e.g. if more than one option is possible - are compliant with the stated requirements in section \ref{sec:application_requirements}.
 
 \begin{enumerate}
-\item Download the source from \url{https://github.com/connors511/WeatherDataVisualization} in \textsf{/application}.
-\item Set up a webserver to host the application, either locally or on the World Wide Web.
-\item Create a database and set the connection information in \textsf{App/fuel/config/development/db.php}
+\item Download the source\footnote{\url{https://github.com/connors511/WeatherDataVisualization}}.
+\item Set up a server to host the software, either locally or on the World Wide Web.
+\item Create a database and set the connection information in \textsf{fuel/config/development/db.php}
 \item Create the database tables. This can be done by running the following with \textsf{Oil} in command line:
 \begin{lstlisting}[language=sh]
-php oil g r migrate
+php oil r migrate
 \end{lstlisting}
-\item Set up the \textsf{preparedata} task as a cron job (should be started when the webserver starts, i.e. run constantly).
+\item Set up the \textsf{preparedata} task as a cron job (should be started when the server starts). The command to start is
+\begin{lstlisting}[language=sh]
+php oil r preparedata
+\end{lstlisting}
 \item Log in to the application with username/password: \textsf{admin/admin}.
 \end{enumerate}
