@@ -19,7 +19,14 @@ FuelPHP uses a HMVC\footnote{Hierarchical model-view-controller} pattern and com
 
 \paragraph{Administration}
 \label{sec:administration}
-An administration panel has been created to provide management of the data without having to think of unauthorized use. It also provides a simple overview and CRUD\footnote{Create, read, update and delete} for the \textsf{files} and can be expanded to provide even more information easily.
+An administration panel has been created to provide management of the data without having to think of unauthorized use. It also provides a simple overview (as seen on figure \ref{fig:admin}) and CRUD\footnote{Create, read, update and delete} for the \textsf{files} and can be expanded to provide even more information easily.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=1\linewidth]{figure/adminCRUD.eps}
+   \caption{Files overview}
+   \label{fig:admin}
+\end{figure}
 
 \paragraph{Tasks}
 \label{sec:tasks}
@@ -28,4 +35,11 @@ The main advantages of using a \textsf{Task} for this job are that it can handle
 In fact, \textsf{Tasks} are quite powerful tools as they can ultimately remove huge bottlenecks from the application webserver by running them on one or several other servers. E.g. files of type \textsf{csv} can be parsed on one server, while those of type \textsf{wrk} can be parsed on another, both independent of the application webserver.
 \paragraph{Timezones}
 \label{sec:timezones}
-When a user uploads a file in the administration, he must pick what timezone the data has been observed in. As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is detected and considered automatically. All data in the application will therefore be in UTC.
+When a user uploads a file in the administration, he must pick what timezone the data has been observed in (as seen on figure \ref{fig:upload}). As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is detected and considered automatically. All data in the application will therefore be in UTC.
+
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=1\linewidth]{figure/uploadfiles.eps}
+   \caption{Uploading files}
+   \label{fig:upload}
+\end{figure}
