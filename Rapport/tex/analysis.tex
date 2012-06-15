@@ -3,7 +3,8 @@
 A lot of considerations has gone into the development process of the application. The following chapter explains the considerations with the most impact on the application.
 
 \section{Comparison}
-It is been discussed if it should be possible to compare data from multiple wind farms at the same time, and how it should be done if that was the case.
+\label{sec:comparison}
+It has been discussed if it should be possible to compare data from multiple wind farms at the same time, and how it should be done if that was the case.
 
 One of the ideas was to let single click on a windmill put it in a `selected' state and a double click on a windmill would trigger the comparison view between all the windmills in the `selected' state.
 
@@ -11,27 +12,44 @@ The comparison view was also discussed to be either one chart, like the one impl
 Another way of viewing them was to have multiple small draggable windows, each one representing a wind farm. This would allow browsing the data for each wind farm independent of each other, but also make it annoying when wanting to compare the same time and having to manually move forth or back in time on each window.
 
 \section{Time handling}
-\todo[inline,color=red]{Rewrite}
-It was considered to add a to and from field to limit the data
+\label{sec:time_handling}
+As time goes by, one would expect the application to contain massive amounts of data.
+In the provided test data\footnote{Data02122.tar.gz provided by Pierre-Julien Trombe on CampusNet}, the application contains \textasciitilde 140 rows of data for \textsf{wrk} files and \textasciitilde 73,000 rows of data for the wind farm data.
+
+It was discussed how we should limit the view of data, since it would require quite a lot of processing power to display that much data.
+
+A `from' and `to' field for selecting a date range that all data on the site would be limited to would increase performance, reduce server load and increase overall user experience.
 
 \section{Radar interaction}
+\label{sec:radar_interaction}
 A lot of considerations went into the interaction of the radars. The primary focus of the radar design was to make it intuitive.
 
-A `play' button to start animation of all radars were considered, but after a test implementation it was found to give a weird feeling and was removed again.
+A few ideas was put on the table but only two of them seemed viable.
 
-All radars will play after a single click and pause the animation if click while an animation is running. A double click will reset the radar to the first image and display the image for an inactive radar.\todo[inline,color=red]{Rewrite to suggestions and present time. Possibly write with other radar related considerations}
+The first idea was to add a `play' button that would start the animation of all radars.
+
+The second idea sounded a bit better and would change the interaction from globally controlling all radars to locally controlling one radar at a time. The idea was to let the radar image be the control button and different types of click on the radar itself would result in different actions.
 
 \section{The data}
+\label{sec:the_data}
 \subsection{Prioritizing}
-\todo[inline,color=red]{Rewrite to suggestions and present time.}
+\label{sec:prioritizing}
 The massive amount of data forced a prioritized list of the order of which the data types should be implemented.
 
 After a quick look at the data, it was decided that the data from the wind farm was the first one to be implemented due to its simplicity.
 
 Research showed that the wrk file was in a relatively easy format with decent documentation\footnote{See \cite{VRIS} for the documentation}, where as the NetCDF\footnote{Network Common Data Form - See \cite{netcdf}} format was very complex with little documentation\footnote{A framework for the file type was found but with very little documentation. See \url{http://www.unidata.ucar.edu/downloads/netcdf/netcdf-cxx/index.jsp}}.
 
+Based on the preliminary research of the file types it was decided that the order of the implementation should be the following:
+\begin{enumerate}
+\item csv
+\item wrk
+\item NetCDF
+\end{enumerate}
+
 \subsection{Choice of map}
-There were two obvious map options - OpenStreetMap and Google maps. We know Google maps from Google, Facebook, etc.. The previous weather project were using Google maps, so at the beginning it was obvious that we were going to use Google maps.
+\label{sec:choice_of_map}
+There were two obvious map options - OpenStreetMap and Google maps. Google maps is known from Google, Facebook, etc. while OpenStreetMap is a more unknown but free collaborative project. The previous weather project was using Google maps, so at the beginning it was obvious that we were going to use Google maps.
 
 \begin{table}[htbp]
 \centering
@@ -56,20 +74,27 @@ There were two obvious map options - OpenStreetMap and Google maps. We know Goog
 ** Navteq North America LLC / Tele Atlas North America: Owned by multiple organisations, data i copyrighted (\url{http://maps.google.co.uk/help/legalnotices_maps.html})
 
 \subsection{Management}
+\label{sec:management}
 \todo[inline,color=red]{Use of PHP for site. C++ over PHP for parsing. Qt as C++}
 
 \subsubsection{Database}
+\label{sec:database}
 In the beginning of the project, it was determined that the given data files always should be parsed in real time, when needed on the frontend. During the analysis of how to handle the different data, however, it was quickly found that this solution would be clumsy to implement, inflexible and generally inefficient.
 For proper data management a database was to be used. Because of the large quantity of the data per file (e.g. a csv single file contains over 72.000 rows), the size of the database can and will increase very rapidly if the application is used on regular basis, and this should be taken into consideration when designing it.
 
 For safety reasons, the application should also contain user authentication in order to get certain administration privileges (such as file CRUD\footnote{Create, Read, Update and Delete. See \url{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete}}. The database should therefore also handle data management for users.
 
 \subsubsection{Timezones}
-As a interactive world map with dynamic data sources have been used, timezones must be dealt with in order to show the proper data across the globe and get a consistent UX.
+\label{sec:timezones}
+As an interactive world map with dynamic data sources has been used, timezones must be dealt with in order to show the proper data across the globe and get a consistent UX.
 
 \subsubsection{Availability}
-\todo[inline,color=red]{Suggestion that leads to API design}
+\label{sec:availability}
+One of the requirements for the project was `efficient system for data request, retrieval and display' and being a web application data request and retrieval is an essential part.
+
+An obvious choice for a web application to support data retrieval would be an API. An API could allow third party software to request or send data to the application. Another use of the API would be AJAX calls from the application itself making the application seem more smooth due to loading data in the background.
 
 \section{Graphical User Interface}
+\label{sec:graphical_user_interface}
 The graphical user interface for visualizing the data should be intuitive
 \todo[inline,color=red]{Explain the considerations behind the GUI decisions}

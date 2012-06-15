@@ -1,7 +1,9 @@
 \section{API}
+\label{sec:api}
 The application has a small API\footnote{Application programming interface} that the application itself uses to retrieve some of the data.
 
 \subsection{Radars}
+\label{sec:api_radars}
 A list of images for a radar can be retrieved by calling
 \begin{lstlisting}[language=sh,caption={Url for retrieving images for a radar}]
 GET http://WEBROOT/rest/radar/list.TYPE?lat=LAT&lng=LNG&f=FROM
@@ -11,6 +13,7 @@ Where \textsf{WEBROOT} is the domain name of the server, \text{TYPE} is the retu
 The returned data is in array format, where each element is an array consisting of two elements. The first is the timestamp of the image, and the second is the url of the radar image relative to the \textsf{WEBROOT}.
 
 \subsection{Wind farms}
+\label{sec:api_wind_farms}
 A list of data from a given wind farm can be retrieved by calling
 \begin{lstlisting}[language=sh,caption={Url for retrieving data for a wind farm}]
 GET http://WEBROOT/rest/csv/list.TYPE?id=ID&c=COL&f=FROM&t=TO
@@ -20,6 +23,7 @@ Where \textsf{WEBROOT} is the domain name of the server, \textsf{TYPE} is the re
 The returned data is in array format, where each element is an array consisting of two elements. The first is the timestamp of the image, and the second is the url of the radar image relative to the \textsf{WEBROOT}.
 
 \subsection{Jobs}
+\label{sec:api_jobs}
 A number of files currently in queue to be parsed can be retrieved by calling
 \begin{lstlisting}[language=sh,caption={Url for retrieving the number of files queued for process}]
 GET http://WEBROOT/rest/jobs/list.TYPE
@@ -27,6 +31,7 @@ GET http://WEBROOT/rest/jobs/list.TYPE
 Where \textsf{WEBROOT} is the domain name of the server.
 
 \subsection{Upload}
+\label{sec:api_upload}
 It is possible to send data to the application, just as if they were being uploaded manually. This allows for remote services to send `real time' data to the application. To send data to the server, the following call should be made:
 \begin{lstlisting}[language=sh,caption={cURL call to send file}]
 curl -F "path=@FILE" http://WEBROOT/api/upload -H "X-KEY: KEY=" -H "X-TIMEZONE: ZONE" -X POST

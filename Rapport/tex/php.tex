@@ -1,9 +1,9 @@
 \subsection{PHP}
-
+\label{sec:php}
 The main programming language chosen for the backend development of the application is PHP. This language has been chosen for several reasons, namely that we are familiar with it, it is well-documented and that it is open source.
 
 \subsubsection{FuelPHP Framework}
-
+\label{sec:fuelphp_framework}
 \begin{quote}
 FuelPHP is a simple, flexible, community driven PHP 5.3 web framework based on the best ideas of other frameworks with a fresh start\cite{FuelPHP}.
 \end{quote}
@@ -18,13 +18,14 @@ FuelPHP uses a HMVC\footnote{Hierarchical model-view-controller} pattern and com
 \end{itemize}
 
 \paragraph{Administration}
-
+\label{sec:administration}
 An administration panel has been created to provide management of the data without having to think of unauthorized use. It also provides a simple overview and CRUD\footnote{Create, read, update and delete} for the \textsf{files} and can be expanded to provide even more information easily.
 
 \paragraph{Tasks}
+\label{sec:tasks}
 When first uploading files in the administration, data was parsed in real time, which could lead to a time out by the server, if too many files were uploaded. To avoid this, a \textsf{Task} called \textsf{preparedata} was created to handle the parsing of the data, that is, running \textsf{DataParser.exe} and inserting the data in the database. As \textsf{preparedata} is running, it will check whether there are any uploaded files that has not yet got their data parsed - if there are, these will be parsed. This check will be performed every 5 seconds, until the \textsf{prepare} is stopped manually.
 The main advantages of using a \textsf{Task} for this job are that it can handle a heavy amount of data without getting time out errors, it can be set up as a cron job, and it is possible to deploy it on another server than the application webserver.
 In fact, \textsf{Tasks} are quite powerful tools as they can ultimately remove huge bottlenecks from the application webserver by running them on one or several other servers. E.g. files of type \textsf{csv} can be parsed on one server, while those of type \textsf{wrk} can be parsed on another, both independent of the application webserver.
-
 \paragraph{Timezones}
+\label{sec:timezones}
 When a user uploads a file in the administration, he must pick what timezone the data has been observed in. As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is detected and considered automatically. All data in the application will therefore be in UTC.
