@@ -74,4 +74,4 @@ Equations \ref{eq:db_1} through \ref{eq:db_4} illustrate the problem and reason 
 \left\lfloor \frac{2^{64}-1}{72,858 \cdot 10} \right\rfloor = 25,318,762,625,531
 \end{equation}
 
-As the size of\todo[fancyline,color=green]{Explicit mention its storage size?} \textsf{bigint} is only twice as big as \textsf{int}, the increase of maximum size of each row is not remarkable.
+As the storage size of \textsf{bigint} is only twice as big as \textsf{int}, the maximum increase in storage per row is not remarkable, where as the increase in number of possible files storeable is increased by a huge margin as seen on equation \ref{eq:db_3} and \ref{eq:db_4}.

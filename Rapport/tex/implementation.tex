@@ -98,10 +98,9 @@ If the browser does not support JavaScript or it is not up-to-date, the user sti
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
-\todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets. Rewrite}
 Today many people keep themselves updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
 
-Bootstrap is used to make sure that the design is working on different devices, for example if the screen is too small, like we know from smartphones, the menu will collapse (see figure \ref{fig:bootstrap}). The user can roll down the menu to get the same menu options as usual.
+Bootstrap is used to make sure that the design is working on different devices, for example if the screen is too small, like we know from smartphones, the menu will collapse as seen on figure \ref{fig:bootstrap}. The user can roll down the menu to get the same menu options as usual.
 
 \begin{figure}[htbp]
 \centering
@@ -176,11 +175,11 @@ If no cache is found on the server, or it has expired, the server retrieves the 
 
 \section{Cross-platform compability}
 \label{sec:cross-platform}
-\todo[inline, color=red]{As stated in bootstrap, smartphones and laptops is somewhat supported because of bootstrap. Rewrite}
 The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
 
-We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
+It has, however, been decided to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
 
+As already mentioned in section \ref{sec:bootstrap}, smaller screens and devices is partly supported through the use of Bootstrap.
 \section{The data}
 \label{sec:implementation_the_data}
 \subsection{File type support}
@@ -191,7 +190,7 @@ The application supports the upload of the following file types:
 \item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
 \item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
 \end{description}
-\todo[inline,color=red]{NOTE: NC not supported. Rewrite}
+
 After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
 
 \subsection{Grouping wrk}
@@ -225,18 +224,17 @@ There have been several design ideas. Many changes through the project and many 
 
 \subsubsection{Map}
 \label{sec:map}
-At the beginning there was a sidebar which could be visible or hidden (figure \ref{fig:map_v1}). This was unnecessary, so there was no need for a big menu and this was replaced with a tiny top bar, with only the necessary options.\\
+At the beginning there was a sidebar which could be visible or hidden as shown on figure \ref{fig:map_v1}. This was unnecessary, so there was no need for a big menu and this was replaced with a tiny top bar, with only the necessary options.
 
-First mockup:
 \begin{figure}[htbp]
    \centering
    \includegraphics[scale=.3]{figure/design_map_v1.eps}
-   \caption{Map - version 1}
+   \caption{Mockup of the first version of them map}
    \label{fig:map_v1}
 \end{figure}
 
 At the beginning it was obvious to have different layers on the map, but later it was found out that it was unnecessary, so it was quickly removed.\\
-Now there is created a cool design which is easy to get used to and all relevant informations can be accessed easily and without to much clicking (figure \ref{fig:map_final}).
+Now there is created a cool design which is easy to get used to and all relevant information can be accessed easily and without to much clicking as shown on figure \ref{fig:map_final}.
 There had also been added some gestures to control the radar easily.\\
 The top bar has a date field to know which date the radar should get data from. This date will be transferred to the chart window.
 
@@ -248,18 +246,18 @@ The top bar has a date field to know which date the radar should get data from. 
 \end{figure}
 
 \subsubsection{Chart}
-At the beginning there was the same sidebar as on the map, but with other options (figure \ref{fig:chart_v1}). This was also replaced by a top bar like on the map.\\
-First mockup: 
+At the beginning there was the same sidebar as on the map, but with other options as shown on figure \ref{fig:chart_v1}. This was also replaced by a top bar like on the map.
+
 \begin{figure}[htbp]
    \centering
    \includegraphics[width=1\linewidth]{figure/design_chart_v1.eps}
-   \caption{Chart pop up - version 1}
+   \caption{Mockup of the first version of the chart pop up}
    \label{fig:chart_v1}
 \end{figure}
 
 This has, through the whole project, been determined to be a pop up on the map.
 The control buttons were before 'fast backward', 'backward', 'today', 'forward' and 'fast forward', but 'today' was replaced with 'play'. The 'play' button moves the chart every second, so the user can view the chart animated.\\
-The new design also has three different views '2-week', 'weekly' and 'daily view' (figure \ref{fig:chart_final}). Control buttons adjust to the view the user has selected.
+The new design also has three different views '2-week', 'weekly' and 'daily view' as seen on figure \ref{fig:chart_final}. Control buttons adjust to the view the user has selected.
 
 \begin{figure}[htbp]
    \centering
