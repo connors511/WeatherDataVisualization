@@ -75,7 +75,7 @@ Likewise, \textsf{Oil} can be used to add columns in existing tables with the fo
 php oil g migration add_column_to_file_csvs column:type
 \end{lstlisting}
 
-After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/\<model\>.php} for the application to recognize it.
+After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/<model>.php} for the application to recognize it.
 
 The \textsf{DataParser} is also coded so that one can create a parser, extending the \textsf{Parser} class, for each file type. The \textsf{Parser} class contains the basic methods of setting the file name, opening for read and write and closing the open file handle. As the \textsf{Task preparedata} runs the \textsf{DataParser}, it is needed that one modifies this to tell it how to insert the parsed data in the database. This is easily done by adding a \textsf{case}, for the specific file type, in the code.
 
