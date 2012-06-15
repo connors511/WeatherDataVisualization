@@ -1,4 +1,5 @@
 \chapter{Work flow \& distribution}
+\label{work_flow_and_distribution}
 At the beginning Dropbox\footnote{A web based file hosting service - see \cite{Dropbox}} was used for sharing files between group members, using a shared folder, all members could read and write to. It was fine at the beginning, but later when there became file conflicts , it started to get a little problematic, since Dropbox doesn't have a smart merging algorithm.
 There was created a public repository at Git\footnote{A web based hosting service - see \cite{Git}} to push and pull data to the git server, so files could be changed without to many conflicts. Git was used, because of the merging algorithm and easy to use.
 
@@ -9,19 +10,23 @@ Git also allow other users to look at the program and and test it by themselves,
 Since Git is used, everyone can access the repository\footnote{Repository \url{http://github.com/connors511/WeatherDataVisualization}} by themselves. Users can't change or commit data, but can download the application and give comments to the project.
 
 \section{Distribution}
+\label{sec:distribution}
 As this software project has been carried out by a group, we have been working together as a team with constructive criticism of each other, spelling and syntax correction ect. This means that everyone has more or less had a hand in every part of the software. However:
 
 Mads Lundt has had the main responsibility of the following parts of the software:
 \begin{itemize}
 \item Map (HTML + JavaScript)
+\item Report sections: \ref{ap:usecase}
 \end{itemize}
 
 Matthias Larsen has had the main responsibility of the following parts of the software:
 \begin{itemize}
 \item Data Parser (C++)
+\item Report sections: \ref{sec:radar_interaction}, \ref{sec:the_cpp_application}, \ref{sec:radar_annotation}, \ref{sec:caching}, \ref{sec:cross-platform}, \ref{sec:file_type_support} through \ref{sec:data_date_range}, \ref{sec:api}, \ref{sec:restrictions_and_limitations}, \ref{sec:application_requirements}, \ref{ap:csv}
 \end{itemize}
 
 Joachim Jensen has had the main responsibility of the following parts of the software:
 \begin{itemize}
 \item File upload (PHP)
+\item Report sections: \ref{ap:installation}
 \end{itemize}

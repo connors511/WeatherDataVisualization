@@ -1,4 +1,5 @@
 \section{Database}
+\label{sec:database}
 All tables will contain an \textsf{id} column, such that all rows in the same table are unique. This also makes it easy to fetch and perform actions for a specific row.
 
 \textsf{users} table should at minimum contain the columns \textsf{username, password} and \textsf{email}.
@@ -26,41 +27,51 @@ All tables use \textsf{InnoDB}, because this engine make it possible to create s
 These relations can be seen in the diagram. The relations and actions is stated by sql as in listing \ref{lst:sql}
 \begin{lstlisting}[language=sql,caption={SQL realations and actions},label={lst:sql}]
 ALTER TABLE `files`
-  ADD CONSTRAINT `files\_ibfk\_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE `file\_csvs`
-  ADD CONSTRAINT `file\_csvs\_ibfk\_1` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `file_csvs`
+  ADD CONSTRAINT `file_csvs_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
-ALTER TABLE `file\_wrks`
-  ADD CONSTRAINT `file\_wrks\_ibfk\_1` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `file_wrks`
+  ADD CONSTRAINT `file_wrks_ibfk_1` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 \end{lstlisting}
 
-\subsection{Optimisation}
+\subsection{Optimization}
+\label{sec:database_optimization}
 In FuelPHP it is possible to create model relations that are similar to sql relations with actions, but easier to manage and at the same time less efficient (though generally adequate). This method was used initially, but performance was found to be too bad, e.g. it would take too much time to cascade delete all the csv rows related to the file selected for deletion, eventually leading to a time out by the server. The time out limit can be changed by the server manager, but it was easier and - as stated before - more efficient to make relation actions in sql. Relations are still present at model level, but actions have been turned off.
 
 When first creating the database, the data types for the fields were not optimized, and as previously stated this is important for performance, and improper data types or constraints can even break the data that should be saved. When optimising the data types, we were also able to gain space and e.g. halve the size of the \textsf{file\_csvs} from maximum 372 bytes per row to maximum 107 bytes.
 
 As seen on figure \ref{fig:dbdiagram}, \textsf{id} for  \textsf{files, file\_csvs} and  \textsf{file\_wrks} are of type \textsf{bigint} ( \textsf{unsigned}). This make it possible for these tables to store a huge amount of data, and even though \textsf{unsigned int} can save a large amount too, we would rather make the application future proof than let it break if the limit was reached.
 
-Here are some examples to illustrate the problem and reason for the decision made:
-\textit{Number of csv files stored, if the data is represented by a 10 minute interval in a span of 1.5 years (as current test data):}
+Equations \ref{eq:db_1} through \ref{eq:db_4} illustrate the problem and reason for the decision made.
+
+\emph{Number of csv files stored, if the data is represented by a 10 minute interval in a span of 1.5 years (as current test data):}
+
 \textsf{unsigned int}: 
 \begin{equation}
-\lfloor \frac{2^{32}-1}{72,858} \rfloor = 58,949
-\end{equation}
-\textsf{unsigned bigint}:
-\begin{equation}
-\lfloor \frac{2^{64}-1}{72,858} \rfloor = 253,187,626,255,312
+\label{eq:db_1}
+\left\lfloor \frac{2^{32}-1}{72,858} \right\rfloor = 58,949
 \end{equation}
 
-\textit{Number of csv files stored, if the data is represented by a 1 minute interval in a span of 1.5 years:}
+\textsf{unsigned bigint}:
+\begin{equation}
+\label{eq:db_2}
+\left\lfloor \frac{2^{64}-1}{72,858} \right\rfloor = 253,187,626,255,312
+\end{equation}
+
+\emph{Number of csv files stored, if the data is represented by a 1 minute interval in a span of 1.5 years:}
+
 \textsf{unsigned int}:
 \begin{equation}
-\lfloor \frac{2^{32}-1}{72,858 \cdot 10} \rfloor = 5,894
-\end{equation}
-\textsf{unsigned bigint}:
-\begin{equation}
-\lfloor \frac{2^{64}-1}{72,858 \cdot 10} \rfloor = 25,318,762,625,531
+\label{eq:db_3}
+\left\lfloor \frac{2^{32}-1}{72,858 \cdot 10} \right\rfloor = 5,894
 \end{equation}
 
-As the size of \textsf{bigint} is only twice as big as \textsf{int}, the increase of maximum size of each row is not remarkable.
+\textsf{unsigned bigint}:
+\begin{equation}
+\label{eq:db_4}
+\left\lfloor \frac{2^{64}-1}{72,858 \cdot 10} \right\rfloor = 25,318,762,625,531
+\end{equation}
+
+As the size of\todo[fancyline,color=green]{Explicit mention its storage size?} \textsf{bigint} is only twice as big as \textsf{int}, the increase of maximum size of each row is not remarkable.

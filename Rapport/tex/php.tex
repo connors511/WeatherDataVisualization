@@ -1,9 +1,9 @@
 \subsection{PHP}
-
+\label{sec:php}
 The main programming language chosen for the backend development of the application is PHP. This language has been chosen for several reasons, namely that we are familiar with it, it is well-documented and that it is open source.
 
 \subsubsection{FuelPHP Framework}
-
+\label{sec:fuelphp_framework}
 \begin{quote}
 FuelPHP is a simple, flexible, community driven PHP 5.3 web framework based on the best ideas of other frameworks with a fresh start\cite{FuelPHP}.
 \end{quote}
@@ -19,12 +19,13 @@ FuelPHP uses a HMVC (hierarchical model-view-controller) pattern and comes with 
 \end{itemize}
 
 \paragraph{Administration}
-
+\label{sec:administration}
 An administration panel has been created to provide management of the data without having to think of unauthorized use. 
 
 \paragraph{Tasks}
-
+\label{sec:tasks}
 When first uploading files in the administration, data was parsed in real time, which could lead to a time out by the server if too many files were uploaded. To avoid this, a task was created to handle the parsing of the data, that is, running DataParser.exe and inserting the data in the database. As the task is running, it will check whether there are any uploaded files, that has not yet got their data parsed - if there are, these will be parsed. This check will be performed every 5 seconds, until the task is stopped manually.
 
 \paragraph{Timezones}
+\label{sec:timezones}
 When a user uploads a file in the administration, he must pick what timezone the data has been observed in. As the dataparser task handles the data for this file, the timezone will be converted to UTC - possible daylight saving time is considered automatically. All data in the application will therefore be in UTC.
