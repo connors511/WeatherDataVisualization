@@ -69,18 +69,21 @@ The PHP part of the application gets a return code from the C++ application depe
 
 \subsection{Extensibility}
 \label{sec:extensibility}
-\todo[inline,color=red]{Write the sections together}
-\todo[inline]{C++}
-The application is coded with extensibility in mind, and all parsers is therefore extending the base class \emph{Parser}.
-The \emph{Parser} class contains the basic methods of setting the filename, opening for read and write and closing the open file handle.\todo[color=red,fancyline]{Explain more in-depth?}
-
-\todo[inline]{PHP}
-The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with Oil. Listing \ref{lst:oil_command} is an example of how oil commands was used to create the model and migration for the csv file type.
+The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with \textsf{Oil}. Listing \ref{lst:oil_command} is an example of how oil commands was used to create the model and migration for the csv file type.
 \begin{lstlisting}[language=sh,caption={Oil command for creating model and migration},label={lst:oil_command}]
-php oil g model file_csv TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed:varchar[10] RegimePossible:varchar[10] OutputPower:varchar[10] RegimeOutput:varchar[10] TimeStampsR:char[19] file_id:bigint
+php oil g model test TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed:varchar[10] RegimePossible:varchar[10] OutputPower:varchar[10] RegimeOutput:varchar[10] TimeStampsR:char[19] file_id:bigint --no-timestamp
 \end{lstlisting}
 
 The created table will have to be related with the \textsf{files} table on sql level\footnote{See \ref{lst:sql} for relations}.
+
+Likewise, \textsf{Oil} can be used to add columns in existing tables with the following command:
+\begin{lstlisting}[language=sh]
+php oil g migration add_column_to_file_csvs column:type
+\end{lstlisting}
+
+After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/\<model\>.php} for the application to recognize it.
+
+The \textsf{DataParser} is also coded so that one can create a parser, extending the \textsf{Parser} class, for each file type. The \textsf{Parser} class contains the basic methods of setting the file name, opening for read and write and closing the open file handle. As the \textsf{Task preparedata} runs the \textsf{DataParser}, it is needed that one modifies this to tell it how to insert the parsed data in the database. This is easily done by adding a \textsf{case}, for the specific file type, in the code.
 
 \section{Frontend}
 \label{sec:frontend}
