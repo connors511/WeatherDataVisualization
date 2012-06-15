@@ -1,30 +1,23 @@
 \chapter{Design \& Implementation}
-\label{sec:design_implementation}
 \section{The use of frameworks}
-\label{sec:the_use_of_frameworks}
 Using frameworks because of the decreased development time due to already developed and tested libraries for various tasks such as database accesss, file handling and file uploading.
 
 \section{Backend}
-\label{sec:backend}
 \subsection{The C++ application}
-\label{sec:the_cpp_application}
 \subsubsection{Why a C++ application?}
-\label{sec:why_cpp_application}
-The reason for using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
+We are using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
 The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is a procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
 
 We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
 
 \subsubsection{Why Qt?}
-\label{sec:why_qt}
-It was decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
+We have decided to use Qt because of the support and community around it. It is very mature and most importantly, object oriented.
 
 Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies such as Google, HP, Philips and Samsung use it.
 
 Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we have opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
 
 \subsubsection{Return codes}
-\label{sec:return_codes}
 The PHP part of the application gets a return code from the C++ application depending on how the parsing went and reacts accordingly. A list of the return codes can be seen in table \ref{tab:cppReturnCodes}.
 \begin{table}[htbp]
 \centering
@@ -68,7 +61,6 @@ The PHP part of the application gets a return code from the C++ application depe
 \input{tex/php}
 
 \subsection{Extensibility}
-\label{sec:extensibility}
 \todo[inline,color=red]{Write the sections together}
 \todo[inline]{C++}
 The application is coded with extensibility in mind, and all parsers is therefore extending the base class \emph{Parser}.
@@ -83,9 +75,7 @@ php oil g model file_csv TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed
 The created table will have to be related with the \textsf{files} table on sql level\footnote{See \ref{lst:sql} for relations}.
 
 \section{Frontend}
-\label{sec:frontend}
 \subsection{jQuery}
-\label{sec:jquery}
 \todo[inline]{Quick roundup about the use of jQuery. Minor rewrite}
 JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages do not have to reload every time, but can be loaded in the background.
 
@@ -97,7 +87,6 @@ One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous Jav
 If the browser does not support JavaScript or it is not up-to-date, the user still has access to upload files, but not viewing data from map or chart.
 
 \subsection{Bootstrap}
-\label{sec:bootstrap}
 \todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets. Rewrite}
 Today many people keep themselves updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
 
@@ -114,10 +103,7 @@ The only problem with smartphone is the smaller screen, sometimes it can be diff
 
 We have tried accessing the software with iPhone and Android. The only problem was the chart, you could not see the whole chart, because of the small screen. Radar and map were working just fine, like on a normal PC.
 
-\subsection{Radar}
-\label{sec:radar}
-\subsubsection{Radar annotation}
-\label{sec:radar_annotation}
+\subsection{Radar annotation}
 In the final stages of the application, it was discussed if the radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
 
 Figure \ref{fig:mock_up_inactive_radar} and \ref{fig:mock_up_active_radar} shows the mock ups for the radar in both inactive and active state.
@@ -140,19 +126,11 @@ The added name and time stamp might pose as a problem, if two radars were placed
 
 This could be somewhat solved, by fading out the radars too close to an active radar, in the same way that windmills inside the range of a radar is faded out when a radar animation starts.
 
-\subsubsection{Radar interaction}
-\label{sec:radar_interaction}
-The idea of a globally controlling `play' button sounded cool because it would enable one to view an animation of a greater area, but after a test implementation it was not working exactly as intended and therefore gave a weird feeling. This idea was dropped, but could be subject of future work.
-
-The second idea of a local control was implemented and in the current version of the application all radars will play after a single click and pause the animation if clicked while an animation is running. A double click will reset the radar to the first image and display the image for an inactive radar.
-
 \section{Speed optimizations}
-\label{sec:speed_optimizations}
 \todo[inline,color=red]{rader images saved and cached in browser. minify and combine js css. reduce size and requests. fuelphps cache}
 At the beginning the chart had monthly, weekly and daily view, but when loading all data for one month, the performance was so poor. This was fixed by changing views to 2-weekly, weekly and daily view.
 
 \subsection{Caching}
-\label{sec:caching}
 Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations.
 
 \begin{table}[htbp]
@@ -182,9 +160,7 @@ The use of PHP, C++ and MySQL allows the execution of the application on almost 
 We have, however, chosen to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
 
 \section{The data}
-\label{sec:implementation_the_data}
 \subsection{File type support}
-\label{sec:file_type_support}
 The application supports the upload of the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
@@ -195,7 +171,6 @@ The application supports the upload of the following file types:
 After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
 
 \subsection{Grouping wrk}
-\label{sec:grouping_wrk}
 The big amount of wrk files for each radar (1 every \textasciitilde 10 minutes for a total of 144 files per day) causes a bit of confusion in the file administration of the control panel.
 
 It was suggested that the administration panel grouped the wrk files per day, or that the data parser combined one day of wrk files into one file before importing it into the database.
@@ -205,7 +180,11 @@ The idea of letting the data parser to handle the merge was dropped due to the c
 Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
 
 \subsection{Data date range}
-\label{sec:data_date_range}
+As time goes by, one would expect the application to contain massive amounts of data.
+In the provided test data\footnote{Data02122.tar.gz provided by Pierre-Julien Trombe on CampusNet}, the application contains \textasciitilde 140 rows of data for \textsf{wrk} files and \textasciitilde 73,000 rows of data for the wind farm data.
+
+It was discussed how we should limit the view of data, since it would require quite a lot of processing power to display that much data.
+
 For the wind farm chart, we went from 1-month, weekly and daily view to 2-week, weekly and daily.
 Preliminary tests showed that the loading time for 1-month view was too slow, because of the huge amount of data that had to be processed and formatted correctly before sent to the browser. The data would also take long to download, especially if not on a high speed internet connection.
 
@@ -216,17 +195,14 @@ All radars will start their animation on the first image taken after the selecte
 The chart will also start at the selected start date, but the navigation buttons allows one to go either back or forth in time independent of the selected from date.
 
 \subsection{Choice of map}
-\label{sec:choice_of_map}
-After comparing the two maps (see table \ref{tab:osm_vs_google}), it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
+After comparing the two maps (table \ref{tab:osm_vs_google}), it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This was not the way we were thinking about open source.
 
 OpenStreetMap was not that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
 
 There have been several design ideas. Many changes through the project and many considerations.
 
 \subsubsection{Map}
-\label{sec:map}
 At the beginning there was a sidebar which could be visible or hidden (figure \ref{fig:map_v1}). This was unnecessary, so there was no need for a big menu and this was replaced with a tiny top bar, with only the necessary options.\\
-
 First mockup:
 \begin{figure}[htbp]
    \centering
