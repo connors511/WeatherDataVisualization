@@ -5,17 +5,17 @@ Using frameworks because of the decreased development time due to already develo
 \section{Backend}
 \subsection{The C++ application}
 \subsubsection{Why a C++ application?}
-We're using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
+We are using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
 The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is a procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
 
 We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
 
 \subsubsection{Why Qt?}
-We've decided to use Qt because of the support and community around it. It's very mature and most importantly, object oriented.
+We have decided to use Qt because of the support and community around it. It is very mature and most importantly, object oriented.
 
 Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies such as Google, HP, Philips and Samsung use it.
 
-Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we've opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
+Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we have opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
 
 \subsubsection{Return codes}
 The PHP part of the application gets a return code from the C++ application depending on how the parsing went and reacts accordingly. A list of the return codes can be seen in table \ref{tab:cppReturnCodes}.
@@ -77,14 +77,14 @@ The created table will have to be related with the \textsf{files} table on sql l
 \section{Frontend}
 \subsection{jQuery}
 \todo[inline]{Quick roundup about the use of jQuery. Minor rewrite}
-JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages don't have to reload every time, but can be loaded in the background.
+JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages do not have to reload every time, but can be loaded in the background.
 
 \todo[fancyline,color=green]{Adam @ sentence: ?}The JavaScript framework there has been used is called jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation}, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software, so there is a lot of help to get on the web.\\
 The animations for radar visualization and chart are made by using jQuery.
  
 One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}, which enables the chart to send data to, and retrieve data from, the server asynchronously. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation - representing simple data structures and associative arrays - see \cite{json}}.
 
-If the browser doesn't support JavaScript or it isn't up-to-date, the user still has access to upload files, but not viewing data from map or chart.
+If the browser does not support JavaScript or it is not up-to-date, the user still has access to upload files, but not viewing data from map or chart.
 
 \subsection{Bootstrap}
 \todo[inline]{Quick roundup about the use of Boostrap and its support for smartphones and tablets. Rewrite}
@@ -101,7 +101,7 @@ Bootstrap is used to make sure that the design is working on different devices, 
 
 The only problem with smartphone is the smaller screen, sometimes it can be difficult to get a good look, specially the charts are a problem.
 
-We have tried accessing the software with iPhone and Android. The only problem was the chart, you couldn't see the whole chart, because of the small screen. Radar and map were working just fine, like on a normal PC.
+We have tried accessing the software with iPhone and Android. The only problem was the chart, you could not see the whole chart, because of the small screen. Radar and map were working just fine, like on a normal PC.
 
 \subsection{Radar annotation}
 In the final stages of the application, it was discussed if the radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
@@ -195,9 +195,9 @@ All radars will start their animation on the first image taken after the selecte
 The chart will also start at the selected start date, but the navigation buttons allows one to go either back or forth in time independent of the selected from date.
 
 \subsection{Choice of map}
-After comparing the two maps (table \ref{tab:osm_vs_google}), it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This wasn't the way we were thinking about open source.
+After comparing the two maps (table \ref{tab:osm_vs_google}), it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This was not the way we were thinking about open source.
 
-OpenStreetMap wasn't that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
+OpenStreetMap was not that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
 
 There have been several design ideas. Many changes through the project and many considerations.
 
