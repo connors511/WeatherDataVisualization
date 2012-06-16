@@ -1,7 +1,7 @@
-We have two types of actor:
+We have two types of actors:
 \begin{itemize}
-\item User: Ordinary person.
-\item Admin: User with permission to access administration.
+\item User: Visitor.
+\item Admin: User with access to the administration panel.
 \end{itemize}
 
 \section{Clicking on a radar at the map}
@@ -10,9 +10,9 @@ We have two types of actor:
 \textbf{Scenario:}
 \begin{itemize}
 \item Checks if there is data for the date
-\item If images isn't generated, it will generate them real time.
+\item If images is not generated, it will generate them real time.
 \item Radar shows images over an interval.
-\item \emph{One click for play/pause and doubleclick for reset.}
+\item \emph{One click for play/pause and double click for reset.}
 \item When there is no more data, the radar resets.
 \end{itemize}
 \textbf{Alternative scenario:} 
@@ -25,7 +25,9 @@ We have two types of actor:
 
 \textbf{Scenario:}
 \begin{itemize}
-\item Visualize data for that given wind farm.
+\item Opens chart dialog.
+\item Chart data is retrieved in the background
+\item Data is visualized if available
 \end{itemize}
 
 \section{Changing view in chart for wind farm}
@@ -50,17 +52,20 @@ We have two types of actor:
 \end{itemize}
 \end{enumerate}
 
-\section{Changing data to be shown}
+\section{Changing data set in chart}
 \textbf{Actor:} User
 
 \textbf{Scenario:}
 \begin{itemize}
-\item The data is shown.
+\item Selecting a new data set
+\item The data is retrieved from the server
+\item Visualize the data if available
 \end{itemize}
 \textbf{Alternative scenario}
-\begin{enumerate}
-\item The data is removed.
-\end{enumerate}
+\begin{itemize}
+\item Unselecting a data set
+\item The data is removed from the chart
+\end{itemize}
 
 \section{Using control buttons in chart for wind farm}
 \textbf{Actor:} User
@@ -108,7 +113,7 @@ We have two types of actor:
 \textbf{Alternative scenario:} 
 \begin{enumerate}
 \item Sign in with wrong username or password.
-\item Adding file that isn't correct format and get an error message.
-\item Adding ZIP file, but files inside zip isn't correct. It will get an error message.
+\item Adding file that is not correct format and get an error message.
+\item Adding ZIP file, but files inside zip are not correct. They will be skipped.
 \item File exists and will not be uploaded.
 \end{enumerate}

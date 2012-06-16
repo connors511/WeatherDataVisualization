@@ -61,10 +61,11 @@
 \pagenumbering{roman}
   \ifx\thesisversion\printversion % no resumes in draft-version
 %% Ad to List of Contents:
-\chapter*{Abstract, Resumé}
 	\ifx\thesislanguage\danishlang
+\chapter*{Resumé}
 	\addcontentsline{toc}{chapter}{Resumé}
 	\else
+\chapter*{Abstract}
 	\addcontentsline{toc}{chapter}{Abstract}
 	\fi
 \input{./tex/abstract.tex}
@@ -146,8 +147,6 @@
 	%\addcontentsline{toc}{chapter}{Introduction}
 	\markboth{Preface}{}
 	\fi
-	
-\listoftodos
 
 \input{./tex/nomenclature.tex}
 

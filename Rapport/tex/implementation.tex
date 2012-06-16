@@ -1,23 +1,28 @@
 \chapter{Design \& Implementation}
+\label{sec:design_and_implementation}
 \section{The use of frameworks}
+\label{sec:the_use_of_frameworks}
 Using frameworks because of the decreased development time due to already developed and tested libraries for various tasks such as database accesss, file handling and file uploading.
 
 \section{Backend}
+\label{sec:backend}
 \subsection{The C++ application}
-\subsubsection{Why a C++ application?}
+\label{sec:the_cpp_application}
 We are using a C++ application because it is much faster to parse huge files in C++ than PHP or JavaScript.
 The choice of language was because we had some knowledge of both C and C++. C++ is object oriented where as C is a procedural language, and seeing as we all favour object oriented programming, the choice between the two was easy.
 
 We could have chosen other languages such as F, F\#, Java, Perl or Ruby, but our limited knowledge about these made us stick with C++, which is also quite fast and portable.
 
-\subsubsection{Why Qt?}
+\subsubsection{The Qt framework}
+\label{sec:the_qt_framework}
 We have decided to use Qt because of the support and community around it. It is very mature and most importantly, object oriented.
 
 Qt is a cross-platform application framework developed by Nokia. Popular software such as Skype, VLC media player and VirtualBox along with companies such as Google, HP, Philips and Samsung use it.
 
-Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we have opted to only use the command line part of Qt, because the programming is run by the application and not by a user.
+Qt makes developing an application with a GUI\footnote{Graphical User Interface} relatively easy, but we have opted to only use the command line part of Qt, because the program is run by the application and not by a user.
 
 \subsubsection{Return codes}
+\label{sec:return_codes}
 The PHP part of the application gets a return code from the C++ application depending on how the parsing went and reacts accordingly. A list of the return codes can be seen in table \ref{tab:cppReturnCodes}.
 \begin{table}[htbp]
 \centering
@@ -62,10 +67,10 @@ The PHP part of the application gets a return code from the C++ application depe
 
 \subsection{Extensibility}
 \label{sec:extensibility}
-The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represent the respective row in the table as an object. Both things can be created automatically in the command line with \textsf{Oil}. Listing \ref{lst:oil_command} is an example of how oil commands was used to create the model and migration for the csv file type.
+The application, especially the models, has been developed with flexibility and extensibility in mind. Thus, backend support for new file types can be done with very little code. A file type table has to be created with proper columns for data. A \textsf{model} represents the respective row in the table as an object. Both things can be created automatically in the command line with \textsf{Oil}. Listing \ref{lst:oil_command} is an example of how oil commands was used to create the model and migration for the csv file type.
 
 \begin{lstlisting}[language=sh,caption={Oil command for creating model and migration},label={lst:oil_command}]
-php oil g model test TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed:varchar[10] RegimePossible:varchar[10] OutputPower:varchar[10] RegimeOutput:varchar[10] TimeStampsR:char[19] file_id:bigint --no-timestamp
+php oil g model file_csv TimeStamps:char[12] PossiblePower:varchar[10] WindSpeed:varchar[10] RegimePossible:varchar[10] OutputPower:varchar[10] RegimeOutput:varchar[10] TimeStampsR:char[19] file_id:bigint --no-timestamp
 \end{lstlisting}
 
 The created table will have to be related with the \textsf{files} table on sql level\footnote{See \ref{lst:sql} for relations}.
@@ -77,37 +82,39 @@ php oil g migration add_column_to_file_csvs column:type
 
 After adding a column, either manually or with \textsf{Oil}, one must insert it in \textsf{/fuel/app/classes/model/<model>.php} for the application to recognize it.
 
-The \textsf{DataParser} is also coded so that one can create a parser, extending the \textsf{Parser} class, for each file type. The \textsf{Parser} class contains the basic methods of setting the file name, opening for read and write and closing the open file handle. As the \textsf{Task preparedata} runs the \textsf{DataParser}, it is needed that one modifies this to tell it how to insert the parsed data in the database. This is easily done by adding a \textsf{case}, for the specific file type, in the code.
+The data parser is also coded so that one can create a parser, extending the \textsf{Parser} class, for each file type. The \textsf{Parser} class contains the basic methods of setting the file name, opening for read and write and closing the open file handle. As the \textsf{Task preparedata} runs the data parser, it is needed that one modifies this to tell it how to insert the parsed data in the database. This is easily done by adding a \textsf{case}, for the specific file type, in the code.
 
 \section{Frontend}
+\label{sec:frontend}
 \subsection{jQuery}
-JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages do not have to reload every time, but can be loaded in the background.
-
-jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation} is a JavaScript framework and used, because of the very well documentation. jQuery is one of the most popular JavaScript library and is free open source software, so there is a lot of help to get on the web.\\
-The animations for radar visualization and chart are made using jQuery.
+\label{sec:jquery}
+JavaScript\footnote{Client-side scripting language for web pages} has been used to load and visualize data. It gives a more smooth design, since the pages do not have to reload every time, but can be loaded in the background with AJAX\footnote{Asynchronous JavaScript and XML}.
  
-One of the techniques with jQuery is for instance AJAX\footnote{Asynchronous JavaScript and XML}, which enables the chart to send data to, and retrieve data from, the server asynchronously. Data is retrieved using XMLHttpRequest, since the data is ready in JSON\footnote{JavaScript Object Notation - representing simple data structures and associative arrays - see \cite{json}}.
+AJAX enables the chart to send data to, and retrieve data from, the server asynchronously. Data is retrieved using XMLHttpRequest\footnote{Also known as XHR}, since the data is ready in JSON\footnote{JavaScript Object Notation - representing simple data structures and associative arrays - see \cite{json}}.
+
+jQuery\footnote{JavaScript framework, see \cite{jquery} for the documentation} is a JavaScript framework and used because of the very well documentation. jQuery is one of the most popular JavaScript libraries and is free open source software. The animations for radar visualization and chart are made using jQuery.
 
 If the browser does not support JavaScript or it is not up-to-date, the user still has access to upload files, but not viewing data from map or chart.
 
 \subsection{Bootstrap}
 \label{sec:bootstrap}
-Today many people keep themselves updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones, that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
+Today many people keep themselves updated on the fly and to give them the opportunity, we have tried to create a design that also works on smartphones and tablets that have smaller screens and lesser processing power. Most of the calculating is done on the server, so the requirements for client-side is almost nothing, other than showing the data that the server has performed.
 
-Bootstrap is used to make sure that the design is working on different devices, for example if the screen is too small, like we know from smartphones, the menu will collapse as seen on figure \ref{fig:bootstrap}. The user can roll down the menu to get the same menu options as usual.
+Bootstrap\footnote{Frontend framework by Twitter. See \url{http://twitter.github.com/bootstrap/}} is used to make sure that the design is working on different devices, for example if the screen is too small, like we know from smartphones, the menu will collapse as seen on figure \ref{fig:bootstrap}. The user can roll down the menu to get the same menu options as usual.
 
 \begin{figure}[htbp]
 \centering
-   \includegraphics[scale=.5]{figure/bootstrap.eps}
+   \includegraphics[width=.95\linewidth]{figure/bootstrap.eps}
    \caption{Menu collapse with bootstrap}
    \label{fig:bootstrap}
 \end{figure}
 
 The only problem with smartphone is the smaller screen, sometimes it can be difficult to get a good look, specially the charts are a problem.
 
-We have tried accessing the software with iPhone and Android. The only problem was the chart, you could not see the whole chart, because of the small screen. Radar and map were working just fine, like on a normal PC.
+We have tried accessing the application with iPhone and Android, and the only problem was the chart, you could not see the whole chart because of the small screen. Radar and map were working just fine like on a normal PC.
 
 \subsection{Radar annotation}
+\label{sec:radar_annotation}
 In the final stages of the application, it was discussed if the radars should have its name and/or time stamp for the current radar image shown to make it clearer for the user when the image was taken.
 
 Figure \ref{fig:mock_up_inactive_radar} and \ref{fig:mock_up_active_radar} shows the mock ups for the radar in both inactive and active state.
@@ -128,17 +135,17 @@ Figure \ref{fig:mock_up_inactive_radar} and \ref{fig:mock_up_active_radar} shows
 \end{figure}
 The added name and time stamp might pose as a problem, if two radars were placed in such a way that their range would overlap where the name or time stamp were put.
 
-This could be somewhat solved, by fading out the radars too close to an active radar, in the same way that windmills inside the range of a radar is faded out when a radar animation starts.
+This could be somewhat solved by fading out the radars too close to an active radar, in the same way that windmills inside the range of a radar is faded out when a radar animation starts.
 
 \section{Speed optimizations}
+\label{sec:speed_optimization}
+At the beginning, the chart had monthly, weekly and daily views, but when loading data for an entire month, the performance was poor. This was fixed by changing the views to 2-weekly, weekly and daily view - However, it has been done in the chart only to get a better UX and the API\footnote{Application programming interface} has no limitation to this.
 
-At the beginning, the chart had monthly, weekly and daily views, but when loading data for an entire month, the performance was poor. This was fixed by changing the views to 2-weekly, weekly and daily view - However, the API has no limitation to this and it has been done in the \textsf{view} only to get a better UX.
+Sometimes, \textsf{ORM}\footnote{Object Relational Mapping}, has been used. This method is great for bringing the number of database queries down and makes use of model relations, so one easily can perform CRUD operations. It has been used a lot in the administration panel, but has been omitted in the API, as it uses an ordinary \textsf{Query Builder}\footnote{Helper for building SQL queries} instead. While \textsf{ORM} is more intuitive to use when manipulating with data, the \textsf{Query Builder} is faster, because \textsf{ORM} creates objects for the rows in the result set. 
 
-Sometimes, \textsf{ORM}\footnote{Object Relational Mapping}, has been used. This method is great for bringing the number of database requests down and makes use of model relations, so one easily can perform CRUD actions. It has been used a lot in the administration panel, but has been omitted in the map and chart views, as these use of an ordinary \textsf{Query Builder} instead. While \textsf{ORM} is more intuitive to use when manipulating with data, the \textsf{Query Builder} is faster, because \textsf{ORM} creates objects for the rows in the result set. 
-
-\subsection{JS & CSS Minization and combination}
-
-In order to reduce the number and size of requests in the frontend, thus making the page load faster, a FuelPHP package \textsf{Casset} has been implemented. This package can minify and combine a selected number of \textsf{JS} and \textsf{CSS} files and save the results on the webserver, which it only does, if the result files do not exist, when a user visits the application. If they do, these files are fetched instead - the minimization and combination execution is therefore only executed once. Benchmarks are below:
+\subsection{JavaScript \& CSS minification and combination}
+\label{sec:javascript_and_css_minification_and_combintaion}
+In order to reduce the number and size of requests in the frontend, thus making the page load faster, a FuelPHP package named \textsf{Casset}\footnote{A class for managing assets} has been implemented. This package can minify and combine a selected number of JavaScript and CSS\footnote{Cascading Style Sheet} files and save the results on the webserver, which it only does, if the result files do not exist when a user visits the application. If they do, these files are fetched instead - the minification and combination execution is therefore only executed once. Benchmarks are shown in table \ref{tab:minify_css}.
 
 \begin{table}[htbp]
 \centering
@@ -146,9 +153,9 @@ In order to reduce the number and size of requests in the frontend, thus making 
 \hline
 \multicolumn{1}{|c|}{\multirow{1}{*}{}} & \multicolumn{2}{|c|}{\textbf{Before}} & \multicolumn{2}{|c|}{\textbf{After}} \\ \cline{2-5}
 \textbf{Files} & 
-Size [kB] & Count & Size [kB] & Count \\ \hline
+Size [kB] & \# files & Size [kB] & \# files \\ \hline
 
-\textbf{JS} &
+\textbf{JavaScript} &
 % EDIT
 525 & 6 & 370 & 1     \\ \hline
 
@@ -156,13 +163,15 @@ Size [kB] & Count & Size [kB] & Count \\ \hline
 % EDIT
 146 & 5 & 120 & 1\\ \hline
 \end{tabular}
-\label{tab:minify_css}
 \caption{Minification and combination benchmarks}
+\label{tab:minify_css}
 \end{table}
 
 \subsection{Caching}
-Caching has been implemented both on server and client side, to allow for maximum performance when viewing charts and radar image animations. The server side cache FuelPHP  
-In FuelPHP a server side cache is available, and this has been activated too. Benchmarks are below:
+\label{sec:caching}
+Caching has been implemented both on the server and client side to allow for maximum performance when viewing charts and radar image animations.
+
+In FuelPHP a server side cache is available, and this has been activated too. Benchmarks are shown in table \ref{tab:cache_benchmarks}.
 
 \begin{table}[htbp]
 \centering
@@ -175,11 +184,11 @@ Radar & \textasciitilde 130-150 ms & \textasciitilde 35 ms & \textasciitilde 2 m
 Chart & \textasciitilde 300 ms & \textasciitilde 40 ms & \textasciitilde 2 ms\\
 \hline
 \end{tabular}
-\label{tab:cache_benchmarks}
 \caption{Cache benchmarks}
+\label{tab:cache_benchmarks}
 \end{table}
 
-When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already has a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to its own file. If radar images do not exist, they are generated in real time when requesting them.
+When a radar image or chart data is requested, the server checks if a cache of the output exists. If it does, it checks if the browser already has a copy of the same cache file and send a \textsf{301 Not Modified} response to the browser, telling it to use its own file. If radar images do not exist, they are generated in real time when requesting them.
 If the browser does not have a cache, or it is too old, the server sends the contents of the new cache to the browser.
 If no cache is found on the server, or it has expired, the server retrieves the needed information from the database, generate the image or data to output, saves it to the cache and sends it to the browser.
 
@@ -187,21 +196,25 @@ If no cache is found on the server, or it has expired, the server retrieves the 
 \label{sec:cross-platform}
 The use of PHP, C++ and MySQL allows the execution of the application on almost all platforms, because the technologies used are open source and available on most platforms.
 
-It has, however, been decided to drop support for all version of Internet Explorer, because this would increase development time drastically -- time we did not have.
+It has, however, been decided to drop support for all versions of Internet Explorer, because this would increase development time drastically -- time we did not have.
 
 As already mentioned in section \ref{sec:bootstrap}, smaller screens and devices is partly supported through the use of Bootstrap.
+
 \section{The data}
+\label{sec:the_data}
 \subsection{File type support}
-The application supports the upload of the following file types:
+\label{sec:file_type_support}
+The software supports the following file types:
 \begin{description}
 \item[csv] Observations form a wind farm. The definition can be found in appendix \ref{ap:csv}.
-\item[wrk] Weather image from a radar. The file must obey the new VRIS format. See \cite{VRIS} for the definition of VRIS.
+\item[wrk] Weather image from a radar. The file must obey the new VRIS\footnote{See \cite{VRIS} for the definition of VRIS} format.
 \item[zip] All supported file formats can be zipped to easily upload multiple files at the same time. Unlimited zip and folder nesting is supported\footnote{Note that there might be a limit on the file- or foldername length set by the operating system.}.
 \end{description}
 
-After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF, at a later date and the focus was shifted to the frontend.
+After the implementation of wrk files, it was discussed whether or not the NetCDF should be implemented and it was decided that the time cost were too big to meet the deadline. Instead it was concluded that the flexibility of the application was good enough to allow extending the application to support other file formats, including NetCDF at a later date, and the focus was shifted to the frontend.
 
 \subsection{Grouping wrk}
+\label{sec:grouping_wrk}
 The big amount of wrk files for each radar (1 every \textasciitilde 10 minutes for a total of 144 files per day) causes a bit of confusion in the file administration of the control panel.
 
 It was suggested that the administration panel grouped the wrk files per day, or that the data parser combined one day of wrk files into one file before importing it into the database.
@@ -211,30 +224,30 @@ The idea of letting the data parser to handle the merge was dropped due to the c
 Lack of time prevented the implementation of file grouping by the administration panel because of the work involved in finding the files that should be grouped together.
 
 \subsection{Data date range}
+\label{sec:data_date_range}
 As time goes by, one would expect the application to contain massive amounts of data.
-In the provided test data\footnote{Data02122.tar.gz provided by Pierre-Julien Trombe on CampusNet}, the application contains \textasciitilde 140 rows of data for \textsf{wrk} files and \textasciitilde 73,000 rows of data for the wind farm data.
+In the provided test data, the application contains \textasciitilde 140 rows of data for \textsf{wrk} files and \textasciitilde 73,000 rows of data for the \textsf{csv} file.
 
 It was discussed how we should limit the view of data, since it would require quite a lot of processing power to display that much data.
 
-For the wind farm chart, we went from 1-month, weekly and daily view to 2-week, weekly and daily.
+For the chart, we went from 1-month, weekly and daily view to 2-week, weekly and daily.
 Preliminary tests showed that the loading time for 1-month view was too slow, because of the huge amount of data that had to be processed and formatted correctly before sent to the browser. The data would also take long to download, especially if not on a high speed internet connection.
 
 Another problem was the radar images. Without any data range, they would all start at the first image taken by that radar, and play till the last. A range chosen by the user from a `to' and `from' date field was suggested. After testing the first implementation it was found that the `to' field was a bit confusing and would result in a bit of a rewrite of already existing code.
 
-The `to' field was removed and the `from' field now decides the starting date for all radars and wind farm charts.
-All radars will start their animation on the first image taken after the selected from date.
+The `to' field was removed and the `from' field now decides the starting date for all radars and charts.
+All radars will start their animation on the first image taken after the selected `from' date.
 The chart will also start at the selected start date, but the navigation buttons allows one to go either back or forth in time independent of the selected from date.
 
 \subsection{Choice of map}
-After comparing the two maps (table \ref{tab:osm_vs_google}), it quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This was not the way we were thinking about open source.
+\label{sec:implementation_choice_of_map}
+After comparing the two maps (see table \ref{tab:osm_vs_google}), the choice quickly became OpenStreetMap. It was partly because Google wants money if the map is used for commercial purposes and because the data is copyrighted and owned by multiple organisations. This was not the way we were thinking about open source.
 
 OpenStreetMap was not that difficult to work with, due to the very well documentation from leaflet\footnote{See \cite{leaflet} for the documentation}.
 
-There have been several design ideas. Many changes through the project and many considerations.
-
 \subsubsection{Map}
 \label{sec:map}
-At the beginning there was a sidebar which could be visible or hidden as shown on figure \ref{fig:map_v1}. This was unnecessary, so there was no need for a big menu and this was replaced with a tiny top bar, with only the necessary options.
+At the beginning there was a sidebar which could be visible or hidden as shown on figure \ref{fig:map_v1}. This was unnecessary, so there was no need for a big menu and this was replaced with a tiny top bar containing only the necessary options.
 
 \begin{figure}[htbp]
    \centering
@@ -243,10 +256,11 @@ At the beginning there was a sidebar which could be visible or hidden as shown o
    \label{fig:map_v1}
 \end{figure}
 
-At the beginning it was obvious to have different layers on the map, but later it was found out that it was unnecessary, so it was quickly removed.\\
-Now there is created a cool design which is easy to get used to and all relevant information can be accessed easily and without to much clicking as shown on figure \ref{fig:map_final}.
-There had also been added some gestures to control the radar easily.\\
-The top bar has a date field to know which date the radar should get data from. This date will be transferred to the chart window.
+At the beginning it was obvious to have different layers on the map, but later we found out that this was unnecessary, so it was quickly removed.
+
+Now there is a awesome design that is easy to get use and all relevant information can be accessed easily and without too much clicking as shown on figure \ref{fig:map_final}.
+
+The top bar has a date field to know which date the radar should get data from. This date will also be used when the chart dialog is opened.
 
 \begin{figure}[htbp]
    \centering
@@ -265,9 +279,10 @@ At the beginning there was the same sidebar as on the map, but with other option
    \label{fig:chart_v1}
 \end{figure}
 
-This has, through the whole project, been determined to be a pop up on the map.
-The control buttons were before 'fast backward', 'backward', 'today', 'forward' and 'fast forward', but 'today' was replaced with 'play'. The 'play' button moves the chart every second, so the user can view the chart animated.\\
-The new design also has three different views '2-week', 'weekly' and 'daily view' as seen on figure \ref{fig:chart_final}. Control buttons adjust to the view the user has selected.
+This has, through the whole project, been determined to be a pop up dialog on the map.
+Before, the control buttons were `fast backward', `backward', `today', `forward' and `fast forward', but `today' was replaced with `play'. The `play' button moves the chart every second, so the user can view the chart animated.
+
+The new design also has three different views `2-week', `weekly' and `daily view' as seen on figure \ref{fig:chart_final}. Control buttons adjust to the view the user has selected.
 
 \begin{figure}[htbp]
    \centering
@@ -275,6 +290,12 @@ The new design also has three different views '2-week', 'weekly' and 'daily view
    \caption{Chart pop up - final}
    \label{fig:chart_final}
 \end{figure}
+
+\subsubsection{Radar interaction}
+\label{sec:radar_interaction}
+When clicking on a radar an animation of radar images taken by the radar is played.
+
+When double clicking the radar, the animation stops and is reset to the default radar icon.
 
 % db.tex should start at section level
 \input{tex/db}
