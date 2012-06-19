@@ -122,7 +122,7 @@ class Preparedata {
 			}
 			else
 			{
-				echo $retval;
+				\Cli::write($retval,'red');
 				$file->name = '1';
 			}
 			

@@ -79,8 +79,13 @@ class Unpack {
 
 					// Rename
 					$newpath = $path_parts['dirname'].'/'.\Fuel\Core\Inflector::friendly_title($path_parts['filename'],self::$_config['normalize_separator']).'.'.$path_parts['extension'];
-					rename($path, $newpath);
+					if ($path != $newpath)
+					{
+						rename($path, $newpath);
+					}
 				}
+				
+				chmod($newpath, 0777);
 
 				self::$_output_files[] = $newpath;
 				break;
