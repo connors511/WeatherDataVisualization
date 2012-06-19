@@ -45,7 +45,7 @@ $month = substr($date,4,2);
 $day = substr($date,6,2);
 echo "WDV.Chart._today = new Date({$year}, {$month}, {$day});\n";
 ?>
-	WDV.Chart._today.setDate(WDV.Chart._today.getDate() - 2);
+	WDV.Chart._today.setMonth(WDV.Chart._today.getMonth() - 1);
 		   </script>
 	</head>
 	<body>

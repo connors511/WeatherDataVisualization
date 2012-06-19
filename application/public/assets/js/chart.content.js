@@ -82,8 +82,6 @@ WDV.Chart = {
 	},
 			
 	Init: function() {
-		// Temp fix for date	
-		console.log("now" + this._today);
 			
 		$('.label_check').each(function(){
 			if ($(this).children('input').is(':checked'))
@@ -231,8 +229,8 @@ WDV.Chart = {
 			}
 		}
 		
-		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate()+1);
-		var tempe = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate()+1);
+		var temps = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate());
+		var tempe = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate());
 		$("#zoom").text(temps.getDate() + ". " + WDV.Chart._month[temps.getMonth()] + " " + temps.getFullYear() + " \t - \t " + tempe.getDate() + ". " + WDV.Chart._month[tempe.getMonth()] + " " + tempe.getFullYear());
 	
 		plot = $.plot($('#placeholder'), WDV.Chart.getArray(sDate, eDate), {
