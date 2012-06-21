@@ -111,7 +111,7 @@ echo Casset::render_js();
 		} echo implode(',', $rads);
 	?>];
 
-	WDV.Settings.Radar.images = [[<?php
+	/*WDV.Settings.Radar.images = [[<?php
 		$arr = array();
 		for ($i = 1; $i <= 141; $i++) {
 			$arr[] = "['radar/{$i}.png']";
@@ -122,7 +122,7 @@ echo Casset::render_js();
 		for ($i = 142; $i <= 285; $i++) {
 			$arr[] = "['radar/{$i}']";
 		} echo implode(",", $arr);
-	?>]];
+	?>]];*/
 WDV.Settings.Radar.url = '<?php echo Uri::create('rest/radar/list.json'); ?>';
 WDV.Settings.Jobs.url = '<?php echo Uri::create('rest/jobs/list.json'); ?>';
 WDV.Settings.Radar.speed = 200;

@@ -6,7 +6,7 @@ class Controller_Rest_Radar extends Controller_Rest
 	public function get_list()
 	{
 
-		$cache = 'radar.' . Input::get('id') . '.' . Input::get('f') . '-' . Input::get('t');
+		$cache = 'radar.' . Input::get('lat') . '-' . Input::get('lat') . '.'. Input::get('f');
 
 		$filename = APPPATH . 'cache' . DS . str_replace('.', '/', $cache) . '.cache';
 
@@ -42,7 +42,7 @@ class Controller_Rest_Radar extends Controller_Rest
 				->and_where('longitude', '=', Input::get('lng'));
 			if ($from)
 			{
-				$query->and_where('date_time', '>', $from);
+				$query->and_where('date_time', '>=', $from);
 			}
 			$query = $query->order_by('date_time')
 				->execute()
